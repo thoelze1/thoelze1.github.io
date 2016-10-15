@@ -6,6 +6,18 @@
 		<meta name="keywords" content="Tanner Hoelzel,Binghamton">
         <meta name="author" content="Tanner Hoelzel">
 		<link rel="shortcut icon" type="image/x-icon" href="favicon.ico" />
+		<script type="text/javascript">
+		function randombg() {
+			// Values between 0x581845 and 0x300A24 (difference is 0x280e21)
+			var r = ("00"+Math.floor(0x30+(0x28*Math.random())).toString(16)).slice(-2);
+			var g = ("00"+Math.floor(0x0A+(0x0C*Math.random())).toString(16)).slice(-2);
+			var b = ("00"+Math.floor(0x24+(0x21*Math.random())).toString(16)).slice(-2);
+			var color = "#"+r+g+b;
+			//window.alert(color);
+			document.body.style.backgroundColor = color;
+		}
+		window.onload = randombg; <!-- this can also be done with <body onload="randombg();"> -->
+		</script>
 		<title>Tanner Hoelzel</title>
 	</head>
 	<body text="#ffffff" bgcolor="#581845">
