@@ -6,8 +6,10 @@ Thanks for stopping by!
 
 ## To Do
 
+- Add Break Google Drive to projects, with live update on drive size (Javascript?)
 - Improve purplish color generation (manipulating red, green, and blue separately doesn't always make a nice purple)
 - Update favicon.ico according to random color
+- Add Game of Nim (Javascript?) where AI always wins
 
 ## Resources
 
