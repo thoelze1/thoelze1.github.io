@@ -1,22 +1,64 @@
 <!DOCTYPE html>
 
-<html>
-  
-  <head>
-    <title>Tanner Hoelzel</title> <!-- <title> tag is tab name-->
-  </head>
-  
-  <body bgcolor="#D0F8F0">
-    <h1 align="center">Tanner Hoelzel</h1>
-    <p align="center">I'm Tanner, a student of computer science at Binghamton University.</p>
-    <hr>
-    <hr>
-    <h2 align="center">Around the Web</h2>
-    <a href="http://github.com/thoelze1">Github</a>
-    <br>
-    <a href="http://www.tannerhoelzel.com/assets/TannerHoelzelResume.pdf">Resume</a>
-    <br>
-    <a href="http://www.linkedin.com/in/tanner-hoelzel-05a9a8105">LinkedIn</a>
-  </body>
+<html lang="en">
+	<head>
+    	<meta charset="utf-8">
+		<meta name="keywords" content="Tanner Hoelzel,Binghamton">
+        <meta name="author" content="Tanner Hoelzel">
+		<link rel="shortcut icon" type="image/x-icon" href="favicon.ico" />
+		<link href="cover.css" rel="stylesheet">
+		<script type="text/javascript">
+		function randombg() {
+			// Values between 0x581845 and 0x300A24 (difference is 0x280e21)
+			var r = ("00"+Math.floor(0x30+(0x28*Math.random())).toString(16)).slice(-2);
+			var g = ("00"+Math.floor(0x0A+(0x0C*Math.random())).toString(16)).slice(-2);
+			var b = ("00"+Math.floor(0x24+(0x21*Math.random())).toString(16)).slice(-2);
+			var color = "#"+r+g+b;
+			//window.alert(color);
+			document.body.style.backgroundColor = color;
+		}
+		window.onload = randombg; <!-- this can also be done with <body onload="randombg();"> -->
+		</script>
+		<title>Tanner Hoelzel</title>
+	</head>
+	<body text="#ffffff" bgcolor="#581845">
+		<div align="center">
+			<h1>Tanner Hoelzel</h1>
+			<h4>I'm Tanner, a student of computer science and mathematics at Binghamton University.</h4>
+		</div>
+		<hr>
+		<div>
+			<h2>Projects</h2>
+			<h3>Exploring Prime Numbers</h3>
+			<p>Lists of prime numbers can be found all over the internet, like at the <a href="https://primes.utm.edu/lists/small/millions/">Prime Pages</a>. However, I haven't found lists of prime numbers organized by number of digits online, so I host them on my website.
+			<ul>
+				<li><a href="http://www.tannerhoelzel.com/primes/primes01.txt">1 digit primes</a></li>
+				<li><a href="http://www.tannerhoelzel.com/primes/primes02.txt">2 digit primes</a></li>
+				<li><a href="http://www.tannerhoelzel.com/primes/primes03.txt">3 digit primes</a></li>
+				<li><a href="http://www.tannerhoelzel.com/primes/primes04.txt">4 digit primes</a></li>
+				<li><a href="http://www.tannerhoelzel.com/primes/primes05.txt">5 digit primes</a></li>
+				<li><a href="http://www.tannerhoelzel.com/primes/primes06.txt">6 digit primes</a></li>
+				<li><a href="http://www.tannerhoelzel.com/primes/primes07.txt">7 digit primes</a></li>
+				<li><a href="http://www.tannerhoelzel.com/primes/primes08.txt">8 digit primes</a></li>
+			</ul>
+			<p>Interesting information on Benford's Law and prime numbers can be found <a href="https://primes.utm.edu/notes/faq/BenfordsLaw.html">here</a>, and an interesting paper about leading digit frequencies in prime numbers can be found <a href="http://rspa.royalsocietypublishing.org/content/royprsa/465/2107/2197.full.pdf">here</a>.</p>
+		</div>
+		<hr>
+		<div align="center">
+			<h2>Around the Web</h2>
+			<input type="button" onclick="location.href='https://github.com/thoelze1';" value="Github" />
+			<input type="button" onclick="location.href='http://www.linkedin.com/in/tanner-hoelzel-05a9a8105';" value="LinkedIn" />
+			<input type="button" onclick="location.href='mailto:thoelze1@binghamton.edu';" value="Email" />
+		</div>
+	</body>
+	<script>
+		(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+		(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+		m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+		})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
 
+  		ga('create', 'UA-85720344-1', 'auto');
+  		ga('send', 'pageview');
+
+	</script>
 </html>
