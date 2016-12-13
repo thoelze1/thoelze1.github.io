@@ -20,11 +20,21 @@ body {
 		</div>
 	</body>
 	<script type="text/javascript">
+
+function httpGet(theUrl) {
+	var xmlHttp = new XMLHttpRequest();
+	xmlHttp.open( "GET", theUrl, false );
+	xmlHttp.send( null);
+	return xmlHttp.responseText;
+}
+
 function addItem() {
 	var inputBox = document.getElementById("input-box");
 	var text = inputBox.value;
 	if(text == "") return;
 	inputBox.value = "";
+
+	httpGet("/saceitem?item=" + encodeURIComponent(text));
 
 	var newitem = document.createElement('div');
 	newitem.innerHTML = text;
