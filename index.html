@@ -6,206 +6,49 @@
 		<meta name="keywords" content="Tanner Hoelzel,Binghamton">
         <meta name="author" content="Tanner Hoelzel">
 		<link rel="shortcut icon" type="image/x-icon" href="favicon.ico" />
+        <script src="Storage.js"></script>
 		<link href="cover.css" rel="stylesheet">
-		<script type="text/javascript">
-		function randombg() {
-			// Values between 0x581845 and 0x300A24 (difference is 0x280e21)
-			var r = ("00"+Math.floor(0x30+(0x28*Math.random())).toString(16)).slice(-2);
-			var g = ("00"+Math.floor(0x0A+(0x0C*Math.random())).toString(16)).slice(-2);
-			var b = ("00"+Math.floor(0x24+(0x21*Math.random())).toString(16)).slice(-2);
-			var color = "#"+r+g+b;
-			//window.alert(color);
-			document.body.style.backgroundColor = color;
-		}
-		window.onload = randombg; <!-- this can also be done with <body onload="randombg();"> -->
-		</script>
-		<title>Tanner Hoelzel</title>
+        <title>Tanner Hoelzel</title>
 	</head>
-	<body text="#ffffff" bgcolor="#581845" onload="startGame()">
-		<div align="center">
-			<h1><big>Tanner Hoelzel</big></h1>
+	<body>
+        <script type="text/javascript">
+            randomcolor();
+            randombg();
+        </script>
+        <br>
+		<div class="centercolumn" align="center">
+			<h1>
+                <big>Tanner Hoelzel</big>
+            </h1>
 			<img src="headshot.png" alt="HTML5 Icon" width="128" height="128">
-			<h3 style="width: 40%;">I'm Tanner, a student of computer science and mathematics at Binghamton University. Feel free to check out my projects at <a href="https://github.com/thoelze1">GitHub</a>, find me on <a href="http://www.linkedin.com/in/tanner-hoelzel-05a9a8105">LinkedIn</a>, or take a look at my <a href="http://tannerhoelzel.com/downloads/TannerHoelzelResume.pdf">resume</a>.</h3>
-		</div>
-		<hr>
-		<div>
-			<h1>Projects</h1>
-            <h3>Image Compression</h3>
-            <p>I haven't yet taken a course in image processing, but I'm interested in understanding various means of image compression. On Youtube, I have uploaded time-lapses that show serial JPEG compression of a starting image.</p>
-            <div align="center">
-                <iframe align="center" width="560" height="315" src="https://www.youtube.com/embed/44__TI19g6s" frameborder="0" allowfullscreen></iframe>
-            </div>
-            <h3>Music and Friends</h3>
-            <p>My good friends Ben and Jackson are behind <a href="https://porkomorph.bandcamp.com/">Porkomorph</a>, the band that's singlehandedly  reorienting folk-o-delic zen punk as we know it. I was recently featured on <a href="https://porkomorph.bandcamp.com/album/thanksgiving-demos-or-two-freak-folk-allegros-in-c-major">Two Freak Folk Allegros in C Major</a>, check it out!</p>
-            <div style='text-align:center;'>
-                    <iframe align="center" style="border: 0; width: 500px ; height: 120px; text-align:center;" src="https://bandcamp.com/EmbeddedPlayer/album=478579305/size=large/bgcol=ffffff/linkcol=0687f5/tracklist=false/artwork=small/track=3739977481/transparent=true/" seamless><a href="http://porkomorph.bandcamp.com/album/thanksgiving-demos-or-two-freak-folk-allegros-in-c-major">thanksgiving demos, or &quot;Two Freak Folk Allegros in C Major&quot; by Porkomorph</a></iframe>
-                    <!-- when width was 100% (rather than 500px), the iframe would not center-->
-            </div>
-            <p>Around Halloween, my friend Matt Warshauer puts together incredible Halloween displays. Check them out <a href="https://bluemusemag.com/2016/10/31/the-halloween-guy-a-satire-of-trump-inspired-politics-robert-e-osullivan/">here</a>!</p>
-            <h3>Coding Competitions</h3>
-            <p>I love taking part in programming competitions! In October, I competed at a coding competition hosted by Google at Binghamton University (left). This Novemeber, I competed at the regional International Collegiate Programming Competition on one of Binghamton's 3 teams (right).</p>
-            <div align="center">
-                <img src="google.jpg" width="400" height="300">
-                <img src="icpc.jpg" width="400" height="300">
-            </div>
-			<h3>Theta Tau Website</h3>
-			<p>I belong to the Nu Gamma chapter of Theta Tau, a professional engineering fraternity at Binghamton University. I will be working on adding short bios and pictures to our website, <a href="thetataubing.com">thetataubing.com</a>, for each brother of our chapter.</p>
-			<h3>BU Robotics</h3>
-			<p>Recently, I've been working toward a rover competition with <a href="http://burobotics.me/">BURobotics</a>, a new club in its first semester at Binghamton. More to come.</p>
-			<h3>Exploring Prime Numbers</h3>
-			<p>Lists of prime numbers can be found all over the internet, like at the <a href="https://primes.utm.edu/lists/small/millions/">Prime Pages</a>. However, I haven't found lists of prime numbers organized by number of digits online, so I host them on my website.</p>
-			<ul>
-				<li><a href="http://www.tannerhoelzel.com/primes/primes01.txt">1 digit primes</a></li>
-				<li><a href="http://www.tannerhoelzel.com/primes/primes02.txt">2 digit primes</a></li>
-				<li><a href="http://www.tannerhoelzel.com/primes/primes03.txt">3 digit primes</a></li>
-				<li><a href="http://www.tannerhoelzel.com/primes/primes04.txt">4 digit primes</a></li>
-				<li><a href="http://www.tannerhoelzel.com/primes/primes05.txt">5 digit primes</a></li>
-				<li><a href="http://www.tannerhoelzel.com/primes/primes06.txt">6 digit primes</a></li>
-				<li><a href="http://www.tannerhoelzel.com/primes/primes07.txt">7 digit primes</a></li>
-				<li><a href="http://www.tannerhoelzel.com/primes/primes08.txt">8 digit primes</a></li>
-			</ul>
-			<p>Interesting information on Benford's Law and prime numbers can be found <a href="https://primes.utm.edu/notes/faq/BenfordsLaw.html">here</a>, and an interesting paper about leading digit frequencies in prime numbers can be found <a href="http://rspa.royalsocietypublishing.org/content/royprsa/465/2107/2197.full.pdf">here</a>.</p>
-		</div>
-        <hr>
-        <div>
-            <h1>Games</h1>
-            <p>This game is outlined in various online tutorials such as <a href="http://www.w3schools.com/graphics/game_intro.asp">this one</a>. I have modified it to emulate Flappy Bird. Try it out!</p>
-            <div id="divGameStage" align="center">
-                <button onmousedown="accelerate(-2)" onmouse="accelerate(-2)" align="center">ACCELERATE</button>
-                <p>Use ACCELERATE to stay alive!</p>
-            </div>
             <br>
-        </div>
-		<hr>
-		<div align="center">
+            <br>
+            <div class="hline"></div>
+            <div id="mainnav">
+                <ul>
+                    <li><a href="index.html" class="thispage">Home</a></li><!--
+                    --><li><a href="projects.html">Projects</a></li><!--
+                    --><li><a href="research.html">Research</a></li><!--
+                    --><li><a href="games.html">Games</a></li> <!-- inline elements respect whitespace in the source -->
+                </ul>
+            </div>
+            <div class="hline"></div>
+            <div id="aboutme">
+                <p>I'm Tanner. I study computer science and mathematics at Binghamton University. Check out my projects at <a href="https://github.com/thoelze1">GitHub</a>, find me on <a href="http://www.linkedin.com/in/tanner-hoelzel-05a9a8105">LinkedIn</a>, or take a look at my <a href="http://tannerhoelzel.com/downloads/TannerHoelzelResume.pdf">resume</a>.</p>
+            </div>
+            <div class="hline" id="footerdelim"></div>
 			<h2>Around the Web</h2>
-			<input type="button" onclick="location.href='https://github.com/thoelze1';" value="Github" />
-			<input type="button" onclick="location.href='http://www.linkedin.com/in/tanner-hoelzel-05a9a8105';" value="LinkedIn" />
-			<input type="button" onclick="location.href='mailto:thoelze1@binghamton.edu';" value="Email" />
+            <div class="links">
+                <ul>
+                    <li><a href="https://github.com/thoelze1"><img src="github.png"></a></li>
+                    <li><a href="http://www.linkedin.com/in/tanner-hoelzel-05a9a8105"><img src="linkedin.png"></a></li>
+                    <li><a href="mailto:thoelze1@binghamton.edu"></a></li>
+                </ul>
+            </div>
 		</div>
         <br>
 	</body>
 	<script>
-
-var myGamePiece;
-var myObstacles = [];
-var myScore;
-var lastClick;
-
-function startGame() {
-    myGamePiece = new component(10, 10, "red", 10, 120); //size, color, coordinates
-    myGamePiece.gravity = 0.05;
-    myScore = new component("30px", "Consolas", "black", 280, 40, "text");
-    myGameArea.start();
-}
-
-var myGameArea = {
-    canvas : document.createElement("canvas"),
-    start : function() {
-        this.canvas.width = 960; //480;
-        this.canvas.height = 270;
-        this.context = this.canvas.getContext("2d");
-        this.frameNo = 0;
-        this.interval = setInterval(updateGameArea, 20);
-        document.getElementById("divGameStage").appendChild(this.canvas);
-    },
-    clear : function() {
-        this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
-        this.interval = 0;
-    }
-}
-
-function component(width, height, color, x, y, type) {
-    this.type = type;
-    this.score = 0;
-    this.width = width;
-    this.height = height;
-    this.speedX = 0;
-    this.speedY = 0;    
-    this.x = x;
-    this.y = y;
-    this.gravity = 0;
-    this.gravitySpeed = 0;
-    this.update = function() {
-        ctx = myGameArea.context;
-        if (this.type == "text") {
-            ctx.font = this.width + " " + this.height;
-            ctx.fillStyle = color;
-            ctx.fillText(this.text, this.x, this.y);
-        } else {
-            ctx.fillStyle = color;
-            ctx.fillRect(this.x, this.y, this.width, this.height);
-        }
-    }
-    this.newPos = function() {
-        this.gravitySpeed += this.gravity;
-        this.x += this.speedX;
-        this.y += this.speedY + this.gravitySpeed;
-        this.hitBottom();
-    }
-    this.hitBottom = function() {
-        var rockbottom = myGameArea.canvas.height - this.height;
-        if (this.y > rockbottom) {
-            this.y = rockbottom;
-            this.gravitySpeed = 0;
-        }
-    }
-    this.crashWith = function(otherobj) {
-        var myleft = this.x;
-        var myright = this.x + (this.width);
-        var mytop = this.y;
-        var mybottom = this.y + (this.height);
-        var otherleft = otherobj.x;
-        var otherright = otherobj.x + (otherobj.width);
-        var othertop = otherobj.y;
-        var otherbottom = otherobj.y + (otherobj.height);
-        var crash = true;
-        if ((mybottom < othertop) || (mytop > otherbottom) || (myright < otherleft) || (myleft > otherright)) {
-            crash = false;
-        }
-        return crash;
-    }
-}
-
-function updateGameArea() {
-    var x, height, gap, minHeight, maxHeight, minGap, maxGap;
-    for (i = 0; i < myObstacles.length; i += 1) {
-        if (myGamePiece.crashWith(myObstacles[i])) {
-            return;
-        } 
-    }
-    myGameArea.clear();
-    myGameArea.frameNo += 1;
-    if (myGameArea.frameNo == 1 || everyinterval(150)) {
-        x = myGameArea.canvas.width;
-        minHeight = 20;
-        maxHeight = 200;
-        height = Math.floor(Math.random()*(maxHeight-minHeight+1)+minHeight);
-        minGap = 50;
-        maxGap = 200;
-        gap = Math.floor(Math.random()*(maxGap-minGap+1)+minGap);
-        myObstacles.push(new component(10, height, "green", x, 0));
-        myObstacles.push(new component(10, x - height - gap, "green", x, height + gap));
-    }
-    for (i = 0; i < myObstacles.length; i += 1) {
-        myObstacles[i].x += -1;
-        myObstacles[i].update();
-    }
-    myScore.text="SCORE: " + myGameArea.frameNo;
-    myScore.update();
-    myGamePiece.newPos();
-    myGamePiece.update();
-    accelerate(0.05);
-}
-
-function everyinterval(n) {
-    if ((myGameArea.frameNo / n) % 1 == 0) {return true;}
-    return false;
-}
-
-function accelerate(n) {
-    myGamePiece.gravity = n;
-}
 
 (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
 (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
