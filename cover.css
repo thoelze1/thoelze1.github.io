@@ -1,3 +1,5 @@
+@charset "UTF-8";
+
 html * {
 	/*font-size: 1em !important;*/
 	color: #FFFFFF; /*!important*/
@@ -110,7 +112,6 @@ body {
 }
 
 .soundcloud {
-	text-align: center;
 	width: 40%;
 }
 
