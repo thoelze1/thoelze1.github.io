@@ -14,3 +14,7 @@ Thanks for stopping by!
 ## Resources
 
 - [Calculate Different Shades Of A Colour](https://paulund.co.uk/calculates-different-shades-colour)
+
+## Ideas
+- Scrape [this list](https://check.torproject.org/cgi-bin/TorBulkExitList.py?ip=1.1.1.1) and others for exit ips
+- Edit http server to change service for requests from exit ips
