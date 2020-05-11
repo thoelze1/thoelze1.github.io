@@ -1,4 +1,4 @@
-#+TITLE: SICP Exercises
+#+TITLE: SICP Exercises (Work in progress)
 #+OPTIONS: toc:1 tex:t
 * Chapter 1
 ** Exercise 1.3

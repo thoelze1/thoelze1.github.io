@@ -1,0 +1,2001 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2020-05-10 Sun 23:23 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>SICP Exercises</title>
+<meta name="generator" content="Org mode" />
+<meta name="author" content="Tanner Hoelzel" />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { width: 90%; }
+  /*]]>*/-->
+</style>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2019 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        displayAlign: "center",
+        displayIndent: "0em",
+
+        "HTML-CSS": { scale: 100,
+                        linebreaks: { automatic: "false" },
+                        webFont: "TeX"
+                       },
+        SVG: {scale: 100,
+              linebreaks: { automatic: "false" },
+              font: "TeX"},
+        NativeMML: {scale: 100},
+        TeX: { equationNumbers: {autoNumber: "AMS"},
+               MultLineWidth: "85%",
+               TagSide: "right",
+               TagIndent: ".8em"
+             }
+});
+</script>
+<script type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS_HTML"></script>
+</head>
+<body>
+<div id="content">
+<h1 class="title">SICP Exercises</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#org5345cd3">Chapter 1</a></li>
+<li><a href="#orge9f41a1">Chapter 2</a></li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org5345cd3" class="outline-2">
+<h2 id="org5345cd3">Chapter 1</h2>
+<div class="outline-text-2" id="text-org5345cd3">
+</div>
+<div id="outline-container-org9071ccc" class="outline-3">
+<h3 id="org9071ccc">Exercise 1.3</h3>
+<div class="outline-text-3" id="text-org9071ccc">
+<div class="org-src-container">
+<pre class="src src-scheme">(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">square</span> x)
+(* x x))
+(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">sum-of-squares-of-largest</span> a b c)
+  (- (+ (square a) (square b) (square c))
+     (<span style="color: #a020f0;">cond</span> ((<span style="color: #a020f0;">and</span> (&lt; a b) (&lt; a c)) a)
+           ((&lt; b c) b)
+           (<span style="color: #a020f0;">else</span> c))))
+</pre>
+</div>
+<p>
+A recursive procedure is simply one that calls itself by name. It is
+not necessarily a recursive process.
+</p>
+
+<p>
+“Programs must be written for people to read, and only incidentally
+for computers to execute”
+</p>
+</div>
+</div>
+<div id="outline-container-org5472a66" class="outline-3">
+<h3 id="org5472a66">Exercise 1.6</h3>
+<div class="outline-text-3" id="text-org5472a66">
+<p>
+Enters a recursive loop not because a cond structure is used instead
+of an if structure but because a function is called instead of using
+an if (or cond) structure. If new-if were implemented with if instead
+of cond, the code would also enter an infinite loop.
+</p>
+
+<p>
+“The set of expressions for which a binding defines a name is called
+the scope of that name”
+</p>
+</div>
+</div>
+<div id="outline-container-orgf77e31b" class="outline-3">
+<h3 id="orgf77e31b">Exercise 1.9</h3>
+<div class="outline-text-3" id="text-orgf77e31b">
+<p>
+First (recursive)
+</p>
+
+<p>
+(+ 4 5)
+</p>
+
+<p>
+(inc (+ (dec 4) 5))
+</p>
+
+<p>
+(inc (+ 3 5))
+</p>
+
+<p>
+(inc (inc (+ (dec 3) 5)))
+</p>
+
+<p>
+(inc (inc (+ 2 5)))
+</p>
+
+<p>
+(inc (inc (inc (+ (dec 2) 5))))
+</p>
+
+<p>
+(inc (inc (inc (+ 1 5))))
+</p>
+
+<p>
+(inc (inc (inc (inc (+ (dec 1) 5)))))
+</p>
+
+<p>
+(inc (inc (inc (inc (+ 0 5)))))
+</p>
+
+<p>
+(inc (inc (inc (inc 5))))
+</p>
+
+<p>
+(inc (inc (inc 6)))
+</p>
+
+<p>
+(inc (inc 7))
+</p>
+
+<p>
+(inc 8)
+</p>
+
+<p>
+9
+</p>
+
+<p>
+Second (iterative)
+</p>
+
+<p>
+(+ 4 5)
+</p>
+
+<p>
+(+ (dec 4) (inc 5))
+</p>
+
+<p>
+(+ 3 6)
+</p>
+
+<p>
+(+ (dec 3) (inc 6))
+</p>
+
+<p>
+(+ 2 7)
+</p>
+
+<p>
+(+ (dec 2) (inc 7))
+</p>
+
+<p>
+(+ 1 8)
+</p>
+
+<p>
+(+ (dec 1) (inc 8))
+</p>
+
+<p>
+(+ 0 9)
+</p>
+
+<p>
+9
+</p>
+
+<div class="org-src-container">
+<pre class="src src-scheme">(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">my-count-change</span> amt values)
+  (<span style="color: #a020f0;">cond</span> ((null? values) 0)
+        ((&lt; amt 0) 0)
+        ((= amt 0) 1)
+        (<span style="color: #a020f0;">else</span> (+ (my-count-change (- amt (car values)) values)
+                 (my-count-change amt (cdr values))))))
+
+(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">count-change</span> amt)
+  (<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">cc</span> amount kinds-of-coins)
+    (<span style="color: #a020f0;">cond</span> ((= amount 0) 1)
+          ((<span style="color: #a020f0;">or</span> (&lt; amount 0) (= kinds-of-coins 0)) 0)
+          (<span style="color: #a020f0;">else</span> (+ (cc amount
+                       (- kinds-of-coins 1))
+                   (cc (- amount
+                          (first-denomination kinds-of-coins))
+                       kinds-of-coins)))))
+  (<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">first-denomination</span> kinds-of-coins)
+    (<span style="color: #a020f0;">cond</span> ((= kinds-of-coins 1) 1)
+          ((= kinds-of-coins 2) 5)
+          ((= kinds-of-coins 3) 10)
+          ((= kinds-of-coins 4) 25)
+          ((= kinds-of-coins 5) 50)))
+  (cc amt 5))
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-org1016dcd" class="outline-3">
+<h3 id="org1016dcd">Exercise 1.11</h3>
+<div class="outline-text-3" id="text-org1016dcd">
+<div class="org-src-container">
+<pre class="src src-scheme">(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">f</span> n)
+  (<span style="color: #a020f0;">if</span> (&lt; n 3)
+      n
+      (+ (* 1 (f (- n 1)))
+         (* 2 (f (- n 2)))
+         (* 3 (f (- n 3))))))
+(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">f-iter</span> n)
+  (<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">iterate</span> a b c count)
+    (<span style="color: #a020f0;">if</span> (= count 0)
+        a
+        (iterate b
+                c
+                (+ c
+                   (* b 2)
+                   (* a 3))
+                (- count 1))))
+  (iterate 0 1 2 n))
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-org05b8b79" class="outline-3">
+<h3 id="org05b8b79">Exercise 1.12</h3>
+<div class="outline-text-3" id="text-org05b8b79">
+<div class="org-src-container">
+<pre class="src src-scheme">(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">pascal</span> n m)
+  (<span style="color: #a020f0;">if</span> (<span style="color: #a020f0;">or</span> (= m 0)
+          (= m n))
+      1
+      (+ (pascal (- n 1) (- m 1))
+         (pascal (- n 1) m))))
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-orgf7298ea" class="outline-3">
+<h3 id="orgf7298ea">Exercise 1.16</h3>
+<div class="outline-text-3" id="text-orgf7298ea">
+<p>
+If n even
+</p>
+
+<p>
+b -&gt; b2
+</p>
+
+<p>
+n -&gt; n/2 - 1
+</p>
+
+<p>
+c -&gt; cb2
+</p>
+
+<p>
+If n odd
+</p>
+
+<p>
+b -&gt; b
+</p>
+
+<p>
+n -&gt; n - 1
+</p>
+
+<p>
+c -&gt; cb
+</p>
+
+<p>
+Fibonacci numbers can be computed logarithmically too!
+</p>
+<div class="org-src-container">
+<pre class="src src-scheme">(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">fast-expt</span> base exp)
+  (<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">fast-iter</span> b n c)
+    (<span style="color: #a020f0;">cond</span> ((= n 0) c)
+          ((even? n) (fast-iter (* b b) (- (/ n 2) 1) (* c (* b b))))
+          (<span style="color: #a020f0;">else</span> (fast-iter b (- n 1) (* c b)))))
+  (fast-iter base exp 1))
+(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">even?</span> n)
+  (= (remainder n 2) 0))
+
+<span style="color: #b22222;">;; </span><span style="color: #b22222;">And so here are all of the combinations of space-/time-complexity</span>
+<span style="color: #b22222;">;; </span><span style="color: #b22222;">we've seen so far:</span>
+
+(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">my-expt</span> b n)
+  (<span style="color: #a020f0;">if</span> (= n 0)
+      1
+      (* b (my-expt b (- n 1)))))
+
+(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">my-expt-iter</span> base pow)
+  (<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">iterate</span> n c)
+    (<span style="color: #a020f0;">cond</span> ((= n 0) c)
+          (<span style="color: #a020f0;">else</span> (iterate (- n 1) (* base c)))))
+  (iterate pow 1))
+
+(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">my-expt-log</span> base pow)
+  (<span style="color: #a020f0;">cond</span> ((= pow 0) 1)
+        ((even? pow) (square (my-expt-log base (/ pow 2))))
+        (<span style="color: #a020f0;">else</span> (* base (my-expt-log base (- pow 1))))))
+
+(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">my-expt-iter-log</span> base pow)
+  (<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">iterate</span> b p c)
+    (<span style="color: #a020f0;">cond</span> ((= p 0) c)
+          ((even? p) (iterate (* b b) (/ p 2) c))
+          (<span style="color: #a020f0;">else</span> (iterate b (- p 1) (* b c)))))
+  (iterate base pow 1))
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-org050f0c5" class="outline-3">
+<h3 id="org050f0c5">Exercise 1.17</h3>
+<div class="outline-text-3" id="text-org050f0c5">
+<div class="org-src-container">
+<pre class="src src-scheme">(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">halve</span> b)
+  (/ b 2))
+(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">double</span> b)
+  (+ b b))
+(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">mult</span> a b)
+  (<span style="color: #a020f0;">cond</span> ((= b 0) 0)
+        ((even? b) (double (mult a (halve b))))
+        (<span style="color: #a020f0;">else</span> (+ a (mult a (- b 1))))))
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-org541c02c" class="outline-3">
+<h3 id="org541c02c">Exercise 1.18</h3>
+<div class="outline-text-3" id="text-org541c02c">
+<div class="org-src-container">
+<pre class="src src-scheme">(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">fast-mult</span> x y)
+  (<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">fast-mult-iter</span> a b c)
+    (<span style="color: #a020f0;">cond</span> ((= b 0) c)
+          ((even? b) (fast-mult-iter (double a) (- (halve b) 1) (+ c (double a))))
+          (<span style="color: #a020f0;">else</span> (fast-mult-iter a (- b 1) (+ c a)))))
+  (fast-mult-iter x y 0))
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-org7e76851" class="outline-3">
+<h3 id="org7e76851">Exercise 1.19</h3>
+<div class="outline-text-3" id="text-org7e76851">
+<div class="org-src-container">
+<pre class="src src-scheme">(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">fib</span> n)
+  (<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">fib-iter</span> a b p q count)
+    (<span style="color: #a020f0;">cond</span> ((= count 0) b)
+          ((even? count)
+           (fib-iter a
+                     b
+                     (+ (square p) (square q))
+                     (+ (* 2 p q) (square q))
+                     (/ count 2)))
+          (<span style="color: #a020f0;">else</span> (fib-iter (+ (* b q) (* a q) (* a p))
+                          (+ (* b p) (* a q))
+                          p
+                          q
+                          (- count 1)))))
+  (fib-iter 1 0 0 1 n))
+
+(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">my-expmod</span> base exp mod)
+  <span style="color: #8b2252;">"Generates an iterative process that runs in a logarithmic number of steps"</span>
+  (<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">iterate</span> b e i)
+    (<span style="color: #a020f0;">cond</span> ((= e 0) i)
+          ((even? e) (iterate (remainder (* b b) mod) (/ e 2) i))
+          (<span style="color: #a020f0;">else</span> (iterate b (- e 1) (remainder (* b i) mod)))))
+  (iterate base exp 1))
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-org26f5baf" class="outline-3">
+<h3 id="org26f5baf">Exercise 1.22</h3>
+<div class="outline-text-3" id="text-org26f5baf">
+<div class="org-src-container">
+<pre class="src src-scheme">(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">timed-prime-test</span> n)
+  (newline)
+  (display n)
+  (start-prime-test n (runtime)))
+(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">start-prime-test</span> n start-time)
+  (<span style="color: #a020f0;">if</span> (prime? n)
+      (report-prime (- (runtime) start-time))))
+(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">report-prime</span> elapsed-time)
+  (display <span style="color: #8b2252;">" *** "</span>)
+  (display elapsed-time))
+(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">search-for-primes</span> a b)
+  (<span style="color: #a020f0;">cond</span> ((&lt; a b) (timed-prime-test a)
+                 (search-for-primes (+ a 1) b))))
+(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">prime?</span> n)
+  (<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">iterate</span> i)
+    (<span style="color: #a020f0;">cond</span> ((= (remainder n i) 0) #f)
+          ((&gt; (* i i) n) #t)
+          (<span style="color: #a020f0;">else</span> (iterate (+ i 1)))))
+  (iterate 2))
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-org33e23f1" class="outline-3">
+<h3 id="org33e23f1">Exercise 1.26</h3>
+<div class="outline-text-3" id="text-org33e23f1">
+<p>
+From a high level, calling expmod with (/ exp 2) halves the
+problem. It is this halving, at each iteration of the process, that
+allows it to run in a number of steps that is logarithmically
+related to the size of the input. When Louis calls expmod twice,
+each with a halved problem (the same half) he is doing twice of
+half of the original amount of work. Therefore he is doing the
+original amount of work, which in the case of computing an exponent
+would be n multiplications where n is the power being raised to.
+</p>
+</div>
+</div>
+<div id="outline-container-org332034e" class="outline-3">
+<h3 id="org332034e">Exercise 1.27</h3>
+<div class="outline-text-3" id="text-org332034e">
+<div class="org-src-container">
+<pre class="src src-scheme">(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">fermat-condition?</span> a n)
+  (= (my-expmod a n n) (remainder a n)))
+(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">fermat-test?</span> n)
+  (<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">satisfies?</span> a)
+    (<span style="color: #a020f0;">cond</span> ((&gt;= a n) #t)
+          ((fermat-condition? a n) (satisfies? (+ a 1)))
+          (<span style="color: #a020f0;">else</span> #f)))
+  (satisfies? 2))
+(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">carmichael?</span> n)
+  (<span style="color: #a020f0;">and</span> (not (prime? n)) (fermat-test? n)))
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-org7c4d38c" class="outline-3">
+<h3 id="org7c4d38c">Exercise 1.29</h3>
+<div class="outline-text-3" id="text-org7c4d38c">
+<div class="org-src-container">
+<pre class="src src-scheme">(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">simp</span> f a b n)
+  (<span style="color: #a020f0;">define</span> <span style="color: #0000ff;">h</span> (/ (- b a) n))
+  (<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">step</span> x) (+ x h h))
+  (<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">cf</span> c x) (* c (f x)))
+  (<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">2f</span> x) (cf 2 x))
+  (<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">4f</span> x) (cf 4 x))
+  (* (/ h 3.0)
+     (+ (f a)
+        (sum 4f (+ a h) step b)
+        (sum 2f (+ a h h) step b)
+        (f b))))
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-orgbf459ae" class="outline-3">
+<h3 id="orgbf459ae">Exercise 1.30</h3>
+<div class="outline-text-3" id="text-orgbf459ae">
+<div class="org-src-container">
+<pre class="src src-scheme">(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">sum</span> term a next b)
+  (<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">iter</span> a result)
+     (<span style="color: #a020f0;">if</span> (&gt; a b)
+         result
+         (iter (next a) (+ result (term a)))))
+  (iter a 0))
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-orge23f57c" class="outline-3">
+<h3 id="orge23f57c">Exercise 1.31</h3>
+<div class="outline-text-3" id="text-orge23f57c">
+<div class="org-src-container">
+<pre class="src src-scheme">(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">product-iter</span> term a next b)
+  (<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">iter</span> a result)
+    (<span style="color: #a020f0;">if</span> (&gt; a b)
+        result
+        (iter (next a) (* result (term a)))))
+  (iter a 1))
+(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">product</span> term a next b)
+  (<span style="color: #a020f0;">if</span> (&gt; a b)
+      1
+      (* (term a)
+         (product term (next a) next b))))
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-org8f1df28" class="outline-3">
+<h3 id="org8f1df28">Exercise 1.32</h3>
+<div class="outline-text-3" id="text-org8f1df28">
+<div class="org-src-container">
+<pre class="src src-scheme">(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">accumulate</span> combiner null-val term a next b)
+  (<span style="color: #a020f0;">if</span> (&gt; a b)
+      null-val
+      (combiner (term a)
+                (accumulate combiner null-val term (next a) next b))))
+(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">accumulate-iter</span> combiner null-val term a next b)
+  (<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">iter</span> a result)
+    (<span style="color: #a020f0;">if</span> (&gt; a b)
+        result
+        (iter (next a) (combiner result (term a)))))
+  (iter a null-val))
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-orga329437" class="outline-3">
+<h3 id="orga329437">Exercise 1.33</h3>
+<div class="outline-text-3" id="text-orga329437">
+<div class="org-src-container">
+<pre class="src src-scheme">(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">filtered-accumulate</span> filter combiner null-val term a next b)
+  (<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">iter</span> a result)
+    (<span style="color: #a020f0;">cond</span> ((&gt; a b) result)
+          ((filter a) (iter (next a) (combiner result (term a))))
+          (<span style="color: #a020f0;">else</span> (iter (next a) (combiner result null-val)))))
+  (iter a null-val))
+(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">sum-square-primes</span> a b)
+  (filtered-accumulate prime? + 0 square a inc b))
+(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">product-coprimes</span> n)
+  (<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">filt</span> a)
+    (= (gcd a n) 1))
+  (filtered-accumulate filt * 1 (<span style="color: #a020f0;">lambda</span> (x) x) 2 inc n))
+(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">gcd</span> a b)
+  (<span style="color: #a020f0;">if</span> (= b 0)
+      a
+      (gcd b (remainder a b))))
+
+(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">factorial</span> b)
+  (product (<span style="color: #a020f0;">lambda</span> (x) x) 2 (<span style="color: #a020f0;">lambda</span> (x) (+ x 1)) b))
+</pre>
+</div>
+
+<p>
+Let is syntactic sugar for the underlying lambda application!
+</p>
+
+<p>
+Iterative approximation of pi
+</p>
+<div class="org-src-container">
+<pre class="src src-scheme">(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">4square</span> x)
+  (* 4 (square x)))
+(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">4square1</span> x)
+  (- (4square x) 1))
+(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">inc</span> x)
+  (+ x 1))
+(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">pi-approx</span> n)
+  (* 2.0 (/ (product-iter 4square 1 inc n)
+            (product-iter 4square1 1 inc n))))
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-org6b91e14" class="outline-3">
+<h3 id="org6b91e14">Exercise 1.35</h3>
+<div class="outline-text-3" id="text-org6b91e14">
+<p>
+x<sup>2</sup> |-&gt; x + 1
+</p>
+
+<p>
+x<sup>2</sup> - x - 1 = 0
+</p>
+
+<p>
+(-(-1) +- sqrt((-1)<sup>2</sup> - 4(-1)))/2
+</p>
+
+<p>
+(1 +- sqrt(5))/2
+</p>
+</div>
+</div>
+<div id="outline-container-org7cf2b56" class="outline-3">
+<h3 id="org7cf2b56">Exercise 1.36</h3>
+<div class="outline-text-3" id="text-org7cf2b56">
+<div class="org-src-container">
+<pre class="src src-scheme">(<span style="color: #a020f0;">define</span> <span style="color: #0000ff;">tolerance</span> 0.00001)
+(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">fixed-point</span> f first-guess)
+  (<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">close-enough?</span> v1 v2)
+    (&lt; (abs (- v1 v2)) tolerance))
+  (<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">try</span> guess)
+    (newline)
+    (display guess)
+    (<span style="color: #a020f0;">let</span> ((next (f guess)))
+      (<span style="color: #a020f0;">if</span> (close-enough? guess next)
+          next
+          (try next))))
+  (try first-guess))
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-org758f8e1" class="outline-3">
+<h3 id="org758f8e1">Exercise 1.37</h3>
+<div class="outline-text-3" id="text-org758f8e1">
+<div class="org-src-container">
+<pre class="src src-scheme">(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">cont-frac</span> n d k)
+  (<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">recurse</span> i)
+    (<span style="color: #a020f0;">if</span> (= i k)
+        0
+        (/ (n i)
+           (+ (d i) (recurse (+ i 1))))))
+  (recurse 1))
+(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">cont-frac</span> n d k)
+  (<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">iter</span> i result)
+    (<span style="color: #a020f0;">if</span> (= i 0)
+        result
+        (iter (- i 1) (/ (n i)
+                         (+ (d i) result)))))
+  (iter k 0))
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-orgce473b0" class="outline-3">
+<h3 id="orgce473b0">Exercise 1.38</h3>
+<div class="outline-text-3" id="text-orgce473b0">
+<div class="org-src-container">
+<pre class="src src-scheme">(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">e-approx</span> k)
+  (<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">d</span> k)
+    (<span style="color: #a020f0;">if</span> (= (remainder k 3) 2)
+        (+ 2.0 (* 2 (quotient k 3)))
+        1.0))
+  (+ 2 (cont-frac (<span style="color: #a020f0;">lambda</span> (x) 1.0) d k)))
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-orgb6078a4" class="outline-3">
+<h3 id="orgb6078a4">Exercise 1.39</h3>
+<div class="outline-text-3" id="text-orgb6078a4">
+<div class="org-src-container">
+<pre class="src src-scheme">(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">tan-cf</span> x k)
+  (cont-frac (<span style="color: #a020f0;">lambda</span> (i) (<span style="color: #a020f0;">if</span> (= i 1)
+                             x
+                             (* -1.0 (square x))))
+             (<span style="color: #a020f0;">lambda</span> (i) (- (* 2 i) 1.0))
+             k))
+
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-org0ebcad8" class="outline-3">
+<h3 id="org0ebcad8">Exercise 1.40</h3>
+<div class="outline-text-3" id="text-org0ebcad8">
+<div class="org-src-container">
+<pre class="src src-scheme">(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">cubic</span> a b c)
+  (<span style="color: #a020f0;">lambda</span> (x) (+ (cube x) (* a (square x)) (* b x) c)))
+
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-org04b1c96" class="outline-3">
+<h3 id="org04b1c96">Exercise 1.41</h3>
+<div class="outline-text-3" id="text-org04b1c96">
+<div class="org-src-container">
+<pre class="src src-scheme">(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">double</span> f)
+  (<span style="color: #a020f0;">lambda</span> (x) (f (f x))))
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-org69a3a98" class="outline-3">
+<h3 id="org69a3a98">Exercise 1.42</h3>
+<div class="outline-text-3" id="text-org69a3a98">
+<div class="org-src-container">
+<pre class="src src-scheme">(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">compose</span> f g)
+  (<span style="color: #a020f0;">lambda</span> (x) (f (g x))))
+
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-org2686c41" class="outline-3">
+<h3 id="org2686c41">Exercise 1.43</h3>
+<div class="outline-text-3" id="text-org2686c41">
+<div class="org-src-container">
+<pre class="src src-scheme">(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">repeated</span> f n)
+  (<span style="color: #a020f0;">if</span> (= n 1)
+      f
+      (compose f (repeated f (- n 1)))))
+(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">repeated-iter</span> f n)
+  (<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">iter</span> i g)
+    (<span style="color: #a020f0;">if</span> (= i n)
+        g
+        (iter (+ i 1) (compose f g))))
+  (iter 1 f))
+(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">repeated-log</span> f n)
+  (<span style="color: #a020f0;">cond</span> ((= n 1) f)
+        ((even? n) (repeated-log (compose f f) (/ n 2)))
+        (<span style="color: #a020f0;">else</span> (compose f (repeated-log f (- n 1))))))
+
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-orge2de97a" class="outline-3">
+<h3 id="orge2de97a">Exercise 1.44</h3>
+<div class="outline-text-3" id="text-orge2de97a">
+<div class="org-src-container">
+<pre class="src src-scheme">(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">sum-list</span> l)
+  (<span style="color: #a020f0;">if</span> (null? l)
+      0
+      (+ (car l) (sum-list (cdr l)))))
+(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">average-list</span> l)
+  (/ (sum-list l) (length l)))
+(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">smooth</span> f)
+  (<span style="color: #a020f0;">lambda</span> (x) (average-list (list (f (- x dx))
+                                  (f x)
+                                  (f (+ x dx))))))
+(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">n-fold-smoothed</span> f n)
+  ((repeated smooth n) f))
+
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-org8c2f479" class="outline-3">
+<h3 id="org8c2f479">Exercise 1.45</h3>
+<div class="outline-text-3" id="text-org8c2f479">
+<p>
+One average-damp works until fourth roots
+</p>
+
+<p>
+Two average-damp's work until eighth roots
+</p>
+
+<p>
+Three average-damp's work until sixteenth roots
+</p>
+
+<p>
+I see a pattern&#x2026;
+</p>
+<div class="org-src-container">
+<pre class="src src-scheme">(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">average-damp</span> f)
+  (<span style="color: #a020f0;">lambda</span> (x) (average (list x (f x)))))
+(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">sqrt</span> x)
+  (fixed-point (average-damp (<span style="color: #a020f0;">lambda</span> (y) (/ x y)))
+               1.0))
+(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">lb</span> x)
+  (/ (log x) (log 2)))
+(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">nth-root</span> k n)
+  (fixed-point
+   ((repeated average-damp (floor (lb n))) (<span style="color: #a020f0;">lambda</span> (x) (/ k (my-expt x (- n 1)))))
+   1.0))
+(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">difference</span> a b)
+  (abs (- a b)))
+(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">test-nth-root</span> base exp)
+  (&lt; (difference base
+                 (nth-root (my-expt base exp)
+                           exp))
+     0.01))
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-org8aa565b" class="outline-3">
+<h3 id="org8aa565b">Exercise 1.46</h3>
+<div class="outline-text-3" id="text-org8aa565b">
+<div class="org-src-container">
+<pre class="src src-scheme">(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">iterative-improve</span> good-enough? improve-guess)
+  (<span style="color: #a020f0;">lambda</span> (guess)
+    (<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">iterate</span> g)
+      (<span style="color: #a020f0;">if</span> (good-enough? g)
+          g
+          (iterate (improve-guess g))))
+    (iterate guess)))
+(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">iterative-improve-sqrt</span> x)
+  ((iterative-improve (<span style="color: #a020f0;">lambda</span> (g) (&lt; (difference (square g) x) 0.001))
+                      (<span style="color: #a020f0;">lambda</span> (g) (average (list g (/ x g))))) 1.0))
+(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">iterative-improve-fixed-point</span> func first-guess)
+  ((iterative-improve (<span style="color: #a020f0;">lambda</span> (g) (&lt; (difference g (func g)) 0.00001))
+                      func) first-guess))
+
+</pre>
+</div>
+<p>
+The general technique of isolating the parts of a program that deal
+with how data objects are represented from the parts of a program
+that deal with how data objects are used is a powerful design
+methodology called "data abstraction".
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-orge9f41a1" class="outline-2">
+<h2 id="orge9f41a1">Chapter 2</h2>
+<div class="outline-text-2" id="text-orge9f41a1">
+</div>
+<div id="outline-container-org5b3fec8" class="outline-3">
+<h3 id="org5b3fec8">Exercise 2.1</h3>
+<div class="outline-text-3" id="text-org5b3fec8">
+<div class="org-src-container">
+<pre class="src src-scheme">(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">same-sign?</span> a b)
+  (&gt; (* a b) 0))
+(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">make-rat</span> n d)
+  (<span style="color: #a020f0;">let</span> ((g (gcd n d)))
+    (cons (* (<span style="color: #a020f0;">cond</span> ((same-sign? n d) 1)
+                   (<span style="color: #a020f0;">else</span> -1))
+             (abs (/ n g)))
+          (abs (/ d g)))))
+(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">numer</span> x) (car x))
+(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">denom</span> x) (cdr x))
+(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">print-rat</span> x)
+  (newline)
+  (display (numer x))
+  (display <span style="color: #8b2252;">"/"</span>)
+  (display (denom x)))
+
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-orgbe1976e" class="outline-3">
+<h3 id="orgbe1976e">Exercise 2.2</h3>
+<div class="outline-text-3" id="text-orgbe1976e">
+<div class="org-src-container">
+<pre class="src src-scheme">(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">make-point</span> x y)
+  (cons x y))
+(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">x-point</span> p) (car p))
+(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">y-point</span> p) (cdr p))
+(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">point-less</span> p1 p2)
+  (<span style="color: #a020f0;">or</span> (&lt; (x-point p1) (x-point p2))
+      (<span style="color: #a020f0;">and</span> (= (x-point p1) (x-point p2))
+           (&lt; (y-point p1) (y-point p2)))))
+(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">point-equal</span> p1 p2)
+  (<span style="color: #a020f0;">and</span> (= (x-point p1) (x-point p2))
+       (= (y-point p1) (y-point p2))))
+(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">point-equal</span> p1 p2)
+  (<span style="color: #a020f0;">and</span> (not (point-less p1 p2))
+       (not (point-less p2 p1))))
+(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">make-segment</span> start end)
+  (<span style="color: #a020f0;">cond</span> ((point-less start end) (cons start end))
+        (<span style="color: #a020f0;">else</span> (cons end start))))
+(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">start-segment</span> seg) (car seg))
+(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">end-segment</span> seg) (cdr seg))
+(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">average</span> a b)
+  (/ (+ a b) 2))
+(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">midpoint-segment</span> seg)
+  (make-point (average (x-point (start-segment seg))
+                       (x-point (end-segment seg)))
+              (average (y-point (start-segment seg))
+                       (y-point (end-segment seg)))))
+(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">print-point</span> p)
+  (newline)
+  (display <span style="color: #8b2252;">"("</span>)
+  (display (x-point p))
+  (display <span style="color: #8b2252;">","</span>)
+  (display (y-point p))
+  (display <span style="color: #8b2252;">")"</span>))
+
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-org130ec5c" class="outline-3">
+<h3 id="org130ec5c">Exercise 2.3</h3>
+<div class="outline-text-3" id="text-org130ec5c">
+<div class="org-src-container">
+<pre class="src src-scheme">(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">make-rectangle</span> corner1 corner2)
+  (<span style="color: #a020f0;">cond</span> ((<span style="color: #a020f0;">or</span> (= (x-point corner1) (x-point corner2))
+             (= (y-point corner1) (y-point corner2)))
+         (error <span style="color: #8b2252;">"Points define a segment"</span>))
+        ((point-less corner1 corner2) (cons corner1 corner2))
+        (<span style="color: #a020f0;">else</span> (cons corner2 corner1))))
+(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">height</span> rect)
+  (difference (y-point (car rect)) (y-point (cdr rect))))
+(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">width</span> rect)
+  (difference (x-point (car rect)) (x-point (cdr rect))))
+</pre>
+</div>
+<p>
+I won't get much more out of this by continuing&#x2026;
+</p>
+</div>
+</div>
+<div id="outline-container-org02e24fc" class="outline-3">
+<h3 id="org02e24fc">Exercise 2.4</h3>
+<div class="outline-text-3" id="text-org02e24fc">
+<div class="org-src-container">
+<pre class="src src-scheme">(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">my-cons</span> x y)
+  (<span style="color: #a020f0;">lambda</span> (m) (m x y)))
+(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">my-car</span> z)
+  (z (<span style="color: #a020f0;">lambda</span> (p q) p)))
+(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">my-cdr</span> z)
+  (z (<span style="color: #a020f0;">lambda</span> (p q) q)))
+</pre>
+</div>
+<p>
+(my-cdr (my-cons 1 2))
+</p>
+
+<p>
+((my-cons 1 2) (lambda (p q) q))
+</p>
+
+<p>
+((lambda (m) (m 1 2)) (lambda (p q) q))
+</p>
+
+<p>
+((lambda (p q) q) 1 2)
+</p>
+
+<p>
+2
+</p>
+</div>
+</div>
+<div id="outline-container-org0718db6" class="outline-3">
+<h3 id="org0718db6">Exercise 2.5</h3>
+<div class="outline-text-3" id="text-org0718db6">
+<div class="org-src-container">
+<pre class="src src-scheme">(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">log-base</span> base value)
+  (/ (log value) (log base)))
+(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">factor-out</span> factor value)
+  (<span style="color: #a020f0;">if</span> (= (remainder value factor) 0)
+      (factor-out factor (/ value factor))
+      value))
+(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">my-cons</span> x y)
+  (* (my-expt 2 x) (my-expt 3 y)))
+(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">my-car</span> p)
+  (log-base 2 (factor-out 3 p)))
+(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">my-cdr</span> p)
+  (log-base 3 (factor-out 2 p)))
+
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-org3b88db8" class="outline-3">
+<h3 id="org3b88db8">Exercise 2.6</h3>
+<div class="outline-text-3" id="text-org3b88db8">
+<div class="org-src-container">
+<pre class="src src-scheme">(<span style="color: #a020f0;">define</span> <span style="color: #0000ff;">zero</span> (<span style="color: #a020f0;">lambda</span> (f) (<span style="color: #a020f0;">lambda</span> (x) x)))
+(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">add-1</span> n)
+  (<span style="color: #a020f0;">lambda</span> (f) (<span style="color: #a020f0;">lambda</span> (x) (f ((n f) x)))))
+</pre>
+</div>
+<p>
+(add-1 zero)
+</p>
+
+<p>
+(lambda (f) (lambda (x) (f ((zero f) x))))
+</p>
+
+<p>
+(lambda (f) (lambda (x) (f (((lambda (q) (lambda (z) z)) f) x))))
+</p>
+
+<p>
+(lambda (f) (lambda (x) (f ((lambda (z) z) x))))
+</p>
+
+<p>
+(lambda (f) (lambda (x) (f x)))
+</p>
+
+<p>
+(lambda (f) (lambda (x) (f x)))
+</p>
+
+<p>
+(add-1 (lambda (f) (lambda (x) (f x))))
+</p>
+
+<p>
+(lambda (f) (lambda (x) (f (((lambda (g) (lambda (x) (g x))) f) x))))
+</p>
+
+<p>
+(lambda (f) (lambda (x) (f ((lambda (x) (f x)) x))))
+</p>
+
+<p>
+(lambda (f) (lambda (x) (f (f x))))
+</p>
+<div class="org-src-container">
+<pre class="src src-scheme">(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">plus</span> a b)
+  (<span style="color: #a020f0;">lambda</span> (f) (compose (a f) (b f))))
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-orgeee9703" class="outline-3">
+<h3 id="orgeee9703">Exercise 2.7</h3>
+<div class="outline-text-3" id="text-orgeee9703">
+<div class="org-src-container">
+<pre class="src src-scheme">(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">make-interval</span> a b) (cons a b))
+(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">lower-bound</span> int)
+  (min (car int) (cdr int)))
+(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">upper-bound</span> int)
+  (max (car int) (cdr int)))
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-orgf2a855d" class="outline-3">
+<h3 id="orgf2a855d">Exercise 2.8</h3>
+<div class="outline-text-3" id="text-orgf2a855d">
+<div class="org-src-container">
+<pre class="src src-scheme">(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">sub-interval</span> x y)
+  (make-interval (- (lower-bound x) (upper-bound y))
+                 (- (upper-bound x) (lower-bound y))))
+
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-orgc89f6ef" class="outline-3">
+<h3 id="orgc89f6ef">Exercise 2.9</h3>
+<div class="outline-text-3" id="text-orgc89f6ef">
+<p>
+Let x = (a b) and y = (c d) be intervals. Then width(x) = (b-a)/2 and
+width(y) = (d-c)/2. Well width(x+y) = width((a+c b+d)) = (b+d-a-c)/2 =
+(b-a)/2 + (d-c)/2 = width(x)+width(y). And width(x-y) = width((a-d
+b-c)) = (b-c-a+d)/2 = width(x) + width(y). Now let x1 = (1 2), x2 =
+(3 4) and x3 = (5 6). Well width(x1) = width(x2) = width(x3) =
+1/2. But width(x1*x2) = width((3 8)) = 5/2 and width(x2*x3) =
+width(15 24) = 9/2. If product width were a function only of factor
+widths then width(x1*x2) would equal width(x2*x3) (because width(x1) =
+width(x2) = width(x3) = 1/2) but this is not the case. Similarly,
+width(x1/x2) = width((1/4 2/3)) = 5/24 != width(x2/x3) = width((1/3
+4/5)) = 7/30.
+</p>
+</div>
+</div>
+<div id="outline-container-orgf82bdff" class="outline-3">
+<h3 id="orgf82bdff">Exercise 2.10</h3>
+<div class="outline-text-3" id="text-orgf82bdff">
+<div class="org-src-container">
+<pre class="src src-scheme">(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">width-interval</span> x)
+  (/ (- (upper-bound x) (lower-bound x)) 2))
+(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">mul-interval</span> x y)
+       (<span style="color: #a020f0;">let</span> ((p1 (* (lower-bound x) (lower-bound y)))
+             (p2 (* (lower-bound x) (upper-bound y)))
+             (p3 (* (upper-bound x) (lower-bound y)))
+             (p4 (* (upper-bound x) (upper-bound y))))
+         (make-interval (min p1 p2 p3 p4)
+                        (max p1 p2 p3 p4))))
+(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">div-interval</span> x y)
+  (<span style="color: #a020f0;">if</span> (= (width-interval y) 0)
+      (error <span style="color: #8b2252;">"Division by zero-width interval"</span>)
+      (mul-interval x
+      (make-interval (/ 1.0 (upper-bound y))
+      (/ 1.0 (lower-bound y))))))
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-org277035b" class="outline-3">
+<h3 id="org277035b">Exercise 2.11</h3>
+<div class="outline-text-3" id="text-org277035b">
+<p>
+If we're multiplying intervals \(i=(a,b)\) and \(j=(x,y)\) then we must have \(a \leq
+b\) and \(x \leq y\) and so we have the following cases:
+</p>
+<table border="2" cellspacing="0" cellpadding="6" rules="all" frame="border">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">&#xa0;</th>
+<th scope="col" class="org-left">\(a \leq b < 0\)</th>
+<th scope="col" class="org-left">\(a < 0 \leq b\)</th>
+<th scope="col" class="org-left">\(0 \leq a \leq b\)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">\(x \leq y < 0\)</td>
+<td class="org-left">\((by,ax)\)</td>
+<td class="org-left">\((bx,ax)\)</td>
+<td class="org-left">\((bx,ay)\)</td>
+</tr>
+
+<tr>
+<td class="org-left">\(x < 0 \leq y\)</td>
+<td class="org-left">\((ay,ax)\)</td>
+<td class="org-left">\((min(ay,bx),min(ax,by))\)</td>
+<td class="org-left">\((bx,by)\)</td>
+</tr>
+
+<tr>
+<td class="org-left">\(0 \leq x \leq y\)</td>
+<td class="org-left">\((ay,bx)\)</td>
+<td class="org-left">\((ay,by)\)</td>
+<td class="org-left">\((ax,by)\)</td>
+</tr>
+</tbody>
+</table>
+<p>
+For simplicity's sake, we notice that multiplication is commutative
+and simplify our table:
+</p>
+<table border="2" cellspacing="0" cellpadding="6" rules="all" frame="border">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">&#xa0;</th>
+<th scope="col" class="org-left">\(a \leq b < 0\)</th>
+<th scope="col" class="org-left">\(a < 0 \leq b\)</th>
+<th scope="col" class="org-left">\(0 \leq a \leq b\)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">\(x \leq y < 0\)</td>
+<td class="org-left">\((by,ax)\)</td>
+<td class="org-left">\((bx,ax)\)</td>
+<td class="org-left">\((bx,ay)\)</td>
+</tr>
+
+<tr>
+<td class="org-left">\(x < 0 \leq y\)</td>
+<td class="org-left">\(j*i\)</td>
+<td class="org-left">\((min(ay,bx),min(ax,by))\)</td>
+<td class="org-left">\((bx,by)\)</td>
+</tr>
+
+<tr>
+<td class="org-left">\(0 \leq x \leq y\)</td>
+<td class="org-left">\(j*i\)</td>
+<td class="org-left">\(j*i\)</td>
+<td class="org-left">\((ax,by)\)</td>
+</tr>
+</tbody>
+</table>
+<div class="org-src-container">
+<pre class="src src-scheme">(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">mul-interval</span> i j)
+  (<span style="color: #a020f0;">let</span> ((a (lower-bound i))
+        (b (upper-bound i))
+        (x (lower-bound j))
+        (y (upper-bound j)))
+    (<span style="color: #a020f0;">cond</span> ((&lt; b 0) (<span style="color: #a020f0;">if</span> (&lt; y 0)
+                       (make-interval (* b y) (* a x))
+                       (mul-interval j i)))
+          ((&lt; a 0) (<span style="color: #a020f0;">cond</span> ((&lt; y 0) (make-interval (* b x) (* a x)))
+                         ((&lt; x 0) (make-interval (min (* a y) (* b x))
+                                                 (max (* a x) (* b y))))
+                         (<span style="color: #a020f0;">else</span> (mul-interval j i))))
+          (<span style="color: #a020f0;">else</span> (<span style="color: #a020f0;">cond</span> ((&lt; y 0) (make-interval (* b x) (* a y)))
+                      ((&lt; x 0) (make-interval (* b x) (* b y)))
+                      (<span style="color: #a020f0;">else</span> (make-interval (* a x) (* b y))))))))
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-orga3a333f" class="outline-3">
+<h3 id="orga3a333f">Exercise 2.12</h3>
+<div class="outline-text-3" id="text-orga3a333f">
+<div class="org-src-container">
+<pre class="src src-scheme">(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">make-center-width</span> c w)
+  (make-interval (- c w) (+ c w)))
+(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">center</span> i)
+  (/ (+ (lower-bound i) (upper-bound i)) 2))
+(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">width</span> i)
+  (/ (- (upper-bound i) (lower-bound i)) 2))  
+(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">make-center-percent</span> c p)
+  (make-center-width c (* c p)))
+(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">percent</span> i)
+  (/ (width i) (center i)))
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-org2f52729" class="outline-3">
+<h3 id="org2f52729">Exercise 2.13</h3>
+<div class="outline-text-3" id="text-org2f52729">
+<p>
+Let interval \(i\) have center \(c_{i}\) and tolerance \(p_{i}\). Let
+interval \(j\) have center \(c_{j}\) and tolerance \(p_{j}\). Then \(i =
+(c_{i}-c_{i}p_{i},c_{i}+c_{i}p_{i})\) and \(j =
+(c_{j}-c_{j}p_{j},c_{j}+c_{j}p_{j})\). Suppose \(c_{i} > 0\) and \(c_{j} >
+0\). Then \[i*j =
+((c_{i}-c_{i}p_{i})*(c_{j}-c_{j}p_{j}),(c_{i}+c_{i}p_{i})*(c_{j}+c_{j}p_{j}))\]
+\[= (c_{i}(1-p_{i})c_{j}(1-p_{j}),c_{i}(1+p_{i})c_{j}(1+p_{j}))\] \[=
+(c_{i}c_{j}(1-p_{i})(1-p_{j}),c_{i}c_{j}(1+p_{i})(1+p_{j}))\] Supposing
+small percentage tolerances: \[=
+(c_{i}c_{j}(1-p_{i}-p_{j}),c_{i}c_{j}(1+p_{i}+p_{j}))\] Therefore \(i*j\)
+is an interval centered at \(c_{i}c_{j}\) with tolerance
+\(p_{i}+p_{j}\).
+</p>
+</div>
+</div>
+<div id="outline-container-org219032b" class="outline-3">
+<h3 id="org219032b">Exercise 2.14</h3>
+<div class="outline-text-3" id="text-org219032b">
+<div class="org-src-container">
+<pre class="src src-scheme">(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">add-interval</span> x y)
+  (make-interval (+ (lower-bound x) (lower-bound y))
+                 (+ (upper-bound x) (upper-bound y))))
+(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">par1</span> r1 r2)
+  (div-interval (mul-interval r1 r2)
+                (add-interval r1 r2)))
+
+  (<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">par2</span> r1 r2)
+    (<span style="color: #a020f0;">let</span> ((one (make-interval 1 1)))
+      (div-interval one
+                    (add-interval (div-interval one r1)
+                                  (div-interval one r2)))))
+</pre>
+</div>
+<p>
+Let \(R_{1} = (a_{1},b_{1})\) and \(R_{2} = (a_{2},b_{2})\). Expanding, we
+see: \[\frac{R_{1}R_{2}}{R_{1}+R_{2}} =
+(\frac{a_{1}a_{2}}{b_{1}+b_{2}},\frac{b_{1}b_{2}}{a_{1}+a_{2}})\]
+\[\frac{1}{\frac{1}{R_{1}}+\frac{1}{R_{2}}} =
+(\frac{a_{1}a_{2}}{a_{1}+a_{2}},\frac{b_{1}b_{2}}{b_{1}+b_{2}})\] This
+can be verified in the REPL.
+</p>
+</div>
+</div>
+<div id="outline-container-org7c9f305" class="outline-3">
+<h3 id="org7c9f305">Exercise 2.17</h3>
+<div class="outline-text-3" id="text-org7c9f305">
+<div class="org-src-container">
+<pre class="src src-scheme">(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">last-pair</span> l)
+  (<span style="color: #a020f0;">if</span> (null? (cdr l))
+      l
+      (last-pair (cdr l))))
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-orgbc40bcb" class="outline-3">
+<h3 id="orgbc40bcb">Exercise 2.18</h3>
+<div class="outline-text-3" id="text-orgbc40bcb">
+<div class="org-src-container">
+<pre class="src src-scheme">(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">reverse</span> l)
+  (<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">helper</span> in out)
+    (<span style="color: #a020f0;">if</span> (null? in)
+        out
+        (helper (cdr in) (cons (car in) out))))
+  (helper l ()))
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-org82099e0" class="outline-3">
+<h3 id="org82099e0">Exercise 2.19</h3>
+<div class="outline-text-3" id="text-org82099e0">
+<div class="org-src-container">
+<pre class="src src-scheme">(<span style="color: #a020f0;">define</span> <span style="color: #0000ff;">no-more?</span> null?)
+(<span style="color: #a020f0;">define</span> <span style="color: #0000ff;">except-first-denomination</span> cdr)
+(<span style="color: #a020f0;">define</span> <span style="color: #0000ff;">first-denomination</span> car)
+(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">cc</span> amount coin-values)
+  (<span style="color: #a020f0;">cond</span> ((= amount 0) 1)
+        ((<span style="color: #a020f0;">or</span> (&lt; amount 0) (no-more? coin-values)) 0)
+        (<span style="color: #a020f0;">else</span>
+         (+ (cc amount
+                (except-first-denomination coin-values))
+            (cc (- amount
+                   (first-denomination coin-values))
+                coin-values)))))
+</pre>
+</div>
+<p>
+The order of the list coin-values still does not affect the
+output because the procedure does not rely on any assumptions
+regarding the order of coin-values.
+</p>
+</div>
+</div>
+<div id="outline-container-org146f41c" class="outline-3">
+<h3 id="org146f41c">Exercise 2.20</h3>
+<div class="outline-text-3" id="text-org146f41c">
+<div class="org-src-container">
+<pre class="src src-scheme">(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">same-parity?</span> a b)
+  (= (remainder a 2) (remainder b 2)))
+(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">same-parity</span> x . l)
+  (<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">filterer</span> sublist)
+    (<span style="color: #a020f0;">cond</span> ((null? sublist) sublist)
+          ((same-parity? x (car sublist))
+           (cons (car sublist) (filterer (cdr sublist))))
+          (<span style="color: #a020f0;">else</span> (filterer (cdr sublist)))))
+  (cons x (filterer l)))
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-org6435c9a" class="outline-3">
+<h3 id="org6435c9a">Exercise 2.21</h3>
+<div class="outline-text-3" id="text-org6435c9a">
+<div class="org-src-container">
+<pre class="src src-scheme">(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">square-list</span> items)
+  (<span style="color: #a020f0;">if</span> (null? items)
+      items
+      (cons (square (car items))
+            (square-list (cdr items)))))
+(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">square-list-map</span> items)
+  (<span style="color: #a020f0;">map</span> square items))
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-org246e081" class="outline-3">
+<h3 id="org246e081">Exercise 2.22</h3>
+<div class="outline-text-3" id="text-org246e081">
+<p>
+Elements appearing first in the input list will be added to the head
+of the ouput list before elements appearing later. Therefore, elements
+appearing first in the input will appear later in the output.
+</p>
+
+<p>
+Now, the output isn't a list.
+</p>
+</div>
+</div>
+<div id="outline-container-org928904e" class="outline-3">
+<h3 id="org928904e">Exercise 2.23</h3>
+<div class="outline-text-3" id="text-org928904e">
+<div class="org-src-container">
+<pre class="src src-scheme">(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">for-each</span> f l)
+  (<span style="color: #a020f0;">if</span> (not (null? l))
+      (<span style="color: #a020f0;">begin</span> (f (car l))
+             (<span style="color: #a020f0;">for-each</span> f (cdr l)))))
+</pre>
+</div>
+<p>
+Note that "nil" is no longer a part of the Scheme standard. See this
+<a href="https://stackoverflow.com/questions/9115703/null-value-in-mit-scheme">stackoverflow post</a> for more.
+</p>
+</div>
+</div>
+<div id="outline-container-org1c9dbfd" class="outline-3">
+<h3 id="org1c9dbfd">Exercise 2.25</h3>
+<div class="outline-text-3" id="text-org1c9dbfd">
+<div class="org-src-container">
+<pre class="src src-scheme">(<span style="color: #a020f0;">define</span> <span style="color: #0000ff;">l1</span> (list 1 3 (list 5 7) 9))
+(car (cdr (car (cdr (cdr l1)))))
+(<span style="color: #a020f0;">define</span> <span style="color: #0000ff;">l2</span> (list (list 7)))
+(car (car l2))
+(<span style="color: #a020f0;">define</span> <span style="color: #0000ff;">l3</span> (list 1 (list 2 (list 3 (list 4 (list 5 (list 6 7)))))))
+(car (cdr (car (cdr (car (cdr (car (cdr (car (cdr (car (cdr l3))))))))))))
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-org1e5ce85" class="outline-3">
+<h3 id="org1e5ce85">Exercise 2.27</h3>
+<div class="outline-text-3" id="text-org1e5ce85">
+<div class="org-src-container">
+<pre class="src src-scheme">(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">deep-reverse</span> l)
+  (<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">helper</span> in out)
+    (<span style="color: #a020f0;">if</span> (null? in)
+        out
+        (helper (cdr in) (cons (deep-reverse (car in)) out))))
+  (<span style="color: #a020f0;">if</span> (list? l)
+      (helper l ())
+      l))
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-org67e83d8" class="outline-3">
+<h3 id="org67e83d8">Exercise 2.28</h3>
+<div class="outline-text-3" id="text-org67e83d8">
+<div class="org-src-container">
+<pre class="src src-scheme">(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">fringe</span> tree)
+  (<span style="color: #a020f0;">cond</span> ((not (list? tree)) (list tree))
+        ((not (pair? tree)) tree)
+        (<span style="color: #a020f0;">else</span> (append (fringe (car tree)) (fringe (cdr tree))))))
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-org15db373" class="outline-3">
+<h3 id="org15db373">Exercise 2.29</h3>
+<div class="outline-text-3" id="text-org15db373">
+<div class="org-src-container">
+<pre class="src src-scheme">(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">left-branch</span> m) (car m))
+(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">right-branch</span> m) (car (cdr m)))
+(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">branch-length</span> b) (car b))
+(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">branch-structure</span> b) (car (cdr b)))
+(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">mobile?</span> structure) (pair? structure))
+(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">branch-weight</span> b)
+  (<span style="color: #a020f0;">let</span> ((structure (branch-structure b)))
+    (<span style="color: #a020f0;">if</span> (mobile? structure)
+        (total-weight structure)
+        structure)))   
+(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">total-weight</span> m)
+  (+ (branch-weight (left-branch m))
+     (branch-weight (right-branch m))))
+(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">mobile-balanced?</span> m)
+  (<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">branch-balanced?</span> b)
+    (<span style="color: #a020f0;">let</span> ((structure (branch-structure b)))
+      (<span style="color: #a020f0;">if</span> (mobile? structure)
+          (mobile-balanced? structure)
+          #t)))
+  (<span style="color: #a020f0;">let</span> ((left (left-branch m))
+        (right (right-branch m)))
+    (<span style="color: #a020f0;">and</span> (= (* (branch-length left) (branch-weight left))
+            (* (branch-length right) (branch-weight right)))
+         (branch-balanced? left)
+         (branch-balanced? right))))
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-orgab3c0dd" class="outline-3">
+<h3 id="orgab3c0dd">Exercise 2.30</h3>
+<div class="outline-text-3" id="text-orgab3c0dd">
+<div class="org-src-container">
+<pre class="src src-scheme">(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">square-tree</span> tree)
+  (<span style="color: #a020f0;">cond</span> ((null? tree) tree)
+        ((not (pair? tree)) (square tree))
+        (<span style="color: #a020f0;">else</span> (cons (square-tree (car tree))
+                    (square-tree (cdr tree))))))
+(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">square-tree-map</span> tree)
+  (<span style="color: #a020f0;">map</span> (<span style="color: #a020f0;">lambda</span> (subtree)
+         (<span style="color: #a020f0;">if</span> (not (pair? subtree))
+             (square subtree)
+             (square-tree-map subtree)))
+       tree))
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-org726b9fc" class="outline-3">
+<h3 id="org726b9fc">Exercise 2.31</h3>
+<div class="outline-text-3" id="text-org726b9fc">
+<div class="org-src-container">
+<pre class="src src-scheme">(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">tree-map</span> f t)
+  (<span style="color: #a020f0;">cond</span> ((null? t) t)
+        ((not (pair? t)) (f t))
+        (<span style="color: #a020f0;">else</span> (cons (tree-map f (car t))
+                    (tree-map f (cdr t))))))
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-orgb56f17a" class="outline-3">
+<h3 id="orgb56f17a">Exercise 2.32</h3>
+<div class="outline-text-3" id="text-orgb56f17a">
+<p>
+The procedure takes advantage of the following observation. If \(x\) is
+an element of set \(S\) then we can partition the subsets of \(S\) into
+two categories: those that contain \(x\) and those that do not. All of
+the subsets that do not contain \(x\) can be found by recursively
+finding all of the subsets of \(S \setminus {x}\). All of the subsets
+that do contain \(x\) are of the form \(x \cup U\) where \(U \in \wp (S
+\setminus {x})\).
+</p>
+<div class="org-src-container">
+<pre class="src src-scheme">(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">subsets</span> s)
+  (<span style="color: #a020f0;">if</span> (null? s)
+      (list ())
+      (<span style="color: #a020f0;">let</span> ((rest (subsets (cdr s))))
+        (append rest (<span style="color: #a020f0;">map</span> (<span style="color: #a020f0;">lambda</span> (l) (cons (car s) l)) rest)))))
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-orgf12b6a6" class="outline-3">
+<h3 id="orgf12b6a6">Exercise 2.33</h3>
+<div class="outline-text-3" id="text-orgf12b6a6">
+<div class="org-src-container">
+<pre class="src src-scheme">(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">accumulate</span> op initial sequence)
+  (<span style="color: #a020f0;">if</span> (null? sequence)
+      initial
+      (op (car sequence)
+          (accumulate op initial (cdr sequence)))))
+(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">map</span> p sequence)
+  (accumulate (<span style="color: #a020f0;">lambda</span> (x y) (cons (p x) y)) () sequence))
+(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">append</span> seq1 seq2)
+  (accumulate cons seq2 seq1))
+(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">length</span> sequence)
+  (accumulate (<span style="color: #a020f0;">lambda</span> (x y) (+ 1 y)) 0 sequence))
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-org43a284d" class="outline-3">
+<h3 id="org43a284d">Exercise 2.34</h3>
+<div class="outline-text-3" id="text-org43a284d">
+<div class="org-src-container">
+<pre class="src src-scheme">(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">horner-eval</span> x coefficient-sequence)
+  (accumulate (<span style="color: #a020f0;">lambda</span> (this-coeff higher-terms)
+                (+ (* higher-terms x)
+                   this-coeff))
+              0
+              coefficient-sequence))
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-org8f55622" class="outline-3">
+<h3 id="org8f55622">Exercise 2.35</h3>
+<div class="outline-text-3" id="text-org8f55622">
+<div class="org-src-container">
+<pre class="src src-scheme">(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">count-leaves</span> t)
+  (accumulate +
+              0
+              (<span style="color: #a020f0;">map</span> (<span style="color: #a020f0;">lambda</span> (elt)
+                     (<span style="color: #a020f0;">if</span> (pair? elt)
+                         (count-leaves elt)
+                         1))
+                   t)))
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-orgf2c405e" class="outline-3">
+<h3 id="orgf2c405e">Exercise 2.36</h3>
+<div class="outline-text-3" id="text-orgf2c405e">
+<div class="org-src-container">
+<pre class="src src-scheme">(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">accumulate-n</span> op init seqs)
+  (<span style="color: #a020f0;">if</span> (null? (car seqs))
+      ()
+      (cons (accumulate op init (<span style="color: #a020f0;">map</span> car seqs))
+            (accumulate-n op init (<span style="color: #a020f0;">map</span> cdr seqs)))))
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-org2cbd7e8" class="outline-3">
+<h3 id="org2cbd7e8">Exercise 2.37</h3>
+<div class="outline-text-3" id="text-org2cbd7e8">
+<div class="org-src-container">
+<pre class="src src-scheme">(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">dot-product</span> v w)
+  (accumulate + 0 (<span style="color: #a020f0;">map</span> * v w)))
+(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">matrix-*-vector</span> m v)
+  (<span style="color: #a020f0;">map</span> (<span style="color: #a020f0;">lambda</span> (row)
+         (dot-product row v))
+       m))
+(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">transpose</span> mat)
+  (accumulate-n cons () mat))
+(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">matrix-*-matrix</span> m n)
+  (<span style="color: #a020f0;">let</span> ((cols (transpose n)))
+    (<span style="color: #a020f0;">map</span> (<span style="color: #a020f0;">lambda</span> (row)
+           (<span style="color: #a020f0;">map</span> (<span style="color: #a020f0;">lambda</span> (col)
+                  (dot-product row col))
+                cols))
+         m)))
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-org81ac7f3" class="outline-3">
+<h3 id="org81ac7f3">Exercise 2.38</h3>
+<div class="outline-text-3" id="text-org81ac7f3">
+<div class="org-src-container">
+<pre class="src src-scheme">(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">fold-left</span> op initial sequence)
+  (<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">iter</span> result rest)
+    (<span style="color: #a020f0;">if</span> (null? rest)
+        result
+        (iter (op result (car rest))
+              (cdr rest))))
+  (iter initial sequence))
+(<span style="color: #a020f0;">define</span> <span style="color: #0000ff;">fold-right</span> accumulate)
+
+(fold-right / 1 (list 1 2 3)) <span style="color: #b22222;">; </span><span style="color: #b22222;">3/2</span>
+(fold-left / 1 (list 1 2 3)) <span style="color: #b22222;">; </span><span style="color: #b22222;">1/6</span>
+(fold-right list () (list 1 2 3)) <span style="color: #b22222;">; </span><span style="color: #b22222;">(1 (2 (3 ())))</span>
+(fold-left list () (list 1 2 3)) <span style="color: #b22222;">; </span><span style="color: #b22222;">(((() 1) 2) 3)</span>
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-org1379a3c" class="outline-3">
+<h3 id="org1379a3c">Exercise 2.39</h3>
+<div class="outline-text-3" id="text-org1379a3c">
+<div class="org-src-container">
+<pre class="src src-scheme">(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">reverse</span> sequence)
+  (fold-right (<span style="color: #a020f0;">lambda</span> (x y) (append y (list x))) () sequence))
+(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">reverse</span> sequence)
+  (fold-left (<span style="color: #a020f0;">lambda</span> (x y) (cons y x)) () sequence))
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-orge26f44f" class="outline-3">
+<h3 id="orge26f44f">Exercise 2.40</h3>
+<div class="outline-text-3" id="text-orge26f44f">
+<div class="org-src-container">
+<pre class="src src-scheme">(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">enumerate-interval</span> k)
+  (<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">iter</span> curr result)
+    (<span style="color: #a020f0;">if</span> (= curr 0)
+        result
+        (iter (- curr 1) (cons curr result))))
+  (iter k ()))
+(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">unique-pairs</span> n)
+  (flatmap (<span style="color: #a020f0;">lambda</span> (i)
+             (<span style="color: #a020f0;">map</span> (<span style="color: #a020f0;">lambda</span> (j)
+                    (list i j))
+                  (enumerate-interval (- i 1))))
+           (enumerate-interval n)))
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-orgf3c65f0" class="outline-3">
+<h3 id="orgf3c65f0">Exercise 2.41</h3>
+<div class="outline-text-3" id="text-orgf3c65f0">
+<div class="org-src-container">
+<pre class="src src-scheme"><span style="color: #b22222;">;; </span><span style="color: #b22222;">This is slow...</span>
+(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">unique-tuples</span> n max)
+  (<span style="color: #a020f0;">cond</span> ((= n 0) (list ()))
+        ((&lt; max n) ())
+        ((= max n) (list (reverse (enumerate-interval n))))
+        (<span style="color: #a020f0;">else</span> (append (unique-tuples n (- max 1))
+                      (<span style="color: #a020f0;">map</span> (<span style="color: #a020f0;">lambda</span> (t)
+                             (cons max t))
+                           (unique-tuples (- n 1) (- max 1)))))))
+<span style="color: #b22222;">;; </span><span style="color: #b22222;">(define (unique-tuples n max)</span>
+<span style="color: #b22222;">;;   </span><span style="color: #b22222;">(define (iter tuples)</span>
+<span style="color: #b22222;">;;     </span><span style="color: #b22222;">(if (= (length (car tuples)) 0)</span>
+<span style="color: #b22222;">;;         </span><span style="color: #b22222;">tuples</span>
+<span style="color: #b22222;">;;         </span><span style="color: #b22222;">(iter (flatmap (lambda (l)</span>
+<span style="color: #b22222;">;;                          </span><span style="color: #b22222;">(if))))))</span>
+<span style="color: #b22222;">;;   </span><span style="color: #b22222;">(if (&lt; max n)</span>
+<span style="color: #b22222;">;;       </span><span style="color: #b22222;">()</span>
+<span style="color: #b22222;">;;       </span><span style="color: #b22222;">(flatmap values</span>
+<span style="color: #b22222;">;;                </span><span style="color: #b22222;">(iter (map list</span>
+<span style="color: #b22222;">;;                           </span><span style="color: #b22222;">(reverse (enumerate-interval n)))))))</span>
+<span style="color: #b22222;">;; </span><span style="color: #b22222;">;; And this doesn't work...</span>
+<span style="color: #b22222;">;; </span><span style="color: #b22222;">(define (unique-tuples n max)</span>
+<span style="color: #b22222;">;;   </span><span style="color: #b22222;">(define (next-tuple tuple)</span>
+<span style="color: #b22222;">;;     </span><span style="color: #b22222;">(define (cons-next-tuple min t)</span>
+<span style="color: #b22222;">;;       </span><span style="color: #b22222;">(cond ((null? t) t)</span>
+<span style="color: #b22222;">;;             </span><span style="color: #b22222;">((null? (cdr t)) t)</span>
+<span style="color: #b22222;">;;             </span><span style="color: #b22222;">((= (car t) (- (cadr t) 1))</span>
+<span style="color: #b22222;">;;              </span><span style="color: #b22222;">(cons min (cons-next-tuple (+ min 1) (cdr t))))</span>
+<span style="color: #b22222;">;;             </span><span style="color: #b22222;">(else (cons (+ 1 (car t)) (cdr t)))))</span>
+<span style="color: #b22222;">;;     </span><span style="color: #b22222;">(cons-next-tuple 1 tuple))</span>
+<span style="color: #b22222;">;;   </span><span style="color: #b22222;">(define (iter t result)</span>
+<span style="color: #b22222;">;;     </span><span style="color: #b22222;">(if (&gt; (car t) max)</span>
+<span style="color: #b22222;">;;         </span><span style="color: #b22222;">result</span>
+<span style="color: #b22222;">;;         </span><span style="color: #b22222;">(iter (next-tuple t) (cons t result))))</span>
+<span style="color: #b22222;">;;   </span><span style="color: #b22222;">(iter (enumerate-interval n) ()))</span>
+(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">sum-list</span> l)
+  (fold-left + 0 l))
+(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">bounded-partition</span> n parts bound)
+  (filter (<span style="color: #a020f0;">lambda</span> (t)
+            (= n (sum-list t)))
+          (unique-tuples parts bound)))
+(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">bounded-paritition-3</span> total bound)
+  (bounded-partition total 3 bound))
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-orge8fbb8f" class="outline-3">
+<h3 id="orge8fbb8f">Exercise 2.42</h3>
+<div class="outline-text-3" id="text-orge8fbb8f">
+<div class="org-src-container">
+<pre class="src src-scheme">(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">make-queen</span> row col)
+  (list row col))
+(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">get-row</span> queen)
+  (car queen))
+(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">get-col</span> queen)
+  (cadr queen))
+(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">queens</span> board-size)
+  (<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">adjoin-position</span> row col board)
+    (cons (make-queen row col) board))
+  (<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">safe?</span> col board)
+    (<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">same-diag?</span> q1 q2)
+      (= (difference (get-row q1) (get-row q2))
+         (difference (get-col q1) (get-col q2))))
+    (<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">same-row?</span> q1 q2)
+      (= (get-row q1) (get-row q2)))
+    (<span style="color: #a020f0;">let</span> ((new-queen (car board)))
+      (fold-right (<span style="color: #a020f0;">lambda</span> (x y) (<span style="color: #a020f0;">and</span> x y))
+                  #t
+                  (<span style="color: #a020f0;">map</span> (<span style="color: #a020f0;">lambda</span> (q)
+                         (<span style="color: #a020f0;">and</span> (not (same-row? new-queen q))
+                              (not (same-diag? new-queen q))))
+                       (cdr board)))))
+  (<span style="color: #a020f0;">define</span> <span style="color: #0000ff;">empty-board</span> ())
+  (<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">queen-cols</span> k)
+    (<span style="color: #a020f0;">if</span> (= k 0)
+        (list empty-board)
+        (filter
+         (<span style="color: #a020f0;">lambda</span> (positions) (safe? k positions))
+         (flatmap
+          (<span style="color: #a020f0;">lambda</span> (rest-of-queens)
+            (<span style="color: #a020f0;">map</span> (<span style="color: #a020f0;">lambda</span> (new-row)
+                   (adjoin-position new-row k rest-of-queens))
+                 (enumerate-interval board-size)))
+          (queen-cols (- k 1))))))
+  (queen-cols board-size))
+(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">repeat-display</span> n str)
+  (<span style="color: #a020f0;">if</span> (&gt; n 0)
+      (<span style="color: #a020f0;">begin</span>
+        (display str)
+        (whitespace (- n 1)))))
+(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">print-queens</span> board)
+  (<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">iter</span> left)
+    (<span style="color: #a020f0;">if</span> (not (null? left))
+        (<span style="color: #a020f0;">let</span> ((row (get-row (car left))))
+          (repeat-display (- row 1) <span style="color: #8b2252;">"."</span>)
+          (display <span style="color: #8b2252;">"Q"</span>)
+          (repeat-display (- (length board) row) <span style="color: #8b2252;">"."</span>)
+          (newline)
+          (iter (cdr left)))))
+  (iter board))
+(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">show-queens</span> n)
+  (<span style="color: #a020f0;">map</span> (<span style="color: #a020f0;">lambda</span> (soln)
+         (print-queens soln)
+         (newline))
+       (queens n)))
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-org3fb842d" class="outline-3">
+<h3 id="org3fb842d">Exercise 2.43</h3>
+<div class="outline-text-3" id="text-org3fb842d">
+<p>
+In the provided <code>queens</code> procedure, the \(n \times (k-1)\) subproblem is
+solved once. Then, for each solution of the subproblem, several
+candidate solutions for the \(n \times k\) problem are created by adding
+a new column with a queen in each possible row.
+</p>
+
+<p>
+Louis's procedure calculates each possible row once (in the call to
+<code>enumerate-interval</code>). Then, for each row, the procedure calculates
+the \(n \times (k-1)\) subproblem. So, at each level of the process, the
+subproblem is solved \(n\) times. Therefore, in Louis' procedure, the
+base-case \(n \times 0\) problem, computed by <code>(queens 0)</code>, is
+calculated \(n^{n}\) times. Louis' procedure solves the puzzle in
+approximately time \(n^{n}T\).
+</p>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>
