@@ -940,3 +940,255 @@ Note that "nil" is no longer a part of the Scheme standard. See this
            (branch-balanced? left)
            (branch-balanced? right))))
 #+END_SRC
+** Exercise 2.30
+#+BEGIN_SRC scheme
+  (define (square-tree tree)
+    (cond ((null? tree) tree)
+          ((not (pair? tree)) (square tree))
+          (else (cons (square-tree (car tree))
+                      (square-tree (cdr tree))))))
+  (define (square-tree-map tree)
+    (map (lambda (subtree)
+           (if (not (pair? subtree))
+               (square subtree)
+               (square-tree-map subtree)))
+         tree))
+#+END_SRC
+** Exercise 2.31
+#+BEGIN_SRC scheme
+  (define (tree-map f t)
+    (cond ((null? t) t)
+          ((not (pair? t)) (f t))
+          (else (cons (tree-map f (car t))
+                      (tree-map f (cdr t))))))
+#+END_SRC
+** Exercise 2.32
+The procedure takes advantage of the following observation. If $x$ is
+an element of set $S$ then we can partition the subsets of $S$ into
+two categories: those that contain $x$ and those that do not. All of
+the subsets that do not contain $x$ can be found by recursively
+finding all of the subsets of $S \setminus {x}$. All of the subsets
+that do contain $x$ are of the form $x \cup U$ where $U \in \wp (S
+\setminus {x})$.
+#+BEGIN_SRC scheme
+  (define (subsets s)
+    (if (null? s)
+        (list ())
+        (let ((rest (subsets (cdr s))))
+          (append rest (map (lambda (l) (cons (car s) l)) rest)))))
+#+END_SRC
+** Exercise 2.33
+#+BEGIN_SRC scheme
+  (define (accumulate op initial sequence)
+    (if (null? sequence)
+        initial
+        (op (car sequence)
+            (accumulate op initial (cdr sequence)))))
+  (define (map p sequence)
+    (accumulate (lambda (x y) (cons (p x) y)) () sequence))
+  (define (append seq1 seq2)
+    (accumulate cons seq2 seq1))
+  (define (length sequence)
+    (accumulate (lambda (x y) (+ 1 y)) 0 sequence))
+#+END_SRC
+** Exercise 2.34
+#+BEGIN_SRC scheme
+  (define (horner-eval x coefficient-sequence)
+    (accumulate (lambda (this-coeff higher-terms)
+                  (+ (* higher-terms x)
+                     this-coeff))
+                0
+                coefficient-sequence))
+#+END_SRC
+** Exercise 2.35
+#+BEGIN_SRC scheme
+  (define (count-leaves t)
+    (accumulate +
+                0
+                (map (lambda (elt)
+                       (if (pair? elt)
+                           (count-leaves elt)
+                           1))
+                     t)))
+#+END_SRC
+** Exercise 2.36
+#+BEGIN_SRC scheme
+  (define (accumulate-n op init seqs)
+    (if (null? (car seqs))
+        ()
+        (cons (accumulate op init (map car seqs))
+              (accumulate-n op init (map cdr seqs)))))
+#+END_SRC
+** Exercise 2.37
+#+BEGIN_SRC scheme
+  (define (dot-product v w)
+    (accumulate + 0 (map * v w)))
+  (define (matrix-*-vector m v)
+    (map (lambda (row)
+           (dot-product row v))
+         m))
+  (define (transpose mat)
+    (accumulate-n cons () mat))
+  (define (matrix-*-matrix m n)
+    (let ((cols (transpose n)))
+      (map (lambda (row)
+             (map (lambda (col)
+                    (dot-product row col))
+                  cols))
+           m)))
+#+END_SRC
+** Exercise 2.38
+#+BEGIN_SRC scheme
+  (define (fold-left op initial sequence)
+    (define (iter result rest)
+      (if (null? rest)
+          result
+          (iter (op result (car rest))
+                (cdr rest))))
+    (iter initial sequence))
+  (define fold-right accumulate)
+
+  (fold-right / 1 (list 1 2 3)) ; 3/2
+  (fold-left / 1 (list 1 2 3)) ; 1/6
+  (fold-right list () (list 1 2 3)) ; (1 (2 (3 ())))
+  (fold-left list () (list 1 2 3)) ; (((() 1) 2) 3)
+#+END_SRC
+** Exercise 2.39
+#+BEGIN_SRC scheme
+  (define (reverse sequence)
+    (fold-right (lambda (x y) (append y (list x))) () sequence))
+  (define (reverse sequence)
+    (fold-left (lambda (x y) (cons y x)) () sequence))
+#+END_SRC
+** Exercise 2.40
+#+BEGIN_SRC scheme
+  (define (enumerate-interval k)
+    (define (iter curr result)
+      (if (= curr 0)
+          result
+          (iter (- curr 1) (cons curr result))))
+    (iter k ()))
+  (define (unique-pairs n)
+    (flatmap (lambda (i)
+               (map (lambda (j)
+                      (list i j))
+                    (enumerate-interval (- i 1))))
+             (enumerate-interval n)))
+#+END_SRC
+** Exercise 2.41
+#+BEGIN_SRC scheme
+  ;; This is slow...
+  (define (unique-tuples n max)
+    (cond ((= n 0) (list ()))
+          ((< max n) ())
+          ((= max n) (list (reverse (enumerate-interval n))))
+          (else (append (unique-tuples n (- max 1))
+                        (map (lambda (t)
+                               (cons max t))
+                             (unique-tuples (- n 1) (- max 1)))))))
+  ;; (define (unique-tuples n max)
+  ;;   (define (iter tuples)
+  ;;     (if (= (length (car tuples)) 0)
+  ;;         tuples
+  ;;         (iter (flatmap (lambda (l)
+  ;;                          (if))))))
+  ;;   (if (< max n)
+  ;;       ()
+  ;;       (flatmap values
+  ;;                (iter (map list
+  ;;                           (reverse (enumerate-interval n)))))))
+  ;; ;; And this doesn't work...
+  ;; (define (unique-tuples n max)
+  ;;   (define (next-tuple tuple)
+  ;;     (define (cons-next-tuple min t)
+  ;;       (cond ((null? t) t)
+  ;;             ((null? (cdr t)) t)
+  ;;             ((= (car t) (- (cadr t) 1))
+  ;;              (cons min (cons-next-tuple (+ min 1) (cdr t))))
+  ;;             (else (cons (+ 1 (car t)) (cdr t)))))
+  ;;     (cons-next-tuple 1 tuple))
+  ;;   (define (iter t result)
+  ;;     (if (> (car t) max)
+  ;;         result
+  ;;         (iter (next-tuple t) (cons t result))))
+  ;;   (iter (enumerate-interval n) ()))
+  (define (sum-list l)
+    (fold-left + 0 l))
+  (define (bounded-partition n parts bound)
+    (filter (lambda (t)
+              (= n (sum-list t)))
+            (unique-tuples parts bound)))
+  (define (bounded-paritition-3 total bound)
+    (bounded-partition total 3 bound))
+#+END_SRC
+** Exercise 2.42
+#+BEGIN_SRC scheme
+    (define (make-queen row col)
+      (list row col))
+    (define (get-row queen)
+      (car queen))
+    (define (get-col queen)
+      (cadr queen))
+    (define (queens board-size)
+      (define (adjoin-position row col board)
+        (cons (make-queen row col) board))
+      (define (safe? col board)
+        (define (same-diag? q1 q2)
+          (= (difference (get-row q1) (get-row q2))
+             (difference (get-col q1) (get-col q2))))
+        (define (same-row? q1 q2)
+          (= (get-row q1) (get-row q2)))
+        (let ((new-queen (car board)))
+          (fold-right (lambda (x y) (and x y))
+                      #t
+                      (map (lambda (q)
+                             (and (not (same-row? new-queen q))
+                                  (not (same-diag? new-queen q))))
+                           (cdr board)))))
+      (define empty-board ())
+      (define (queen-cols k)
+        (if (= k 0)
+            (list empty-board)
+            (filter
+             (lambda (positions) (safe? k positions))
+             (flatmap
+              (lambda (rest-of-queens)
+                (map (lambda (new-row)
+                       (adjoin-position new-row k rest-of-queens))
+                     (enumerate-interval board-size)))
+              (queen-cols (- k 1))))))
+      (queen-cols board-size))
+    (define (repeat-display n str)
+      (if (> n 0)
+          (begin
+            (display str)
+            (whitespace (- n 1)))))
+    (define (print-queens board)
+      (define (iter left)
+        (if (not (null? left))
+            (let ((row (get-row (car left))))
+              (repeat-display (- row 1) ".")
+              (display "Q")
+              (repeat-display (- (length board) row) ".")
+              (newline)
+              (iter (cdr left)))))
+      (iter board))
+    (define (show-queens n)
+      (map (lambda (soln)
+             (print-queens soln)
+             (newline))
+           (queens n)))
+#+END_SRC
+** Exercise 2.43
+In the provided ~queens~ procedure, the $n \times (k-1)$ subproblem is
+solved once. Then, for each solution of the subproblem, several
+candidate solutions for the $n \times k$ problem are created by adding
+a new column with a queen in each possible row.
+
+Louis's procedure calculates each possible row once (in the call to
+~enumerate-interval~). Then, for each row, the procedure calculates
+the $n \times (k-1)$ subproblem. So, at each level of the process, the
+subproblem is solved $n$ times. Therefore, in Louis' procedure, the
+base-case $n \times 0$ problem, computed by ~(queens 0)~, is
+calculated $n^{n}$ times. Louis' procedure solves the puzzle in
+approximately time $n^{n}T$.
