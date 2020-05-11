@@ -3,4 +3,4 @@
 * [[file:sicp-exercises.org][Solutions to SICP exercises]]
 * [[file:emacs-golf.org][Emacs golf:]] solutions to some [[https://vimgolf.com][VimGolf]] challenges in Emacs
 * [[https://github.com/thoelze1][GitHub]]
-* [[file:~/git/thoelze1.github.io/resume/resume.pdf][Resume]]
+* [[file:../resume/resume.pdf][Resume]]
