@@ -1,1 +1,0 @@
-# [tannerhoelzel.com](http://www.tannerhoelzel.com)
