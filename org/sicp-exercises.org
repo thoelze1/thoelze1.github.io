@@ -1,6 +1,6 @@
 #+TITLE: SICP Exercises (Work in progress)
 #+OPTIONS: toc:1 tex:t
-* Chapter 1
+* Section 1.1
 ** Exercise 1.3
 #+BEGIN_SRC scheme
 (define (square x)
@@ -24,6 +24,7 @@ of cond, the code would also enter an infinite loop.
 
 “The set of expressions for which a binding defines a name is called
 the scope of that name”
+* Section 1.2
 ** Exercise 1.9
 First (recursive)
 
@@ -275,6 +276,7 @@ would be n multiplications where n is the power being raised to.
 (define (carmichael? n)
   (and (not (prime? n)) (fermat-test? n)))
 #+END_SRC
+* Section 1.3
 ** Exercise 1.29
 #+BEGIN_SRC scheme
 (define (simp f a b n)
@@ -522,7 +524,7 @@ The general technique of isolating the parts of a program that deal
 with how data objects are represented from the parts of a program
 that deal with how data objects are used is a powerful design
 methodology called "data abstraction".
-* Chapter 2
+* Section 2.1
 ** Exercise 2.1
 #+BEGIN_SRC scheme
 (define (same-sign? a b)
@@ -794,6 +796,7 @@ see: $$\frac{R_{1}R_{2}}{R_{1}+R_{2}} =
 $$\frac{1}{\frac{1}{R_{1}}+\frac{1}{R_{2}}} =
 (\frac{a_{1}a_{2}}{a_{1}+a_{2}},\frac{b_{1}b_{2}}{b_{1}+b_{2}})$$ This
 can be verified in the REPL.
+* Section 2.2
 ** Exercise 2.17
 :LOGBOOK:
 CLOCK: [2020-05-06 Wed 00:41]--[2020-05-06 Wed 00:45] =>  0:04
@@ -1123,61 +1126,61 @@ that do contain $x$ are of the form $x \cup U$ where $U \in \wp (S
 #+END_SRC
 ** Exercise 2.42
 #+BEGIN_SRC scheme
-    (define (make-queen row col)
-      (list row col))
-    (define (get-row queen)
-      (car queen))
-    (define (get-col queen)
-      (cadr queen))
-    (define (queens board-size)
-      (define (adjoin-position row col board)
-        (cons (make-queen row col) board))
-      (define (safe? col board)
-        (define (same-diag? q1 q2)
-          (= (difference (get-row q1) (get-row q2))
-             (difference (get-col q1) (get-col q2))))
-        (define (same-row? q1 q2)
-          (= (get-row q1) (get-row q2)))
-        (let ((new-queen (car board)))
-          (fold-right (lambda (x y) (and x y))
-                      #t
-                      (map (lambda (q)
-                             (and (not (same-row? new-queen q))
-                                  (not (same-diag? new-queen q))))
-                           (cdr board)))))
-      (define empty-board ())
-      (define (queen-cols k)
-        (if (= k 0)
-            (list empty-board)
-            (filter
-             (lambda (positions) (safe? k positions))
-             (flatmap
-              (lambda (rest-of-queens)
-                (map (lambda (new-row)
-                       (adjoin-position new-row k rest-of-queens))
-                     (enumerate-interval board-size)))
-              (queen-cols (- k 1))))))
-      (queen-cols board-size))
-    (define (repeat-display n str)
-      (if (> n 0)
-          (begin
-            (display str)
-            (whitespace (- n 1)))))
-    (define (print-queens board)
-      (define (iter left)
-        (if (not (null? left))
-            (let ((row (get-row (car left))))
-              (repeat-display (- row 1) ".")
-              (display "Q")
-              (repeat-display (- (length board) row) ".")
-              (newline)
-              (iter (cdr left)))))
-      (iter board))
-    (define (show-queens n)
-      (map (lambda (soln)
-             (print-queens soln)
-             (newline))
-           (queens n)))
+  (define (make-queen row col)
+    (list row col))
+  (define (get-row queen)
+    (car queen))
+  (define (get-col queen)
+    (cadr queen))
+  (define (queens board-size)
+    (define (adjoin-position row col board)
+      (cons (make-queen row col) board))
+    (define (safe? col board)
+      (define (same-diag? q1 q2)
+        (= (difference (get-row q1) (get-row q2))
+           (difference (get-col q1) (get-col q2))))
+      (define (same-row? q1 q2)
+        (= (get-row q1) (get-row q2)))
+      (let ((new-queen (car board)))
+        (fold-right (lambda (x y) (and x y))
+                    #t
+                    (map (lambda (q)
+                           (and (not (same-row? new-queen q))
+                                (not (same-diag? new-queen q))))
+                         (cdr board)))))
+    (define empty-board ())
+    (define (queen-cols k)
+      (if (= k 0)
+          (list empty-board)
+          (filter
+           (lambda (positions) (safe? k positions))
+           (flatmap
+            (lambda (rest-of-queens)
+              (map (lambda (new-row)
+                     (adjoin-position new-row k rest-of-queens))
+                   (enumerate-interval board-size)))
+            (queen-cols (- k 1))))))
+    (queen-cols board-size))
+  (define (repeat-display n str)
+    (if (> n 0)
+        (begin
+          (display str)
+          (whitespace (- n 1)))))
+  (define (print-queens board)
+    (define (iter left)
+      (if (not (null? left))
+          (let ((row (get-row (car left))))
+            (repeat-display (- row 1) ".")
+            (display "Q")
+            (repeat-display (- (length board) row) ".")
+            (newline)
+            (iter (cdr left)))))
+    (iter board))
+  (define (show-queens n)
+    (map (lambda (soln)
+           (print-queens soln)
+           (newline))
+         (queens n)))
 #+END_SRC
 ** Exercise 2.43
 In the provided ~queens~ procedure, the $n \times (k-1)$ subproblem is
