@@ -1,84 +1,73 @@
 #+TITLE: SICP Exercises
 #+OPTIONS: toc:3 tex:t
+#+PROPERTY: header-args :tangle sicp-exercises.scm
 * Chapter 1
+** Notes
+A recursive procedure is simply one that calls itself by name. It is
+not necessarily a recursive process.
+#+BEGIN_QUOTE
+Programs must be written for people to read, and only incidentally
+for computers to execute
+#+END_QUOTE
+#+BEGIN_QUOTE
+The set of expressions for which a binding defines a name is called
+the scope of that name
+#+END_QUOTE
+~let~ is syntactic sugar for ~lambda~ application
+#+BEGIN_QUOTE
+The general technique of isolating the parts of a program that deal
+with how data objects are represented from the parts of a program
+that deal with how data objects are used is a powerful design
+methodology called "data abstraction".
+#+END_QUOTE
 ** Section 1.1
 *** Exercise 1.3
 #+BEGIN_SRC scheme
-(define (square x)
-(* x x))
-(define (sum-of-squares-of-largest a b c)
-  (- (+ (square a) (square b) (square c))
-     (cond ((and (< a b) (< a c)) a)
-           ((< b c) b)
-           (else c))))
+  (define (square x)
+    (* x x))
+  (define (sum-of-squares-of-largest a b c)
+    (- (+ (square a) (square b) (square c))
+       (cond ((and (< a b) (< a c)) a)
+             ((< b c) b)
+             (else c))))
 #+END_SRC
-A recursive procedure is simply one that calls itself by name. It is
-not necessarily a recursive process.
-
-“Programs must be written for people to read, and only incidentally
-for computers to execute”
 *** Exercise 1.6
-Enters a recursive loop not because a cond structure is used instead
-of an if structure but because a function is called instead of using
-an if (or cond) structure. If new-if were implemented with if instead
-of cond, the code would also enter an infinite loop.
-
-“The set of expressions for which a binding defines a name is called
-the scope of that name”
+Enters a recursive loop not because ~cond~ is used instead of ~if~ but
+because a function call is used instead of ~if~ or ~cond~. If ~new-if~
+were implemented with ~if~ instead of ~cond~, the code would also
+enter an infinite loop.
 ** Section 1.2
 *** Exercise 1.9
-First (recursive)
-
+Recursive:
+#+BEGIN_SRC scheme
 (+ 4 5)
-
 (inc (+ (dec 4) 5))
-
 (inc (+ 3 5))
-
 (inc (inc (+ (dec 3) 5)))
-
 (inc (inc (+ 2 5)))
-
 (inc (inc (inc (+ (dec 2) 5))))
-
 (inc (inc (inc (+ 1 5))))
-
 (inc (inc (inc (inc (+ (dec 1) 5)))))
-
 (inc (inc (inc (inc (+ 0 5)))))
-
 (inc (inc (inc (inc 5))))
-
 (inc (inc (inc 6)))
-
 (inc (inc 7))
-
 (inc 8)
-
 9
-
-Second (iterative)
-
+#+END_SRC
+Iterative:
+#+BEGIN_SRC scheme
 (+ 4 5)
-
 (+ (dec 4) (inc 5))
-
 (+ 3 6)
-
 (+ (dec 3) (inc 6))
-
 (+ 2 7)
-
 (+ (dec 2) (inc 7))
-
 (+ 1 8)
-
 (+ (dec 1) (inc 8))
-
 (+ 0 9)
-
 9
-
+#+END_SRC
 #+BEGIN_SRC scheme
 (define (my-count-change amt values)
   (cond ((null? values) 0)
@@ -134,23 +123,14 @@ Second (iterative)
          (pascal (- n 1) m))))
 #+END_SRC
 *** Exercise 1.16
-If n even
-
-b -> b2
-
-n -> n/2 - 1
-
-c -> cb2
-
-If n odd
-
-b -> b
-
-n -> n - 1
-
-c -> cb
-
-Fibonacci numbers can be computed logarithmically too!
+If $n$ is even:
+$$b \to b^{2}$$
+$$n \to \frac{n}{2} - 1$$
+$$c \to cb^{2}$$
+If $n$ is odd:
+$$b \to b$$
+$$n \to n - 1$$
+$$c \to cb$$
 #+BEGIN_SRC scheme
 (define (fast-expt base exp)
   (define (fast-iter b n c)
@@ -256,14 +236,14 @@ Fibonacci numbers can be computed logarithmically too!
   (iterate 2))
 #+END_SRC
 *** Exercise 1.26
-From a high level, calling expmod with (/ exp 2) halves the
+From a high level, calling ~expmod~ with ~(/ exp 2)~ halves the
 problem. It is this halving, at each iteration of the process, that
 allows it to run in a number of steps that is logarithmically
-related to the size of the input. When Louis calls expmod twice,
+related to the size of the input. When Louis calls ~expmod~ twice,
 each with a halved problem (the same half) he is doing twice of
 half of the original amount of work. Therefore he is doing the
 original amount of work, which in the case of computing an exponent
-would be n multiplications where n is the power being raised to.
+would be $n$ multiplications where $n$ is the power being raised to.
 *** Exercise 1.27
 #+BEGIN_SRC scheme
 (define (fermat-condition? a n)
@@ -351,10 +331,6 @@ would be n multiplications where n is the power being raised to.
 (define (factorial b)
   (product (lambda (x) x) 2 (lambda (x) (+ x 1)) b))
 #+END_SRC
-
-Let is syntactic sugar for the underlying lambda application!
-
-Iterative approximation of pi
 #+BEGIN_SRC scheme
 (define (4square x)
   (* 4 (square x)))
@@ -367,13 +343,10 @@ Iterative approximation of pi
             (product-iter 4square1 1 inc n))))
 #+END_SRC
 *** Exercise 1.35
-x^2 |-> x + 1
-
-x^2 - x - 1 = 0
-
-(-(-1) +- sqrt((-1)^2 - 4(-1)))/2
-
-(1 +- sqrt(5))/2
+$$x^{2} \mapsto x + 1$$
+$$x^{2} - x - 1 = 0$$
+$$x = \frac{-(-1) \pm \sqrt{(-1)^{2} - 4(-1)}}{2}$$
+$$x = \frac{1 \pm \sqrt{5}}{2}$$
 *** Exercise 1.36
 #+BEGIN_SRC scheme
 (define tolerance 0.00001)
@@ -429,7 +402,6 @@ x^2 - x - 1 = 0
 #+BEGIN_SRC scheme
 (define (cubic a b c)
   (lambda (x) (+ (cube x) (* a (square x)) (* b x) c)))
-
 #+END_SRC
 *** Exercise 1.41
 #+BEGIN_SRC scheme
@@ -440,7 +412,6 @@ x^2 - x - 1 = 0
 #+BEGIN_SRC scheme
 (define (compose f g)
   (lambda (x) (f (g x))))
-
 #+END_SRC
 *** Exercise 1.43
 #+BEGIN_SRC scheme
@@ -477,12 +448,10 @@ x^2 - x - 1 = 0
 
 #+END_SRC
 *** Exercise 1.45
-One average-damp works until fourth roots
-
-Two average-damp's work until eighth roots
-
-Three average-damp's work until sixteenth roots
-
+In the REPL I see the following:
+- One average-damp works until fourth roots
+- Two average-damp's work until eighth roots
+- Three average-damp's work until sixteenth roots
 I see a pattern...
 #+BEGIN_SRC scheme
 (define (average-damp f)
@@ -519,12 +488,7 @@ I see a pattern...
 (define (iterative-improve-fixed-point func first-guess)
   ((iterative-improve (lambda (g) (< (difference g (func g)) 0.00001))
                       func) first-guess))
-
 #+END_SRC
-The general technique of isolating the parts of a program that deal
-with how data objects are represented from the parts of a program
-that deal with how data objects are used is a powerful design
-methodology called "data abstraction".
 * Chapter 2
 ** Section 2.1
 *** Exercise 2.1
@@ -606,15 +570,14 @@ I won't get much more out of this by continuing...
 (define (my-cdr z)
   (z (lambda (p q) q)))
 #+END_SRC
+Expansion:
+#+BEGIN_SRC scheme
 (my-cdr (my-cons 1 2))
-
 ((my-cons 1 2) (lambda (p q) q))
-
 ((lambda (m) (m 1 2)) (lambda (p q) q))
-
 ((lambda (p q) q) 1 2)
-
 2
+#+END_SRC
 *** Exercise 2.5
 #+BEGIN_SRC scheme
 (define (log-base base value)
@@ -637,25 +600,19 @@ I won't get much more out of this by continuing...
 (define (add-1 n)
   (lambda (f) (lambda (x) (f ((n f) x)))))
 #+END_SRC
+Expansion:
+#+BEGIN_SRC scheme
 (add-1 zero)
-
 (lambda (f) (lambda (x) (f ((zero f) x))))
-
 (lambda (f) (lambda (x) (f (((lambda (q) (lambda (z) z)) f) x))))
-
 (lambda (f) (lambda (x) (f ((lambda (z) z) x))))
-
 (lambda (f) (lambda (x) (f x)))
-
 (lambda (f) (lambda (x) (f x)))
-
 (add-1 (lambda (f) (lambda (x) (f x))))
-
 (lambda (f) (lambda (x) (f (((lambda (g) (lambda (x) (g x))) f) x))))
-
 (lambda (f) (lambda (x) (f ((lambda (x) (f x)) x))))
-
 (lambda (f) (lambda (x) (f (f x))))
+#+END_SRC
 #+BEGIN_SRC scheme
 (define (plus a b)
   (lambda (f) (compose (a f) (b f))))
@@ -676,17 +633,21 @@ I won't get much more out of this by continuing...
 
 #+END_SRC
 *** Exercise 2.9
-Let x = (a b) and y = (c d) be intervals. Then width(x) = (b-a)/2 and
-width(y) = (d-c)/2. Well width(x+y) = width((a+c b+d)) = (b+d-a-c)/2 =
-(b-a)/2 + (d-c)/2 = width(x)+width(y). And width(x-y) = width((a-d
-b-c)) = (b-c-a+d)/2 = width(x) + width(y). Now let x1 = (1 2), x2 =
-(3 4) and x3 = (5 6). Well width(x1) = width(x2) = width(x3) =
-1/2. But width(x1*x2) = width((3 8)) = 5/2 and width(x2*x3) =
-width(15 24) = 9/2. If product width were a function only of factor
-widths then width(x1*x2) would equal width(x2*x3) (because width(x1) =
-width(x2) = width(x3) = 1/2) but this is not the case. Similarly,
-width(x1/x2) = width((1/4 2/3)) = 5/24 != width(x2/x3) = width((1/3
-4/5)) = 7/30.
+Let $x = (a,b)$ and $y = (c,d)$ be intervals. Then $width(x) =
+\frac{b-a}{2}$ and $width(y) = \frac{d-c}{2}$. Well: $$width(x+y) =
+width((a+c,b+d))$$ $$= \frac{b+d-a-c}{2}$$ $$= \frac{b-a}{2} +
+\frac{d-c}{2}$$ $$= width(x)+width(y)$$ And: $$width(x-y) =
+width((a-d,b-c))$$ $$= \frac{b-c-a+d}{2}$$ $$= width(x) + width(y)$$
+Now let $x_{1} = (1,2)$, $x_{2} = (3,4)$, and $x_{3} = (5,6)$. Then
+$$width(x_{1}) = width(x_{2}) = width(x_{3}) = \frac{1}{2}$$ But
+$width(x_{1}*x_{2}) = width((3,8)) = \frac{5}{2}$ and
+$width(x_{2}*x_{3}) = width(15 24) = \frac{9}{2}$. If product width
+were a function only of factor widths then $width(x_{1}*x_{2})$ would
+equal $width(x_{2}*x_{3})$ (because $width(x_{1}) = width(x_{2}) =
+width(x_{3})$) but this is not the case. Similarly,
+$$width(\frac{x_{1}}{x_{2}}) = width((\frac{1}{4},\frac{2}{3})) =
+\frac{5}{24}$$ $$\neq width(\frac{x_{2}}{x_{3}}) =
+width((\frac{1}{3},\frac{4}{5})) = \frac{7}{30}$$
 *** Exercise 2.10
 :LOGBOOK:
 CLOCK: [2020-05-05 Tue 15:32]--[2020-05-05 Tue 16:00] =>  0:28
@@ -814,6 +775,8 @@ CLOCK: [2020-05-06 Wed 00:41]--[2020-05-06 Wed 00:45] =>  0:04
 CLOCK: [2020-05-06 Wed 01:07]--[2020-05-06 Wed 01:11] =>  0:04
 CLOCK: [2020-05-06 Wed 00:46]--[2020-05-06 Wed 01:02] =>  0:16
 :END:
+Note that "nil" is no longer a part of the Scheme standard; we'll use
+~()~ instead. See this [[https://stackoverflow.com/questions/9115703/null-value-in-mit-scheme][stackoverflow post]] for more.
 #+BEGIN_SRC scheme
   (define (reverse l)
     (define (helper in out)
@@ -888,8 +851,6 @@ CLOCK: [2020-05-06 Wed 13:50]--[2020-05-06 Wed 14:18] =>  0:28
           (begin (f (car l))
                  (for-each f (cdr l)))))
 #+END_SRC
-Note that "nil" is no longer a part of the Scheme standard. See this
-[[https://stackoverflow.com/questions/9115703/null-value-in-mit-scheme][stackoverflow post]] for more.
 *** Exercise 2.25
 #+BEGIN_SRC scheme
   (define l1 (list 1 3 (list 5 7) 9))
@@ -1250,3 +1211,704 @@ I'll leave this exercise here.
   (define (start-segment v) (car v))
   (define (end-segment v) (cdr v))
 #+END_SRC
+*** Exercise 2.49
+#+BEGIN_SRC scheme
+  (define (fold-right op null l)
+    (if (null? l)
+        null
+        (op (car l) (fold-right op null (cdr l)))))
+  (define (fold-left-iter op null l)
+    (define (iter curr result)
+      (if (null? curr)
+          result
+          (iter (cdr curr) (op result (car curr)))))
+    (iter l null))
+  (define (take n l)
+    (if (= n 0)
+        ()
+        (cons (car l) (take (- n 1) (cdr l)))))
+  (define (rotate-left l n)
+    (fold-right cons
+                (take n l)
+                ((repeated cdr n) l)))
+  (define (outline f)
+    (segments->painter
+     (let ((rotl (lambda (l) (fold-right cons (list (car l)) (cdr l)))))
+       (let ((x-cors (list 0 0 1 1)))
+         (let ((corners (map make-vect x-cors (rotl x-cors))))
+           (map make-segment
+                corners
+                (rotl corners)))))))
+  (define (x-painter f)
+    (segments-painter
+     (map make-segment
+          (map make-vect
+               (list 0 0)
+               (list 0 1))
+          (map make-vect
+               (list 1 1)
+               (list 1 0)))))
+#+END_SRC
+*** Exercise 2.51
+#+BEGIN_SRC scheme
+  (define (below p1 p2)
+    (rotate90 (beside (rotate270 p2)
+                      (rotate270 p1))))
+#+END_SRC
+** Section 2.3
+*** Exercise 2.53
+#+BEGIN_SRC scheme :results output
+  (list 'a 'b 'c)
+  (list (list 'george))
+  (cdr '((x1 x2) (y1 y2)))
+  (cadr '((x1 x2) (y1 y2)))
+  (pair? (car '(a short list)))
+  (memq 'red '((red shoes) (blue socks)))
+  (memq 'red '(red shoes blue socks))
+#+END_SRC
+*** Exercise 2.54
+#+BEGIN_SRC scheme
+  (define (equal? a b)
+    (if (and (pair? a) (pair? b))
+        (and (equal? (car a) (car b))
+             (equal? (cdr a) (cdr b)))
+        (eq? a b)))
+#+END_SRC
+*** Exercise 2.55
+Eva types ~(car ''abracadabra)~ and the interpreter prints
+~quote~. A footnote mentions that ~'~ is implemented as procedure
+application, and so ~(car ''abracadabra)~ is evaluated to ~(car (quote
+(quote abracadabra)))~. Then it makes sense for ~car~ of ~(quote
+abracadabra)~ to be ~quote~. To verify this we run the following:
+#+BEGIN_SRC scheme
+(cdr ''abracadabra)
+abracadabra
+#+END_SRC
+This is consistent with our explanation.
+*** Exercise 2.56
+The provided code:
+#+BEGIN_SRC scheme
+  (define (same-variable? v1 v2)
+    (and (variable? v1) (variable? v2) (eq? v1 v2)))
+  (define (make-sum a1 a2) (list '+ a1 a2))
+  (define (make-product m1 m2) (list '* m1 m2))
+  (define (sum? x)
+    (and (pair? x) (eq? (car x) '+)))
+  (define (addend s) (cadr s))
+  (define (augend s) (caddr s))
+  (define (product? x)
+    (and (pair? x) (eq? (car x) '*)))
+  (define (multiplier p) (cadr p))
+  (define (multiplicand p) (caddr p))
+  (define (deriv exp var)
+    (cond ((number? exp) 0)
+          ((variable? exp)
+           (if (same-variable? exp var) 1 0))
+          ((sum? exp)
+           (make-sum (deriv (addend exp) var)
+                     (deriv (augend exp) var)))
+          ((product? exp)
+           (make-sum
+            (make-product (multiplier exp)
+                          (deriv (multiplicand exp) var))
+            (make-product (deriv (multiplier exp) var)
+                          (multiplicand exp))))
+          (else
+           (error "unknown expression type -- DERIV" exp))))
+#+END_SRC
+#+BEGIN_SRC scheme
+  (define (exponentiation? x)
+    (and (pair? x) (eq? (car x) '**)))
+  (define (base e) (cadr e))
+  (define (exponent e) (caddr e))
+  (define (make-exponentiation b p)
+    (cond ((=number? p 0) 1)
+          ((=number? p 1) b)
+          ((and (number? b) (number? p)) (expt b p))
+          (else (list '** b p))))
+  (define (make-difference a b)
+    (make-sum a (make-product b -1)))
+  (define (deriv exp var)
+    (cond ((number? exp) 0)
+          ((variable? exp)
+           (if (same-variable? exp var) 1 0))
+          ((sum? exp)
+           (make-sum (deriv (addend exp) var)
+                     (deriv (augend exp) var)))
+          ((product? exp)
+           (make-sum
+            (make-product (multiplier exp)
+                          (deriv (multiplicand exp) var))
+            (make-product (deriv (multiplier exp) var)
+                          (multiplicand exp))))
+          ((exponentiation? exp)
+           (make-product
+            (exponent exp)
+            (make-product (make-exponentiation
+                           (base exp)
+                           (make-difference (exponent exp)
+                                            1))
+                          (deriv (base exp) var))))
+          (else
+           (error "unknown expression type -- DERIV" exp))))
+#+END_SRC
+*** Exercise 2.57
+#+BEGIN_SRC scheme
+  (define (augend s)
+    (if (null? (cdddr s))
+        (caddr s)
+        (cons '+ (cddr s))))
+  (define (make-sum a b)
+    (let* ((flat (flatmap (lambda (t) (if (sum? t) (cdr t) t))
+                          (list a b)))
+           (sum (foldl + 0 (filter number? flat)))
+           (rest (filter! number? flat)))
+      (cond ((null? rest) sum)
+            ((= sum 0) (if (null? (cdr rest)) (car rest) (cons '+ rest)))
+            (else (cons '+ (cons acc rest))))))
+  (define (multiplicand p)
+    (if (null? (cdddr p))
+        (caddr p)
+        (cons '* (cddr p))))
+  (define (make-product a b)
+    (let* ((flat (flatmap (lambda (t) (if (sum? t) (cdr t) t))
+                          (list a b)))
+           (prod (foldl * 1 (filter number? flat)))
+           (rest (filter! number? flat)))
+      (cond ((null? rest) prod)
+            ((= sum 1) (if (null? (cdr rest)) (car rest) (cons '+ rest)))
+            ((= sum 0) 0)
+            (else (cons '+ (cons acc rest))))))
+#+END_SRC
+I tried to refactor ~make-sum~ and ~make-product~ into a simpler yet
+meaningful-enough function, to no avail. I'll heed the [[https://en.wikipedia.org/wiki/Rule_of_three_(computer_programming)][rule of three]]
+for now.
+*** Exercise 2.58
+a. Infix addition:
+   #+BEGIN_SRC scheme
+     (define (sum? e)
+       (and (pair? e)
+            (pair? (cdr e))
+            (eq? (cadr e) '+)))
+     (define (addend s) (cadr s))
+     (define (augend s) (caddr s))
+     (define (make-sum a1 a2)
+       (cond ((=number? a1 0) a2)
+             ((=number? a2 0) a1)
+             ((and (number? a1) (number? a2)) (+ a1 a2))
+             (else (list a1 '+ a2))))
+   #+END_SRC
+   The same modifications apply to ~product?~, ~multiplier~,
+   ~multiplicand~, and ~make-product~, mutatis mutandis.
+b. Each element in a given list is a number, a variable, a sum, a
+   product, or a parenthesized expression. If a list has more than one
+   element, it must by a product or a sum. If the list contains both
+   ~+~ and ~*~, such as ~(x + 3 * y)~ then the list represents a sum,
+   because ~*~ binds tighter than ~+~. Therefore, if the list contains
+   even one ~+~ then we can consider the expression to the left of the
+   first ~+~ the addend and the expression to the right the augend. If
+   a list that has more than one element is not a sum, then it must be
+   a product.
+*** Exercise 2.59
+Provided code:
+#+BEGIN_SRC scheme
+  (define (adjoin-set x set)
+    (if (element-of-set? x set)
+        set
+        (cons x set)))
+  (define (element-of-set? x set)
+    (cond ((null? set) false)
+          ((equal? x (car set)) true)
+          (else (element-of-set? x (cdr set)))))
+  (define (intersection-set set1 set2)
+    (cond ((or (null? set1) (null? set2)) '())
+          ((element-of-set? (car set1) set2)
+           (cons (car set1)
+                 (intersection-set (cdr set1) set2)))
+          (else (intersection-set (cdr set1) set2))))
+#+END_SRC
+#+BEGIN_SRC scheme
+  (define (union-set set1 set2)
+    (cond ((null? set1) set2)
+          ((null? set2) set1)
+          (else (adjoin-set (car set1) (union-set (cdr set1) set2)))))
+#+END_SRC
+*** Exercise 2.60
+#+BEGIN_SRC scheme
+  (define (element-of-set? x set) (memq x set))
+  (define (adjoin-set x set) (cons x set))
+  (define (union-set set1 set2) (append set1 set2))
+  (define (intersection-set set1 set2)
+    (filter (lambda (x) (element-of-set? x set2)) set1))
+#+END_SRC
+~element-of-set?~ is still an $O(n)$ operation; there's no getting
+around this. But ~adjoin-set~ is now an $O(1)$ operation, and
+~union-set~, which is $O(n^{2})$ in my implementation above, is now
+$O(n)$. ~intersection-set~ is still an $O(n^{2})$ operation.
+*** Exercise 2.61
+#+BEGIN_SRC scheme
+  (define (adjoin-set x set)
+    (cond ((null? set) (cons x set))
+          ((> x (car set)) (cons (car set) (adjoin-set x (cdr set))))
+          ((= x (car set)) set)
+          (else (cons x set))))
+#+END_SRC
+*** Exercise 2.62
+#+BEGIN_SRC scheme
+  (define (union-set set1 set2)
+    (cond ((null? set1) set2)
+          ((null? set2) set1)
+          (else (let ((x1 (car set1))
+                      (x2 (car set2)))
+                  (cond ((= x1 x2)
+                         (cons x1 (union-set (cdr set1)
+                                             (cdr set2))))
+                        ((< x1 x2)
+                         (cons x1 (union-set (cdr set1)
+                                             set2)))
+                        ((> x1 x2)
+                         (cons x2 (union-set set1
+                                             (cdr set2)))))))))
+#+END_SRC
+<s
+*** Exercise 2.63
+The trees from[[https://mitpress.mit.edu/sites/default/files/sicp/full-text/book/book-Z-H-16.html#%25_fig_2.16][ Figure 2.16]]:
+#+BEGIN_SRC scheme
+  (define tree-a
+    (make-tree
+     7
+     (make-tree
+      3
+      (make-tree 1 () ())
+      (make-tree 5 () ()))
+     (make-tree
+      9
+      ()
+      (make-tree 11 () ()))))
+  (define tree-b
+    (make-tree
+     3
+     (make-tree 1 () ())
+     (make-tree
+      7
+      (make-tree 5 () ())
+      (make-tree
+       9
+       ()
+       (make-tree 11 () ())))))
+  (define tree-c
+    (make-tree
+     5
+     (make-tree
+      3
+      (make-tree 1 () ())
+      ())
+     (make-tree
+      9
+      (make-tree 7 () ())
+      (make-tree 11 () ()))))
+#+END_SRC
+a. ~tree->list-1~ and ~tree->list-2~ result in ~(1 3 5 7 9 11)~ for
+   every tree above. Moreover, ~tree->list-1~ and ~tree->list-2~
+   produce the same result for for any two trees that represent the same
+   set.
+b. ~tree->list-1~ uses ~append~ to combine the solutions to the
+   recursively-solved subproblems. This procedure takes time
+   proportional to the size of its first input, namely the left
+   subtree of any given node.
+
+   Suppose we have a balanced tree of $n = 2^{k}-1$ nodes (meaning
+   that $k$ is the number of levels in the tree). Level $i$ of the
+   tree (call the root level $0$) has $2^{i}$ nodes. Each of these
+   nodes combines its subproblems in time proportional to the size of
+   its left subtree, which is $2^{k-i-1}$. The total time of the tree
+   is therefore proportional to the following: $$\sum_{i=0}^{k-1}
+   2^{i}2^{k-i-1} = \sum_{i=0}^{k-1} 2^{k-1} = k2^{k-1} =
+   k\frac{n+1}{2} = \log(n+1)\frac{n+1}{2}$$ Therefore the order of
+   growth of ~tree->list-1~ is $O(n\log(n))$.
+
+   Perhaps a simpler formula:
+   $$\frac{n}{2}+2\frac{n}{4}+4\frac{n}{8}+\ldots$$
+   $$\frac{n}{2}+\frac{n}{2}+\frac{n}{2}+\ldots$$
+   $$\log(n)\frac{n}{2}$$
+
+   On the other hand, ~tree->list-2~ uses ~cons~ to combine
+   subproblems, and therefore take $O(1)$ time for each of the $n$
+   nodes in the tree, for a total of $O(n)$ time.
+*** Exercise 2.64
+b. ~partial-tree~ recurses once left and once right at each node to
+   build the tree. Therefore each of the $n$ elements is tree-ified by
+   one call to ~partial-tree~. All of the operations ~partial-tree~
+   used to combine the solutions to the subproblems are $O(1)$,
+   therefore ~partial-tree~ takes $O(n)$ time.
+*** Exercise 2.65
+#+BEGIN_SRC scheme
+  (define (union-set set1 set2)
+    (list->tree (union-set-list (tree->list-2 set1)
+                                (tree->list-2 set2))))
+#+END_SRC
+Mutatis mutandis for ~intersection-set~.
+*** Exercise 2.67
+~(a d a b b c a)~
+*** Exercise 2.68
+#+BEGIN_SRC scheme
+  (define (encode-symbol symbol tree)
+    (define (encode-1 bits branch)
+      (if (leaf? branch)
+          bits
+          (let ((left (left-branch branch)))
+            (if (memq symbol (symbols left))
+                (encode-1 (cons 0 bits) left)
+                (encode-1 (cons 1 bits) (right-branch branch))))))
+    (if (memq symbol (symbols tree))
+        (reverse (encode-1 () tree))
+        (error "not in tree")))
+#+END_SRC
+*** Exercise 2.69
+#+BEGIN_SRC scheme
+  (define (successive-merge tree-set)
+    (cond ((null? tree-set) ())
+          ((null? (cdr tree-set)) (car tree-set))
+          (else
+           (successive-merge (adjoin-set (make-code-tree (car tree-set)
+                                                         (cadr tree-set))
+                                         (cddr tree-set))))))
+#+END_SRC
+*** Exercise 2.70
+#+BEGIN_SRC scheme
+  (length (encode '(GET A JOB
+                    SHA NA NA NA NA NA NA NA NA
+                    GET A JOB
+                    SHA NA NA NA NA NA NA NA NA
+                    WAH YIP YIP YIP YIP YIP YIP YIP YIP YIP
+                    SHA BOOM)
+                  (generate-huffman-tree
+                   '((A 2) (NA 16)
+                     (BOOM 1) (SHA 3)
+                     (GET 2) (YIP 9)
+                     (JOB 2) (WAH 1)))))
+  ;Value: 84
+#+END_SRC
+A fixed-length code would take at least 3 bits per symbol times 36
+symbols for a total of 108 bits.
+*** Exercise 2.71
+The trees look like lists: each non-leaf node has one leaf child and
+one non-leaf child. The most frequent symbol takes one bit, and the
+least frequent symbol takes $n-1$ bits.
+*** Exercise 2.72
+If the relative frequencies are as described in exercise 2.71, then
+the ~memq~ call in ~encode-1~ searches a list of length one at each
+node, which is a constant-time operation. Therefore each of the $n$
+iterations (in the worst case) of ~encode-1~ are
+constant-time. Therefore ~encode-1~ has growth $O(n)$. ~reverse~ and
+the ~memq~ call in ~encode~ also have growth $O(n)$, so ~encode~ has
+time-complexity $O(n)$ where $n$ is the number of symbols in the
+alphabet.
+** Section 2.4
+*** Exercise 2.73
+#+BEGIN_SRC scheme
+  (define (same-variable? v1 v2)
+    (and (variable? v1) (variable? v2) (eq? v1 v2)))
+  (define (deriv exp var)
+    (cond ((number? exp) 0)
+          ((variable? exp) (if (same-variable? exp var) 1 0))
+          (else ((get 'deriv (operator exp)) (operands exp)
+                 var))))
+  (define (operator exp) (car exp))
+  (define (operands exp) (cdr exp))
+#+END_SRC
+b.
+#+BEGIN_SRC scheme
+  (define (install-prefix-system)
+    (define (deriv-sum sum)
+      (make-sum (deriv (addend exp) var)
+                (deriv (augend exp) var)))
+    (define (deriv-product prod)
+      (make-sum
+       (make-product (multiplier exp)
+                     (deriv (multiplicand exp) var))
+       (make-product (deriv (multiplier exp) var)
+                     (multiplicand exp))))
+    (put 'deriv '+ deriv-sum)
+    (put 'deriv '* deriv-product))
+#+END_SRC
+** Section 2.5
+*** Exercise 2.77
+~magnitude~ was already defined in 2.4.3 as:
+#+BEGIN_SRC scheme
+  (define (magnitude z) (apply-generic 'magnitude z))
+#+END_SRC
+This was done to provide a generic interface for getting the magnitude
+of a complex number whether it's represented in rectangular or polar
+coordinates. A function taking a complex number tagged with
+~'polar~ and a function taking a complex number tagged with
+~'rectangular~ were already added to the table.
+*** Exercise 2.78
+#+BEGIN_SRC scheme
+  (define (attach-tag type-tag contents)
+    (if (eq? type-tag 'scheme-number)
+        contents
+        (cons type-tag contents)))
+  (define (type-tag datum)
+    (cond ((number? datum) 'scheme-number)
+          ((pair? datum) (car datum))
+          (else (error "Bad tagged datum -- TYPE-TAG" datum))))
+  (define (contents datum)
+    (cond ((number? datum) datum)
+          ((pair? datum) (cdr datum))
+          (else (error "Bad tagged datum -- CONTENTS" datum))))
+#+END_SRC
+*** Exercise 2.79
+The following solution tests equality of numbers in the arithmetic
+package that have the same type. For a more general approach that
+allows compation numbers with different types, see Exercise 2.85.
+#+BEGIN_SRC scheme
+  (define (equ?-num a b) (= a b))
+  (put 'equ? '(scheme-number scheme-number) equ?-num)
+  (define (equ?-rat a b) (and (= (numer a) (numer b))
+                              (= (denom a) (denom b))))
+  (put 'equ? '(rational rational) equ?-rat)
+  (define (equ?-complex a b) (and (= (real-part a) (real-part b))
+                                  (= (imag-part a) (imag-part b))))
+  (put 'equ? '(complex complex) equ?-complex)
+  (define (equ? a b) (apply-generic 'equ? a b))
+#+END_SRC
+With the current implementation of complex and rational numbers as
+pairs of scheme numbers, using ~=~ within ~equ?-rat~ and
+~equ?-complex~ should work. But because ~equ?~ works with
+scheme-numbers too, recursively testing the components of complex and
+rational numbers by replacing ~=~ with ~equ?~ in ~equ?-rat~ and
+~equ?-complex~ will also work with future representations of complex
+and rational numbers that internally use numbers from our number
+package...
+*** Exercise 2.80
+#+BEGIN_SRC scheme
+  (define (=zero? x) (apply-generic '=zero? x))
+  (put '=zero? '(scheme-number) (lambda (x) (= x 0)))
+  (define (=zero?-complex x)
+    (= (magnitude x) 0))
+  (put '=zero? '(complex) =zero?-complex)
+  (define (=zero?-rat x)
+    (= (numer x) 0))
+  (put '=zero?-rat '(rational) =zero?-rat)
+#+END_SRC
+*** Exercise 2.81
+a. Infinite recursion: ~apply-generic~ coerces the first complex
+   number to a complex number, and calls itself.
+c. Code:
+   #+BEGIN_SRC scheme
+     (define (apply-generic op . args)
+       (let ((type-tags (map type-tag args)))
+         (let ((proc (get op type-tags)))
+           (if proc
+               (apply proc (map contents args))
+               (if (= (length args) 2)
+                   (let ((type1 (car type-tags))
+                         (type2 (cadr type-tags))
+                         (a1 (car args))
+                         (a2 (cadr args)))
+                     (if (eq? type1 type2)
+                         (error "No method for these types"
+                                (list op type-tags))
+                         (let ((t1->t2 (get-coercion type1 type2))
+                               (t2->t1 (get-coercion type2 type1)))
+                           (cond (t1->t2
+                                  (apply-generic op (t1->t2 a1) a2))
+                                 (t2->t1
+                                  (apply-generic op a1 (t2->t1 a2)))
+                                 (else
+                                  (error "No method for these types"
+                                         (list op type-tags)))))))
+                   (error "No method for these types"
+                          (list op type-tags)))))))
+   #+END_SRC
+*** Exercise 2.82
+Imagine an arithmetic package for complex, real, and imaginary
+numbers. Both real and imaginary numbers are subtypes of complex
+numbers, but real and imaginary numbers are unrelated to each
+other. If one tried to ~add~ a real number and a complex number, this
+would only be possible if each was converted (raised) to a complex
+number. With the current type-coercion algorithm, this is not possible.
+
+One way to approach a fully general coercion system for two arguments
+would be to determine all possible types that the first argument can
+be coerced into, and, for each of these types, coerce the first
+argument and retry the operation with each of the possible types of
+the second argument in turn.
+
+After thinking about this for a while, I do not know enough about the
+use case to make a satisfactory general procedure. I can imagine
+situations where:
++ The arguments can be coereced into new types in multiple valid
+  ways. Which coercions should be preferred?
++ The arguments can be "downcast". For example, a quadrilateral may
+  happen to be a square, and so it is valid to coerce such a
+  quadrilateral into a square. Should implicit coercion be allowed
+  here?
++ The only coercion that allows the operation to succeed requires that
+  an argument be coerced into a distant type. Should such coercion
+  happen automatically, or require that the caller be more explicit?
+
+Instead, we will try the more naive method suggested in the exercise:
+#+BEGIN_SRC scheme
+  (define (apply-generic op . args)
+    (let ((type-tags (map type-tag args)))
+      (define (fail) (error "No method for these types"
+                            (list op type-tags)))
+      (define (try-coerce targets)
+        (if (null? targets)
+            (fail)
+            (let* ((targ (car targets))
+                   (funcs (filter! null?
+                                   (map (lambda (type) (get-coercion type targ))
+                                        type-tags))))
+              (if (= (length funcs) (length args))
+                  (let ((proc (get op (repeat (length args) targ))))
+                    (if proc
+                        (apply proc (map contents (map apply
+                                                       funcs
+                                                       (map list args))))
+                        (try-coerce (cdr targets))))))))
+      (let ((proc (get op type-tags)))
+        (if proc
+            (apply proc (map contents args))
+            (let ((all-types (remove-duplicates type-tags)))
+              (if (length-1 all-types)
+                  (fail)
+                  (try-coerce all-types)))))))
+#+END_SRC
+Usually, circular inheritance does not make sense. Therefore there
+cannot be cycles in a general graph of type relationships. Therefore,
+given two types a and b, at most one type can be an ancestor of the
+other. If downcasting is to be explicit, then method of attempting to
+coerce all of the args into the type of the first arg, then the second
+arg, etc. is equivalent to attempting to coerce all of the args into
+the type of the arg with the highest type in the hierarchy (because
+all of the coercions that attempt to coerce the arg with the highest
+type to any lower type will fail because we've said downcasting is
+explicit).
+*** Exercise 2.83
+#+BEGIN_SRC scheme
+  (define (int->rat int)
+    (make-rational int 1))
+  (put 'raise 'int int->rat)
+  (define (rat->real rat)
+    (make-real (/ (numer rat) (denom rat))))
+  (put 'raise 'rat rat->real)
+  (define (real->complex real)
+    (make-complex-real-imag real 0))
+  (put 'raise 'real raise-real)
+  (define (raise num)
+    ((get 'raise (type-tag num)) (contents num)))
+#+END_SRC
+*** Exercise 2.84
+#+BEGIN_SRC scheme
+  (define (ancestor? arg1 arg2)
+    (let ((func (get 'raise (tag arg2))))
+      (if func
+          (let ((super (func (contents arg2))))
+            (if (= (tag super) (tag arg1))
+                super
+                (ancestor? arg1 super)))
+          #f)))
+  (define (apply-generic op . args)
+    (let ((type-tags (map type-tag args)))
+      (let ((proc (get op type-tags)))
+        (if proc
+            (apply proc (map contents args))
+            (if (= (length args) 2)
+                (let ((a1 (car args))
+                      (a2 (cadr args)))
+                  (let ((a2->type1 (ancestor? a1 a2))
+                        (a1->type2 (ancestor? a2 a1)))
+                    (cond (a2->type1
+                           (apply-generic op a1 a2->type1))
+                          (a1->type2
+                           (apply-generic op a1->type2 a2))
+                          (else
+                           (error "No method for these types"
+                                  (list op type-tags))))))
+                (error "No method for these types"
+                       (list op type-tags)))))))
+#+END_SRC
+*** Exercise 2.85
+#+BEGIN_SRC scheme
+  (define (project-complex complex)
+    (make-real (real-part complex)))
+  (put 'project 'complex 'project-complex)
+  (define (project-real real)
+    (make-rat (round real) 1))
+  (put 'project 'real 'project-real)
+  (define (project-rat rat)
+    (make-int (round (/ (numer rat) (denom rat)))))
+  (put 'project 'rat 'project-rat)
+  (define (project num) (apply-generic 'project num))
+  (define (drop num)
+    (if (get 'project (type-tag num))
+        (let ((projection (project num)))
+          (if (equ? num (raise projection))
+              (drop (projection))
+              num))
+        num))
+  (define (apply-generic op . args)
+    (let ((type-tags (map type-tag args)))
+      (let ((proc (get op type-tags)))
+        (if proc
+            (drop (apply proc (map contents args)))
+            (if (= (length args) 2)
+                (let ((a1 (car args))
+                      (a2 (cadr args)))
+                  (let ((a2->type1 (ancestor? a1 a2))
+                        (a1->type2 (ancestor? a2 a1)))
+                    (cond (a2->type1
+                           (apply-generic op a1 a2->type1))
+                          (a1->type2
+                           (apply-generic op a1->type2 a2))
+                          (else
+                           (error "No method for these types"
+                                  (list op type-tags))))))
+                (error "No method for these types"
+                       (list op type-tags)))))))
+#+END_SRC
+*** Exercise 2.86
+Depending on whether we want to store complex numbers internally as
+rational numbers (or other future numbers), or just to handle making
+complex numbers from rational numbers (or other future numbers) we
+would need to:
++ Make both of the ~make-complex-from-~ procedures generic
++ Replace ~+~, ~-~, ~*~, and ~/~ with ~add~, ~sub~, ~mul~, and ~div~
+  in internal procedures ~add-complex~, ~sub-complex~, etc
++ Rewrite polar- and rectangular- complex-number pacakges to use
+  generic procedures ~sine~, ~cosine~, ~atangent~, ~sqrt~, ~plus~
++ Rewrite ~project-complex~ and ~raise-complex~
+*** Exercise 2.87
+Because ~=zero?~ is used in ~adjoin-term~, zero coefficients are left
+out of polynomials constructed with ~add~ and ~mul~. If we rewrite
+~make-poly~ so that terms with zero coefficients are not actually
+stored, then any polynomial that can be created will not no terms with
+zero coefficients. Therefore the zero polynomial will simply have no
+terms:
+#+BEGIN_SRC scheme
+  (put '=zero? 'poly empty-termlist?)
+#+END_SRC
+*** Exercise 2.88
+#+BEGIN_SRC scheme
+  (define (neg-poly poly)
+    (define (neg-terms terms)
+      (if (empty-termlist? terms)
+          terms
+          (let ((first (first-term terms)))
+            (adjoin-term (make-term (order first)
+                                    (neg (coeff first)))
+                         (neg-terms (rest-terms terms))))))
+    (make-poly (variable poly)
+               (neg-terms (term-list poly))))
+  (put 'neg 'poly neg-poly)
+  (define (sub-poly p1 p2) (add-poly p1 (neg p2)))
+  (put 'sub 'poly sub-poly)
+#+END_SRC
+* this is simply a test of what is finally implemented on my macbook pro running macos.
+I truly never thought that I would see this day. This is fucking
+wonderful. It's not based on the time of the hold, and there's
+absolutely zero need to change how I type to accomodate for the double
+functionality underneath my fingertips. This. Is. Awesome.
