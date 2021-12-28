@@ -1,0 +1,544 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2021-12-28 Tue 00:05 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Breaking into my old laptop</title>
+<meta name="generator" content="Org mode" />
+<meta name="author" content="Tanner Hoelzel" />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .equation-container {
+    display: table;
+    text-align: center;
+    width: 100%;
+  }
+  .equation {
+    vertical-align: middle;
+  }
+  .equation-label {
+    display: table-cell;
+    text-align: right;
+    vertical-align: middle;
+  }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { width: 90%; }
+  /*]]>*/-->
+</style>
+<style type="text/css">
+    /*<![CDATA[*/
+      pre.src {
+        height: 100px;
+        overflow: auto;
+      }
+    /*]]>*/
+   </style>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2020 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="content">
+<h1 class="title">Breaking into my old laptop</h1>
+<p>
+I recently found my old 2012 Macbook Pro, but I forgot the password. I
+decided to try to get in without it. Here's what happened&#x2026;
+</p>
+
+<div id="outline-container-org1c048d9" class="outline-2">
+<h2 id="org1c048d9">Accessing the filesystem</h2>
+<div class="outline-text-2" id="text-org1c048d9">
+<p>
+You can boot in single user mode to get into the filesystem (just hold
+⌘-<kbd>S</kbd> at boot<sup><a id="fnr.1" class="footref" href="#fn.1">1</a></sup>). I thought it would be more fun to actually
+log in, so I decided to keep trying&#x2026;
+</p>
+</div>
+</div>
+
+<div id="outline-container-org42e0a57" class="outline-2">
+<h2 id="org42e0a57">Resetting the password</h2>
+<div class="outline-text-2" id="text-org42e0a57">
+<p>
+To reset a user's password, you can create a new administrator account
+from which any password can be overwritten<sup><a id="fnr.2" class="footref" href="#fn.2">2</a></sup>. An easy way is
+to boot in single-user mode and run:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-bash">$ rm /var/db/.AppleSetupDone
+</pre>
+</div>
+
+<p>
+which triggers the setup process at the next boot, allowing you to
+create a new admin account. But at this point, I decided it would be
+more fun to recover my actual password&#x2026;
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgfed7112" class="outline-2">
+<h2 id="orgfed7112">Cracking the password</h2>
+<div class="outline-text-2" id="text-orgfed7112">
+<p>
+First, we need to find the hash stored by the OS. I found a nice
+guide<sup><a id="fnr.3" class="footref" href="#fn.3">3</a></sup> on cracking mac passwords: apparently, a user's password
+hash resides at <code>/Volumes/&lt;hard drive
+name&gt;/var/db/dslocal/nodes/Default/users/&lt;username&gt;.plist</code>. I grabbed
+the relevant plist and attempted to extract the hash:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-bash">$ sudo defaults read tanner.plist ShadowHashData | tr -dc 0-9a-f | xxd -r -p | plutil -convert xml1 - -o - 2&gt; /dev/null
+Property List error: Unexpected character &#232; at line 1 / JSON error: JSON text did not start with array or object and option to allow fragments not set.
+</pre>
+</div>
+
+<p>
+No luck. I'm not sure why. I tried another method<sup><a id="fnr.4" class="footref" href="#fn.4">4</a></sup> which happened
+to work:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-bash">$ dscl . read tanner.plist dsAttrTypeNative:ShadowHashData | xxd -r -p | plutil -convert xml1 -
+&lt;?xml <span style="color: #a0522d;">version</span>=<span style="color: #8b2252;">"1.0"</span> <span style="color: #a0522d;">encoding</span>=<span style="color: #8b2252;">"UTF-8"</span>?&gt;
+&lt;!DOCTYPE plist PUBLIC <span style="color: #8b2252;">"-//Apple//DTD PLIST 1.0//EN"</span> <span style="color: #8b2252;">"http://www.apple.com/DTDs/PropertyList-1.0.dtd"</span>&gt;
+&lt;plist <span style="color: #a0522d;">version</span>=<span style="color: #8b2252;">"1.0"</span>&gt;
+&lt;dict&gt;
+        &lt;key&gt;SALTED-SHA512-PBKDF2&lt;/key&gt;
+        &lt;dict&gt;
+                &lt;key&gt;entropy&lt;/key&gt;
+                &lt;data&gt;
+                96kq3nobm2G/jFtdoIsfgzP8m3SCYbGhnI1OdO0rv/ag+8UJOUDUZtTIaH4G
+                MsBLMM8HFtqpH5jAKpJiQhDwmYNWZ64ZAYpV1hUt7UlswDK8HtnTOeZ1x5hI
+                <span style="color: #a0522d;">CHFkd0ZbGUziMPRGRuNUv64aOC2ihxFODsAkbuZnrvjsfWTCBZ0</span>=
+                &lt;/data&gt;
+                &lt;key&gt;iterations&lt;/key&gt;
+                &lt;integer&gt;36900&lt;/integer&gt;
+                &lt;key&gt;salt&lt;/key&gt;
+                &lt;data&gt;
+                BQn1fkxpi15tLrI6sVCfZs8rVxxE+<span style="color: #a0522d;">0q8W94cwIxj3wA</span>=
+                &lt;/data&gt;
+        &lt;/dict&gt;
+        &lt;key&gt;SRP-RFC5054-4096-SHA512-PBKDF2&lt;/key&gt;
+        &lt;dict&gt;
+                &lt;key&gt;iterations&lt;/key&gt;
+                &lt;integer&gt;36900&lt;/integer&gt;
+                &lt;key&gt;salt&lt;/key&gt;
+                &lt;data&gt;
+                YzJlukj/KbexF5fHhQzv8IViPl2/qtsVDJLjNeAUdo0=
+                &lt;/data&gt;
+                &lt;key&gt;verifier&lt;/key&gt;
+                &lt;data&gt;
+                UfW9fmB6SDEtcJHCd3jOewcOtqc3sg87U2KGKsd1znQh8DULayr4AZCoPJfv
+                JOw+uzQulSIe/utd7g+Toogso6GW1BtfxUuY4wAkJoEAqMO1rsKzVE9BoGJa
+                W18glTHgrbygkjMZEBoVrKXqBHeoWAVFsr2UzQDOfj4XmjHSLUbxfsVkgQSD
+                ehm058nCkq7Sat3CqM1U0k2Lv9cmE+eg0QoOHaBG2PdcV11c0UAyuDOZkQrL
+                rAKcTb51ylGWT8GH2DO0OgCYmMZnjqCgfqPL06omgs/BPxnbEL63epztC01y
+                FriNbRyuOBgawzo9YW+/Z4I9XEYS7rK3d8zVaI+ZiC8WFDYRJFQxbuAVlcUt
+                QIGnMy+DEUFmFIoZmjv+YLA6dngClbQ84MkOa9x3ApfopVNVhaA/20CDsB7s
+                X+y/Z5YJ+MusJd264Yjx1ijR8qrrHSlrpcXo6tKZQsCL0yWDu3UQT8lK6Yst
+                8Evmx2KmIM9Oxm0DhvHB+djoQO7e6vnK582mh4uMSWsm/SAng+Evs7M0CQtN
+                PhG0qi5MsLiDufjsgluPcksVCtgxev1n2+hzF0TMhb82d8FrRM7ixOIzFPy6
+                NdCSqIV2Rnxc3HY5DCoTkQvVzA44jGxtBzBkqZz6e6fNggXwn1cehtq4LLa1
+                evmkn++fUmbk+<span style="color: #a0522d;">QzialJqMVg</span>=
+                &lt;/data&gt;
+        &lt;/dict&gt;
+&lt;/dict&gt;
+&lt;/plist&gt;
+</pre>
+</div>
+
+<p>
+Great! Now that we have the hash, we'll use hashcat to crack
+it. Hashcat expects input in base 16, so we'll need to convert the
+above hash/salt values which are in base 64. You can perform this
+conversion any way you want, so I just rewrote a popular script <sup><a id="fnr.5" class="footref" href="#fn.5">5</a></sup>:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-python"><span style="color: #b22222;">#</span><span style="color: #b22222;">!/usr/bin/python2.7</span>
+<span style="color: #a020f0;">import</span> base64
+<span style="color: #a020f0;">import</span> sys
+<span style="color: #a0522d;">entropy64</span> = <span style="color: #8b2252;">'96kq3nobm2G/jFtdoIsfgzP8m3SCYbGhnI1OdO0rv/ag+8UJOUDUZtTIaH4GMsBLMM8HFtqpH5jAKpJiQhDwmYNWZ64ZAYpV1hUt7UlswDK8HtnTOeZ1x5hICHFkd0ZbGUziMPRGRuNUv64aOC2ihxFODsAkbuZnrvjsfWTCBZ0='</span>
+<span style="color: #a0522d;">iterations</span> = <span style="color: #8b2252;">'36900'</span>
+<span style="color: #a0522d;">salt64</span> = <span style="color: #8b2252;">'BQn1fkxpi15tLrI6sVCfZs8rVxxE+0q8W94cwIxj3wA='</span>
+<span style="color: #a0522d;">entropyRaw</span> = base64.b64decode(entropy64)
+<span style="color: #a0522d;">entropyHex</span> = entropyRaw.encode(<span style="color: #8b2252;">"hex"</span>)
+<span style="color: #a0522d;">saltRaw</span> = base64.b64decode(salt64)
+<span style="color: #a0522d;">saltHex</span> = saltRaw.encode(<span style="color: #8b2252;">"hex"</span>)
+<span style="color: #a020f0;">print</span>(<span style="color: #8b2252;">"$ml$%s$%s$%s"</span> %(iterations, saltHex, entropyHex))
+</pre>
+</div>
+
+<p>
+I ran the script, and:
+</p>
+
+<pre class="example">
+$ml$36900$0509f57e4c698b5e6d2eb23ab1509f66cf2b571c44fb4abc5bde1cc08c63df00$f7a92ade7a1b9b61bf8c5b5da08b1f8333fc9b748261b1a19c8d4e74ed2bbff6a0fbc5093940d466d4c8687e0632c04b30cf0716daa91f98c02a92624210f099835667ae19018a55d6152ded496cc032bc1ed9d339e675c7984808716477465b194ce230f44646e354bfae1a382da287114e0ec0246ee667aef8ec7d64c2059d
+</pre>
+
+<p>
+Now we're ready for hashcat. I decided to use a dictionary attack with
+14 million of the most common passwords:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-markdown">$ hashcat -a 0 -m 7100 hash.txt rockyou.txt -w 4 --potfile-path hash.pot
+hashcat (v5.1.0) starting...
+
+* Device #1: WARNING! Kernel exec timeout is not disabled.
+             This may cause "CL_OUT_OF_RESOURCES" or related errors.
+             To disable the timeout, see: https://hashcat.net/q/timeoutpatch
+OpenCL Platform #1: NVIDIA Corporation
+======================================
+* Device #1: NVIDIA GeForce GTX 960, 499/1998 MB allocatable, 8MCU
+
+Hashfile 'hash.txt' on line 1 ($ml$36...114e0ec0246ee667aef8ec7d64c2059d): Token length exception
+No hashes loaded.
+
+Started: Wed Dec 15 05:03:01 2021
+Stopped: Wed Dec 15 05:03:01 2021
+</pre>
+</div>
+
+<p>
+We got a "token length exception." It turns out that hashcat expects a
+64-byte hash, but we gave it a 128-byte one<sup><a id="fnr.6" class="footref" href="#fn.6">6</a></sup>. We'll just remove
+64 bytes from the hash and try again. Since each byte of the hash is
+represented in <code>hash.txt</code> in hexadecimal as two ASCII characters, each
+of which occupies one byte, we need to remove <kbd>64*2</kbd> bytes from
+<code>hash.txt</code>:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-markdown">$ truncate -s=-64 hash.txt &gt; hash-truncated.txt
+$ hashcat -a 0 -m 7100 hash-truncated.txt rockyou.txt --encoding-from=utf8 --encoding-to=ascii -w 4 --potfile-path ~/hash-truncated.pot
+hashcat (v5.1.0) starting...
+
+* Device #1: WARNING! Kernel exec timeout is not disabled.
+             This may cause "CL_OUT_OF_RESOURCES" or related errors.
+             To disable the timeout, see: https://hashcat.net/q/timeoutpatch
+OpenCL Platform #1: NVIDIA Corporation
+======================================
+* Device #1: NVIDIA GeForce GTX 960, 499/1998 MB allocatable, 8MCU
+
+Hashes: 1 digests; 1 unique digests, 1 unique salts
+Bitmaps: 16 bits, 65536 entries, 0x0000ffff mask, 262144 bytes, 5/13 rotates
+Rules: 1
+
+Applicable optimizers:
+* Zero-Byte
+* Single-Hash
+* Single-Salt
+* Slow-Hash-SIMD-LOOP
+* Uses-64-Bit
+
+Minimum password length supported by kernel: 0
+Maximum password length supported by kernel: 256
+
+Watchdog: Temperature abort trigger set to 90c
+
+* Device #1: build_opts '-cl-std=CL1.2 -I OpenCL -I /usr/share/hashcat/OpenCL -D LOCAL_MEM_TYPE=1 -D VENDOR_ID=32 -D CUDA_ARCH=502 -D AMD_ROCM=0 -D VECT_SIZE=1 -D DEVICE_TYPE=4 -D DGST_R0=0 -D DGST_R1=1 -D DGST_R2=2 -D DGST_R3=3 -D DGST_ELEM=32 -D KERN_TYPE=7100 -D _unroll'
+Dictionary cache built:
+* Filename..: ./rockyou.txt
+* Passwords.: 14329857
+* Bytes.....: 139921497
+* Keyspace..: 14329850
+* Runtime...: 7 secs
+
+$ml$36900$0509f57e4c698b5e6d2eb23ab1509f66cf2b571c44fb4abc5bde1cc08c63df00$f7a92ade7a1b9b61bf8c5b5da08b1f8333fc9b748261b1a19c8d4e74ed2bbff6a0fbc5093940d466d4c8687e0632c04b30cf0716daa91f98c02a92624210f099:[REDACTED]
+
+Session..........: hashcat
+Status...........: Cracked
+Hash.Type........: macOS v10.8+ (PBKDF2-SHA512)
+Hash.Target......: $ml$36900$0509f57dbc698b5e6d2eb23ab150b066cf2b571c4...10f099
+Time.Started.....: Wed Dec 15 23:37:35 2021 (1 min, 18 secs)
+Time.Estimated...: Wed Dec 15 23:38:53 2021 (0 secs)
+Guess.Base.......: File (./rockyou.txt)
+Guess.Queue......: 1/1 (100.00%)
+Speed.#1.........:     3385 H/s (268.08ms) @ Accel:512 Loops:128 Thr:64 Vec:1
+Recovered........: 1/1 (100.00%) Digests, 1/1 (100.00%) Salts
+Progress.........: 262144/14329850 (1.83%)
+Rejected.........: 0/262144 (0.00%)
+Restore.Point....: 0/14329850 (0.00%)
+Restore.Sub.#1...: Salt:0 Amplifier:0-1 Iteration:36864-36899
+Candidates.#1....: 123456 -&gt; rayburn1
+Hardware.Mon.#1..: Temp: 69c Fan: 17% Util:100% Core:1430MHz Mem:3004MHz Bus:16
+
+Started: Wed Dec 15 23:37:20 2021
+Stopped: Wed Dec 15 23:38:55 2021
+</pre>
+</div>
+
+<p>
+We recovered the password in just over a minute!
+</p>
+</div>
+</div>
+
+<div id="outline-container-org0a5f8e0" class="outline-2">
+<h2 id="org0a5f8e0">Notes</h2>
+<div class="outline-text-2" id="text-org0a5f8e0">
+<p>
+To prevent leaking the recovered password, I flipped bits in both the
+salt and the hash. However, I used a well-known password dictionary
+and provided full output from hashcat, which means that the recovered
+password lies somewhere in the dictionary between the shown candidates
+(unless I'm lying). If I'm not, then my password could be recovered by
+hashing the candidates until a hash is found with low edit distance
+from the above hash. Happy hunting!
+</p>
+</div>
+</div>
+<div id="footnotes">
+<h2 class="footnotes">Footnotes: </h2>
+<div id="text-footnotes">
+
+<div class="footdef"><sup><a id="fn.1" class="footnum" href="#fnr.1">1</a></sup> <div class="footpara"><p class="footpara">
+<a href="https://support.apple.com/en-us/HT201255">https://support.apple.com/en-us/HT201255</a>
+</p></div></div>
+
+<div class="footdef"><sup><a id="fn.2" class="footnum" href="#fnr.2">2</a></sup> <div class="footpara"><p class="footpara">
+<a href="https://logi.wiki/index.php/Single_user_mode">https://logi.wiki/index.php/Single_user_mode</a>
+</p></div></div>
+
+<div class="footdef"><sup><a id="fn.3" class="footnum" href="#fnr.3">3</a></sup> <div class="footpara"><p class="footpara">
+<a href="https://null-byte.wonderhowto.com/how-to/hacking-macos-hack-mac-password-without-changing-0189001">https://null-byte.wonderhowto.com/how-to/hacking-macos-hack-mac-password-without-changing-0189001</a>
+</p></div></div>
+
+<div class="footdef"><sup><a id="fn.4" class="footnum" href="#fnr.4">4</a></sup> <div class="footpara"><p class="footpara">
+<a href="https://www.onlinehashcrack.com/how-to-extract-hashes-crack-mac-osx-passwords.php">https://www.onlinehashcrack.com/how-to-extract-hashes-crack-mac-osx-passwords.php</a>
+</p></div></div>
+
+<div class="footdef"><sup><a id="fn.5" class="footnum" href="#fnr.5">5</a></sup> <div class="footpara"><p class="footpara">
+<a href="https://github.com/tokyoneon/hashdump.py/blob/master/hashdump.py">https://github.com/tokyoneon/hashdump.py/blob/master/hashdump.py</a>
+</p></div></div>
+
+<div class="footdef"><sup><a id="fn.6" class="footnum" href="#fnr.6">6</a></sup> <div class="footpara"><p class="footpara">
+<a href="https://github.com/hashcat/hashcat/issues/1697">https://github.com/hashcat/hashcat/issues/1697</a>
+</p></div></div>
+
+
+</div>
+</div></div>
+<div id="postamble" class="status">
+<p class="author">Author: Tanner Hoelzel</p>
+<p class="date">Created: 2021-12-28 Tue 00:05</p>
+<p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
+</div>
+</body>
+</html>

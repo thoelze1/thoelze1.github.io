@@ -1,0 +1,215 @@
+#+TITLE: Breaking into my old laptop
+
+I recently found my old 2012 Macbook Pro, but I forgot the password. I
+decided to try to get in without it. Here's what happened...
+
+* Accessing the filesystem
+You can boot in single user mode to get into the filesystem (just hold
+⌘-~S~ at boot[fn:1]). I thought it would be more fun to actually
+log in, so I decided to keep trying...
+
+* Resetting the password
+To reset a user's password, you can create a new administrator account
+from which any password can be overwritten[fn:2]. An easy way is
+to boot in single-user mode and run:
+
+ #+begin_src bash
+ $ rm /var/db/.AppleSetupDone
+ #+end_src
+
+which triggers the setup process at the next boot, allowing you to
+create a new admin account. But at this point, I decided it would be
+more fun to recover my actual password...
+
+* Cracking the password
+First, we need to find the hash stored by the OS. I found a nice
+guide[fn:3] on cracking mac passwords: apparently, a user's password
+hash resides at =/Volumes/<hard drive
+name>/var/db/dslocal/nodes/Default/users/<username>.plist=. I grabbed
+the relevant plist and attempted to extract the hash:
+
+#+begin_src bash
+$ sudo defaults read tanner.plist ShadowHashData | tr -dc 0-9a-f | xxd -r -p | plutil -convert xml1 - -o - 2> /dev/null
+Property List error: Unexpected character è at line 1 / JSON error: JSON text did not start with array or object and option to allow fragments not set.
+#+end_src
+
+No luck. I'm not sure why. I tried another method[fn:4] which happened
+to work:
+
+#+begin_src bash
+$ dscl . read tanner.plist dsAttrTypeNative:ShadowHashData | xxd -r -p | plutil -convert xml1 -
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>SALTED-SHA512-PBKDF2</key>
+	<dict>
+		<key>entropy</key>
+		<data>
+		96kq3nobm2G/jFtdoIsfgzP8m3SCYbGhnI1OdO0rv/ag+8UJOUDUZtTIaH4G
+		MsBLMM8HFtqpH5jAKpJiQhDwmYNWZ64ZAYpV1hUt7UlswDK8HtnTOeZ1x5hI
+		CHFkd0ZbGUziMPRGRuNUv64aOC2ihxFODsAkbuZnrvjsfWTCBZ0=
+		</data>
+		<key>iterations</key>
+		<integer>36900</integer>
+		<key>salt</key>
+		<data>
+		BQn1fkxpi15tLrI6sVCfZs8rVxxE+0q8W94cwIxj3wA=
+		</data>
+	</dict>
+	<key>SRP-RFC5054-4096-SHA512-PBKDF2</key>
+	<dict>
+		<key>iterations</key>
+		<integer>36900</integer>
+		<key>salt</key>
+		<data>
+		YzJlukj/KbexF5fHhQzv8IViPl2/qtsVDJLjNeAUdo0=
+		</data>
+		<key>verifier</key>
+		<data>
+		UfW9fmB6SDEtcJHCd3jOewcOtqc3sg87U2KGKsd1znQh8DULayr4AZCoPJfv
+		JOw+uzQulSIe/utd7g+Toogso6GW1BtfxUuY4wAkJoEAqMO1rsKzVE9BoGJa
+		W18glTHgrbygkjMZEBoVrKXqBHeoWAVFsr2UzQDOfj4XmjHSLUbxfsVkgQSD
+		ehm058nCkq7Sat3CqM1U0k2Lv9cmE+eg0QoOHaBG2PdcV11c0UAyuDOZkQrL
+		rAKcTb51ylGWT8GH2DO0OgCYmMZnjqCgfqPL06omgs/BPxnbEL63epztC01y
+		FriNbRyuOBgawzo9YW+/Z4I9XEYS7rK3d8zVaI+ZiC8WFDYRJFQxbuAVlcUt
+		QIGnMy+DEUFmFIoZmjv+YLA6dngClbQ84MkOa9x3ApfopVNVhaA/20CDsB7s
+		X+y/Z5YJ+MusJd264Yjx1ijR8qrrHSlrpcXo6tKZQsCL0yWDu3UQT8lK6Yst
+		8Evmx2KmIM9Oxm0DhvHB+djoQO7e6vnK582mh4uMSWsm/SAng+Evs7M0CQtN
+		PhG0qi5MsLiDufjsgluPcksVCtgxev1n2+hzF0TMhb82d8FrRM7ixOIzFPy6
+		NdCSqIV2Rnxc3HY5DCoTkQvVzA44jGxtBzBkqZz6e6fNggXwn1cehtq4LLa1
+		evmkn++fUmbk+QzialJqMVg=
+		</data>
+	</dict>
+</dict>
+</plist>
+#+end_src
+
+Great! Now that we have the hash, we'll use hashcat to crack
+it. Hashcat expects input in base 16, so we'll need to convert the
+above hash/salt values which are in base 64. You can perform this
+conversion any way you want, so I just rewrote a popular script [fn:5]:
+
+#+begin_src python
+  #!/usr/bin/python2.7
+  import base64
+  import sys
+  entropy64 = '96kq3nobm2G/jFtdoIsfgzP8m3SCYbGhnI1OdO0rv/ag+8UJOUDUZtTIaH4GMsBLMM8HFtqpH5jAKpJiQhDwmYNWZ64ZAYpV1hUt7UlswDK8HtnTOeZ1x5hICHFkd0ZbGUziMPRGRuNUv64aOC2ihxFODsAkbuZnrvjsfWTCBZ0='
+  iterations = '36900'
+  salt64 = 'BQn1fkxpi15tLrI6sVCfZs8rVxxE+0q8W94cwIxj3wA='
+  entropyRaw = base64.b64decode(entropy64)
+  entropyHex = entropyRaw.encode("hex")
+  saltRaw = base64.b64decode(salt64)
+  saltHex = saltRaw.encode("hex")
+  print("$ml$%s$%s$%s" %(iterations, saltHex, entropyHex))
+#+end_src
+
+I ran the script, and:
+
+#+BEGIN_EXAMPLE
+$ml$36900$0509f57e4c698b5e6d2eb23ab1509f66cf2b571c44fb4abc5bde1cc08c63df00$f7a92ade7a1b9b61bf8c5b5da08b1f8333fc9b748261b1a19c8d4e74ed2bbff6a0fbc5093940d466d4c8687e0632c04b30cf0716daa91f98c02a92624210f099835667ae19018a55d6152ded496cc032bc1ed9d339e675c7984808716477465b194ce230f44646e354bfae1a382da287114e0ec0246ee667aef8ec7d64c2059d
+#+END_EXAMPLE
+
+Now we're ready for hashcat. I decided to use a dictionary attack with
+14 million of the most common passwords:
+
+#+BEGIN_SRC markdown
+$ hashcat -a 0 -m 7100 hash.txt rockyou.txt -w 4 --potfile-path hash.pot
+hashcat (v5.1.0) starting...
+
+,* Device #1: WARNING! Kernel exec timeout is not disabled.
+             This may cause "CL_OUT_OF_RESOURCES" or related errors.
+             To disable the timeout, see: https://hashcat.net/q/timeoutpatch
+OpenCL Platform #1: NVIDIA Corporation
+======================================
+,* Device #1: NVIDIA GeForce GTX 960, 499/1998 MB allocatable, 8MCU
+
+Hashfile 'hash.txt' on line 1 ($ml$36...114e0ec0246ee667aef8ec7d64c2059d): Token length exception
+No hashes loaded.
+
+Started: Wed Dec 15 05:03:01 2021
+Stopped: Wed Dec 15 05:03:01 2021
+#+END_SRC
+
+We got a "token length exception." It turns out that hashcat expects a
+64-byte hash, but we gave it a 128-byte one[fn:6]. We'll just remove
+64 bytes from the hash and try again. Since each byte of the hash is
+represented in =hash.txt= in hexadecimal as two ASCII characters, each
+of which occupies one byte, we need to remove ~64*2~ bytes from
+=hash.txt=:
+
+#+BEGIN_SRC markdown
+$ truncate -s=-64 hash.txt > hash-truncated.txt
+$ hashcat -a 0 -m 7100 hash-truncated.txt rockyou.txt --encoding-from=utf8 --encoding-to=ascii -w 4 --potfile-path ~/hash-truncated.pot
+hashcat (v5.1.0) starting...
+
+,* Device #1: WARNING! Kernel exec timeout is not disabled.
+             This may cause "CL_OUT_OF_RESOURCES" or related errors.
+             To disable the timeout, see: https://hashcat.net/q/timeoutpatch
+OpenCL Platform #1: NVIDIA Corporation
+======================================
+,* Device #1: NVIDIA GeForce GTX 960, 499/1998 MB allocatable, 8MCU
+
+Hashes: 1 digests; 1 unique digests, 1 unique salts
+Bitmaps: 16 bits, 65536 entries, 0x0000ffff mask, 262144 bytes, 5/13 rotates
+Rules: 1
+
+Applicable optimizers:
+,* Zero-Byte
+,* Single-Hash
+,* Single-Salt
+,* Slow-Hash-SIMD-LOOP
+,* Uses-64-Bit
+
+Minimum password length supported by kernel: 0
+Maximum password length supported by kernel: 256
+
+Watchdog: Temperature abort trigger set to 90c
+
+,* Device #1: build_opts '-cl-std=CL1.2 -I OpenCL -I /usr/share/hashcat/OpenCL -D LOCAL_MEM_TYPE=1 -D VENDOR_ID=32 -D CUDA_ARCH=502 -D AMD_ROCM=0 -D VECT_SIZE=1 -D DEVICE_TYPE=4 -D DGST_R0=0 -D DGST_R1=1 -D DGST_R2=2 -D DGST_R3=3 -D DGST_ELEM=32 -D KERN_TYPE=7100 -D _unroll'
+Dictionary cache built:
+,* Filename..: ./rockyou.txt
+,* Passwords.: 14329857
+,* Bytes.....: 139921497
+,* Keyspace..: 14329850
+,* Runtime...: 7 secs
+
+$ml$36900$0509f57e4c698b5e6d2eb23ab1509f66cf2b571c44fb4abc5bde1cc08c63df00$f7a92ade7a1b9b61bf8c5b5da08b1f8333fc9b748261b1a19c8d4e74ed2bbff6a0fbc5093940d466d4c8687e0632c04b30cf0716daa91f98c02a92624210f099:[REDACTED]
+Session..........: hashcat
+Status...........: Cracked
+Hash.Type........: macOS v10.8+ (PBKDF2-SHA512)
+Hash.Target......: $ml$36900$0509f57dbc698b5e6d2eb23ab150b066cf2b571c4...10f099
+Time.Started.....: Wed Dec 15 23:37:35 2021 (1 min, 18 secs)
+Time.Estimated...: Wed Dec 15 23:38:53 2021 (0 secs)
+Guess.Base.......: File (./rockyou.txt)
+Guess.Queue......: 1/1 (100.00%)
+Speed.#1.........:     3385 H/s (268.08ms) @ Accel:512 Loops:128 Thr:64 Vec:1
+Recovered........: 1/1 (100.00%) Digests, 1/1 (100.00%) Salts
+Progress.........: 262144/14329850 (1.83%)
+Rejected.........: 0/262144 (0.00%)
+Restore.Point....: 0/14329850 (0.00%)
+Restore.Sub.#1...: Salt:0 Amplifier:0-1 Iteration:36864-36899
+Candidates.#1....: 123456 -> rayburn1
+Hardware.Mon.#1..: Temp: 69c Fan: 17% Util:100% Core:1430MHz Mem:3004MHz Bus:16
+
+Started: Wed Dec 15 23:37:20 2021
+Stopped: Wed Dec 15 23:38:55 2021
+#+END_SRC
+
+We recovered the password in just over a minute!
+
+* Notes
+To prevent leaking the recovered password, I flipped bits in both the
+salt and the hash. However, I used a well-known password dictionary
+and provided full output from hashcat, which means that the recovered
+password lies somewhere in the dictionary between the shown candidates
+(unless I'm lying). If I'm not, then my password could be recovered by
+hashing the candidates until a hash is found with low edit distance
+from the above hash. Happy hunting!
+
+[fn:1] https://support.apple.com/en-us/HT201255
+[fn:2] https://logi.wiki/index.php/Single_user_mode
+[fn:3] https://null-byte.wonderhowto.com/how-to/hacking-macos-hack-mac-password-without-changing-0189001
+[fn:4] https://www.onlinehashcrack.com/how-to-extract-hashes-crack-mac-osx-passwords.php
+[fn:5] https://github.com/tokyoneon/hashdump.py/blob/master/hashdump.py
+[fn:6] https://github.com/hashcat/hashcat/issues/1697
