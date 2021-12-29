@@ -1,0 +1,44 @@
+#+TITLE: Cracking a Windows 7 Password
+
+Windows 7 stores passwords using NTLM, an unsalted hash vulnerable to
+rainbow table attacks in addition to brute-force/dictionary attacks.
+
+* Dumping the hash
+Boot into another drive with access to the target drive. Everything
+needed to dump the target drive resides in =\Windows\System32\config=,
+so copy this directory and move to a machine of your choice. 
+
+Dumping a Windows 7 hash is more involved than on El Capitan[fn:1], but
+ophcrack automates it:
+
+#+begin_src bash
+$ sudo apt-get install ophcrack
+$ ophcrack
+#+end_src
+
+You can provide =ophcrack= the =config= directory from the target
+machine and it will dump each user's password hash in plaintext (I
+have not found a way to dump the hash from the =ophcrack= command-line
+interface). With the hash in cleartext, we can now use the attack of
+our choice.
+
+* Rainbow Tables
+Because the NTLM hash is unsalted, it is vulnerable to rainbow table
+attacks. The authors of =ophcrack= have made publicly available
+multiple terabytes of rainbow tables for use with various editions of
+Windows. These rainbow tables can be downloaded from their
+webpage[fn:2], extracted, and used:
+
+#+begin_src bash
+$ mkdir tables
+$ unzip tables_vista_free.zip -d tables/vista_free
+$ ophcrack -g -d ./tables -t vista_free -f hash.txt
+#+end_src
+
+* Dictionary
+The hash can also be attacked with a dictionary of possible passwords
+(or by brute-force) using password recovery tools such as John the
+Ripper or Hashcat[fn:1].
+
+[fn:1] [[file:hacking-my-laptop.org]]
+[fn:2] https://ophcrack.sourceforge.io/tables.php
