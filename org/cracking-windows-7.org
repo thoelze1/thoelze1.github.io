@@ -22,7 +22,7 @@ have not found a way to dump the hash from the =ophcrack= command-line
 interface). With the hash in cleartext, we can now use the attack of
 our choice.
 
-* Rainbow Tables
+* Rainbow Table Attack
 Because the NTLM hash is unsalted, it is vulnerable to rainbow table
 attacks. The authors of =ophcrack= have made publicly available
 multiple terabytes of rainbow tables for use with various editions of
@@ -35,7 +35,7 @@ $ unzip tables_vista_free.zip -d tables/vista_free
 $ ophcrack -g -d ./tables -t vista_free -f hash.txt
 #+end_src
 
-* Dictionary
+* Dictionary Attack
 The hash can also be attacked with a dictionary of possible passwords
 (or by brute-force) using password recovery tools such as John the
 Ripper or Hashcat[fn:1].

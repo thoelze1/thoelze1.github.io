@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2021-12-29 Wed 01:11 -->
+<!-- 2021-12-29 Wed 01:15 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Cracking a Windows 7 Password</title>
@@ -286,9 +286,9 @@ our choice.
 </div>
 </div>
 
-<div id="outline-container-org26af925" class="outline-2">
-<h2 id="org26af925">Rainbow Tables</h2>
-<div class="outline-text-2" id="text-org26af925">
+<div id="outline-container-org10ce93e" class="outline-2">
+<h2 id="org10ce93e">Rainbow Table Attack</h2>
+<div class="outline-text-2" id="text-org10ce93e">
 <p>
 Because the NTLM hash is unsalted, it is vulnerable to rainbow table
 attacks. The authors of <code>ophcrack</code> have made publicly available
@@ -306,9 +306,9 @@ $ ophcrack -g -d ./tables -t vista_free -f hash.txt
 </div>
 </div>
 
-<div id="outline-container-orgca2a7db" class="outline-2">
-<h2 id="orgca2a7db">Dictionary</h2>
-<div class="outline-text-2" id="text-orgca2a7db">
+<div id="outline-container-org97065f7" class="outline-2">
+<h2 id="org97065f7">Dictionary Attack</h2>
+<div class="outline-text-2" id="text-org97065f7">
 <p>
 The hash can also be attacked with a dictionary of possible passwords
 (or by brute-force) using password recovery tools such as John the
@@ -333,7 +333,7 @@ Ripper or Hashcat<sup><a id="fnr.1.100" class="footref" href="#fn.1">1</a></sup>
 </div></div>
 <div id="postamble" class="status">
 <p class="author">Author: Tanner Hoelzel</p>
-<p class="date">Created: 2021-12-29 Wed 01:11</p>
+<p class="date">Created: 2021-12-29 Wed 01:15</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>
