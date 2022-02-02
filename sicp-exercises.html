@@ -1,237 +1,447 @@
-<!doctype html>
-<html lang="en">
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
+<!-- 2022-02-02 Wed 00:19 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>SICP Exercises</title>
-<!-- 2020-05-21 Thu 02:05 -->
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="generator" content="Org-mode">
-<meta name="author" content="Tanner Hoelzel">
-
-<link  href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<meta name="generator" content="Org mode" />
+<meta name="author" content="Tanner Hoelzel" />
 <style type="text/css">
-/* org mode styles on top of twbs */
-
-html {
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
     position: relative;
-    min-height: 100%;
-}
-
-body {
-    font-size: 18px;
-    margin-bottom: 105px;
-}
-
-footer {
+    overflow: auto;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
     position: absolute;
-    bottom: 0;
-    width: 100%;
-    height: 101px;
-    background-color: #f5f5f5;
-}
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline; margin-top: 14px;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
 
-footer > div {
-    padding: 10px;
-}
-
-footer p {
-    margin: 0 0 5px;
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .equation-container {
+    display: table;
     text-align: center;
-    font-size: 16px;
-}
-
-#table-of-contents {
-    margin-top: 20px;
-    margin-bottom: 20px;
-}
-
-blockquote p {
-    font-size: 18px;
-}
-
-pre {
-    font-size: 16px;
-}
-
-.footpara {
-    display: inline-block;
-}
-
-figcaption {
-  font-size: 16px;
-  color: #666;
-  font-style: italic;
-  padding-bottom: 15px;
-}
-
-/* from twbs docs */
-
-.bs-docs-sidebar.affix {
-    position: static;
-}
-@media (min-width: 768px) {
-    .bs-docs-sidebar {
-        padding-left: 20px;
-    }
-}
-
-/* All levels of nav */
-.bs-docs-sidebar .nav > li > a {
-    display: block;
-    padding: 4px 20px;
-    font-size: 14px;
-    font-weight: 500;
-    color: #999;
-}
-.bs-docs-sidebar .nav > li > a:hover,
-.bs-docs-sidebar .nav > li > a:focus {
-    padding-left: 19px;
-    color: #A1283B;
-    text-decoration: none;
-    background-color: transparent;
-    border-left: 1px solid #A1283B;
-}
-.bs-docs-sidebar .nav > .active > a,
-.bs-docs-sidebar .nav > .active:hover > a,
-.bs-docs-sidebar .nav > .active:focus > a {
-    padding-left: 18px;
-    font-weight: bold;
-    color: #A1283B;
-    background-color: transparent;
-    border-left: 2px solid #A1283B;
-}
-
-/* Nav: second level (shown on .active) */
-.bs-docs-sidebar .nav .nav {
-    display: none; /* Hide by default, but at >768px, show it */
-    padding-bottom: 10px;
-}
-.bs-docs-sidebar .nav .nav > li > a {
-    padding-top: 1px;
-    padding-bottom: 1px;
-    padding-left: 30px;
-    font-size: 12px;
-    font-weight: normal;
-}
-.bs-docs-sidebar .nav .nav > li > a:hover,
-.bs-docs-sidebar .nav .nav > li > a:focus {
-    padding-left: 29px;
-}
-.bs-docs-sidebar .nav .nav > .active > a,
-.bs-docs-sidebar .nav .nav > .active:hover > a,
-.bs-docs-sidebar .nav .nav > .active:focus > a {
-    padding-left: 28px;
-    font-weight: 500;
-}
-
-/* Nav: third level (shown on .active) */
-.bs-docs-sidebar .nav .nav .nav {
-    padding-bottom: 10px;
-}
-.bs-docs-sidebar .nav .nav .nav > li > a {
-    padding-top: 1px;
-    padding-bottom: 1px;
-    padding-left: 40px;
-    font-size: 12px;
-    font-weight: normal;
-}
-.bs-docs-sidebar .nav .nav .nav > li > a:hover,
-.bs-docs-sidebar .nav .nav .nav > li > a:focus {
-    padding-left: 39px;
-}
-.bs-docs-sidebar .nav .nav .nav > .active > a,
-.bs-docs-sidebar .nav .nav .nav > .active:hover > a,
-.bs-docs-sidebar .nav .nav .nav > .active:focus > a {
-    padding-left: 38px;
-    font-weight: 500;
-}
-
-/* Show and affix the side nav when space allows it */
-@media (min-width: 992px) {
-    .bs-docs-sidebar .nav > .active > ul {
-        display: block;
-    }
-    /* Widen the fixed sidebar */
-    .bs-docs-sidebar.affix,
-    .bs-docs-sidebar.affix-bottom {
-        width: 213px;
-    }
-    .bs-docs-sidebar.affix {
-        position: fixed; /* Undo the static from mobile first approach */
-        top: 20px;
-    }
-    .bs-docs-sidebar.affix-bottom {
-        position: absolute; /* Undo the static from mobile first approach */
-    }
-    .bs-docs-sidebar.affix .bs-docs-sidenav,.bs-docs-sidebar.affix-bottom .bs-docs-sidenav {
-        margin-top: 0;
-        margin-bottom: 0
-    }
-}
-@media (min-width: 1200px) {
-    /* Widen the fixed sidebar again */
-    .bs-docs-sidebar.affix-bottom,
-    .bs-docs-sidebar.affix {
-        width: 263px;
-    }
-}
+    width: 100%;
+  }
+  .equation {
+    vertical-align: middle;
+  }
+  .equation-label {
+    display: table-cell;
+    text-align: right;
+    vertical-align: middle;
+  }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { width: 90%; }
+  /*]]>*/-->
 </style>
 <script type="text/javascript">
-$(function() {
-    'use strict';
-
-    $('.bs-docs-sidebar li').first().addClass('active');
-
-    $(document.body).scrollspy({target: '.bs-docs-sidebar'});
-
-    $('.bs-docs-sidebar').affix();
-});
+// @license magnet:?xt=urn:btih:e95b018ef3580986a04669f1b5879592219e2a7a&dn=public-domain.txt Public Domain
+<!--/*--><![CDATA[/*><!--*/
+     function CodeHighlightOn(elem, id)
+     {
+       var target = document.getElementById(id);
+       if(null != target) {
+         elem.classList.add("code-highlighted");
+         target.classList.add("code-highlighted");
+       }
+     }
+     function CodeHighlightOff(elem, id)
+     {
+       var target = document.getElementById(id);
+       if(null != target) {
+         elem.classList.remove("code-highlighted");
+         target.classList.remove("code-highlighted");
+       }
+     }
+    /*]]>*///-->
+// @license-end
 </script>
-
 <script type="text/x-mathjax-config">
-MathJax.Hub.Config({
-  displayAlign: "center",
-  displayIndent: "2em",
-  messageStyle: "none",
-  "HTML-CSS": {
-    scale: 100,
-    styles: {
-      ".MathJax_Display": {
-        "font-size": "100%"
-      }
-    }
-  },
-  "SVG": {
-    scale: 100,
-    styles: {
-      ".MathJax_SVG_Display": {
-        "font-size": "100%",
-        "margin-left": "-2.281em"
-      }
-    }
-  }
+    MathJax.Hub.Config({
+        displayAlign: "center",
+        displayIndent: "0em",
+
+        "HTML-CSS": { scale: 100,
+                        linebreaks: { automatic: "false" },
+                        webFont: "TeX"
+                       },
+        SVG: {scale: 100,
+              linebreaks: { automatic: "false" },
+              font: "TeX"},
+        NativeMML: {scale: 100},
+        TeX: { equationNumbers: {autoNumber: "AMS"},
+               MultLineWidth: "85%",
+               TagSide: "right",
+               TagIndent: ".8em"
+             }
 });
 </script>
-<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_SVG"></script>
+<script type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS_HTML"></script>
 </head>
 <body>
-<div id="content" class="container">
-<div class="row"><div class="col-md-9"><h1 class="title">SICP Exercises</h1>
-<div id="outline-container-sec-1" class="outline-2">
-<h2 id="sec-1">Chapter 1</h2>
-<div class="outline-text-2" id="text-1">
-</div><div id="outline-container-sec-1-1" class="outline-3">
-<h3 id="sec-1-1">Section 1.1</h3>
-<div class="outline-text-3" id="text-1-1">
-</div><div id="outline-container-sec-1-1-1" class="outline-4">
-<h4 id="sec-1-1-1">Exercise 1.3</h4>
-<div class="outline-text-4" id="text-1-1-1">
+<div id="content">
+<h1 class="title">SICP Exercises</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#orgd7fd4a2">Chapter 1</a>
+<ul>
+<li><a href="#org458e8fb">Notes</a></li>
+<li><a href="#org280ae56">Section 1.1</a>
+<ul>
+<li><a href="#orga4ce1e4">Exercise 1.3</a></li>
+<li><a href="#org27873f1">Exercise 1.6</a></li>
+</ul>
+</li>
+<li><a href="#orgdff8735">Section 1.2</a>
+<ul>
+<li><a href="#orgd495443">Exercise 1.9</a></li>
+<li><a href="#orgd85fdc5">Exercise 1.11</a></li>
+<li><a href="#org42ac906">Exercise 1.12</a></li>
+<li><a href="#org18f7aa4">Exercise 1.16</a></li>
+<li><a href="#org4a02bb4">Exercise 1.17</a></li>
+<li><a href="#org044953f">Exercise 1.18</a></li>
+<li><a href="#orge17c774">Exercise 1.19</a></li>
+<li><a href="#org3814d4e">Exercise 1.22</a></li>
+<li><a href="#org938a5b0">Exercise 1.26</a></li>
+<li><a href="#org12c4a89">Exercise 1.27</a></li>
+</ul>
+</li>
+<li><a href="#org9919842">Section 1.3</a>
+<ul>
+<li><a href="#org5b7e25f">Exercise 1.29</a></li>
+<li><a href="#org9381477">Exercise 1.30</a></li>
+<li><a href="#org3adc820">Exercise 1.31</a></li>
+<li><a href="#org696a9b0">Exercise 1.32</a></li>
+<li><a href="#orgfc6054a">Exercise 1.33</a></li>
+<li><a href="#org43447c3">Exercise 1.35</a></li>
+<li><a href="#org5d53b46">Exercise 1.36</a></li>
+<li><a href="#orgea27843">Exercise 1.37</a></li>
+<li><a href="#org9e359f4">Exercise 1.38</a></li>
+<li><a href="#org441c516">Exercise 1.39</a></li>
+<li><a href="#org7b44dd4">Exercise 1.40</a></li>
+<li><a href="#orgebb32e3">Exercise 1.41</a></li>
+<li><a href="#orgb516110">Exercise 1.42</a></li>
+<li><a href="#orge4ebc4d">Exercise 1.43</a></li>
+<li><a href="#orgdb62506">Exercise 1.44</a></li>
+<li><a href="#orgd6cd235">Exercise 1.45</a></li>
+<li><a href="#org081453e">Exercise 1.46</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#org2c53aad">Chapter 2</a>
+<ul>
+<li><a href="#org4e28f8d">Section 2.1</a>
+<ul>
+<li><a href="#org559ada8">Exercise 2.1</a></li>
+<li><a href="#org0b5e766">Exercise 2.2</a></li>
+<li><a href="#orgc45e052">Exercise 2.3</a></li>
+<li><a href="#org189a224">Exercise 2.4</a></li>
+<li><a href="#org8b60b4d">Exercise 2.5</a></li>
+<li><a href="#org5a3b8a5">Exercise 2.6</a></li>
+<li><a href="#org28ea4f4">Exercise 2.7</a></li>
+<li><a href="#org229cdef">Exercise 2.8</a></li>
+<li><a href="#org8396d08">Exercise 2.9</a></li>
+<li><a href="#orgee962c1">Exercise 2.10</a></li>
+<li><a href="#org555c05e">Exercise 2.11</a></li>
+<li><a href="#org247478b">Exercise 2.12</a></li>
+<li><a href="#org4323988">Exercise 2.13</a></li>
+<li><a href="#orgc83d97e">Exercise 2.14</a></li>
+</ul>
+</li>
+<li><a href="#org2a64ba4">Section 2.2</a>
+<ul>
+<li><a href="#org45882bb">Exercise 2.17</a></li>
+<li><a href="#org5312d70">Exercise 2.18</a></li>
+<li><a href="#org264fb7b">Exercise 2.19</a></li>
+<li><a href="#org9fd410c">Exercise 2.20</a></li>
+<li><a href="#org0b31535">Exercise 2.21</a></li>
+<li><a href="#org60b3dfd">Exercise 2.22</a></li>
+<li><a href="#org5323a89">Exercise 2.23</a></li>
+<li><a href="#org90e2a81">Exercise 2.25</a></li>
+<li><a href="#org56d4ce3">Exercise 2.27</a></li>
+<li><a href="#orgaf060e0">Exercise 2.28</a></li>
+<li><a href="#orgd6fc44a">Exercise 2.29</a></li>
+<li><a href="#org5a8ea68">Exercise 2.30</a></li>
+<li><a href="#org7231783">Exercise 2.31</a></li>
+<li><a href="#org16a8ccd">Exercise 2.32</a></li>
+<li><a href="#org4753d39">Exercise 2.33</a></li>
+<li><a href="#org3ab1d76">Exercise 2.34</a></li>
+<li><a href="#orgad11e42">Exercise 2.35</a></li>
+<li><a href="#orgdf1653b">Exercise 2.36</a></li>
+<li><a href="#org5dc61c1">Exercise 2.37</a></li>
+<li><a href="#org7914ad3">Exercise 2.38</a></li>
+<li><a href="#orgeb2f9ca">Exercise 2.39</a></li>
+<li><a href="#orga0162c2">Exercise 2.40</a></li>
+<li><a href="#org60c9fdd">Exercise 2.41</a></li>
+<li><a href="#orgb7f7a93">Exercise 2.42</a></li>
+<li><a href="#orgc1430d4">Exercise 2.43</a></li>
+<li><a href="#orga0a3945">Exercise 2.44</a></li>
+<li><a href="#org01ecff8">Exercise 2.45</a></li>
+<li><a href="#org48a3b61">Exercise 2.46</a></li>
+<li><a href="#org339d705">Exercise 2.47</a></li>
+<li><a href="#orgf4e85d0">Exercise 2.48</a></li>
+<li><a href="#org2978a93">Exercise 2.49</a></li>
+<li><a href="#org3bc60ce">Exercise 2.51</a></li>
+</ul>
+</li>
+<li><a href="#org33ff3aa">Section 2.3</a>
+<ul>
+<li><a href="#org1150912">Exercise 2.53</a></li>
+<li><a href="#org1db27ba">Exercise 2.54</a></li>
+<li><a href="#orgbad9df6">Exercise 2.55</a></li>
+<li><a href="#org23c9833">Exercise 2.56</a></li>
+<li><a href="#orgaeac6be">Exercise 2.57</a></li>
+<li><a href="#org6a421ff">Exercise 2.58</a></li>
+<li><a href="#org6808a0b">Exercise 2.59</a></li>
+<li><a href="#orged916a5">Exercise 2.60</a></li>
+<li><a href="#orgf0d85f3">Exercise 2.61</a></li>
+<li><a href="#orgc3df2e8">Exercise 2.62</a></li>
+<li><a href="#org8ff9ed6">Exercise 2.63</a></li>
+<li><a href="#org1b83e1d">Exercise 2.64</a></li>
+<li><a href="#orge27f686">Exercise 2.65</a></li>
+<li><a href="#org3f5f504">Exercise 2.67</a></li>
+<li><a href="#org8c63945">Exercise 2.68</a></li>
+<li><a href="#org9958d17">Exercise 2.69</a></li>
+<li><a href="#org865ab1c">Exercise 2.70</a></li>
+<li><a href="#org6abd4b9">Exercise 2.71</a></li>
+<li><a href="#org493be07">Exercise 2.72</a></li>
+</ul>
+</li>
+<li><a href="#orgdede9c5">Section 2.4</a>
+<ul>
+<li><a href="#orgbd47114">Exercise 2.73</a></li>
+</ul>
+</li>
+<li><a href="#orgfac3fb6">Section 2.5</a>
+<ul>
+<li><a href="#org26684d3">Exercise 2.77</a></li>
+<li><a href="#orgadd2c47">Exercise 2.78</a></li>
+<li><a href="#org01def75">Exercise 2.79</a></li>
+<li><a href="#org1748131">Exercise 2.80</a></li>
+<li><a href="#org717aa90">Exercise 2.81</a></li>
+<li><a href="#orgc2f36e8">Exercise 2.82</a></li>
+<li><a href="#org22827f2">Exercise 2.83</a></li>
+<li><a href="#org1a422e8">Exercise 2.84</a></li>
+<li><a href="#org3ba3d7c">Exercise 2.85</a></li>
+<li><a href="#org0b3f40f">Exercise 2.86</a></li>
+<li><a href="#org6c81fdc">Exercise 2.87</a></li>
+<li><a href="#orgdb9e2be">Exercise 2.88</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-orgd7fd4a2" class="outline-2">
+<h2 id="orgd7fd4a2">Chapter 1</h2>
+<div class="outline-text-2" id="text-orgd7fd4a2">
+</div>
+<div id="outline-container-org458e8fb" class="outline-3">
+<h3 id="org458e8fb">Notes</h3>
+<div class="outline-text-3" id="text-org458e8fb">
+<p>
+A recursive procedure is simply one that calls itself by name. It is
+not necessarily a recursive process.
+</p>
+<blockquote>
+<p>
+Programs must be written for people to read, and only incidentally
+for computers to execute
+</p>
+</blockquote>
+<blockquote>
+<p>
+The set of expressions for which a binding defines a name is called
+the scope of that name
+</p>
+</blockquote>
+<p>
+<kbd>let</kbd> is syntactic sugar for <kbd>lambda</kbd> application
+</p>
+<blockquote>
+<p>
+The general technique of isolating the parts of a program that deal
+with how data objects are represented from the parts of a program
+that deal with how data objects are used is a powerful design
+methodology called "data abstraction".
+</p>
+</blockquote>
+</div>
+</div>
+<div id="outline-container-org280ae56" class="outline-3">
+<h3 id="org280ae56">Section 1.1</h3>
+<div class="outline-text-3" id="text-org280ae56">
+</div>
+<div id="outline-container-orga4ce1e4" class="outline-4">
+<h4 id="orga4ce1e4">Exercise 1.3</h4>
+<div class="outline-text-4" id="text-orga4ce1e4">
 <div class="org-src-container">
-
 <pre class="src src-scheme">(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">square</span> x)
-(* x x))
+  (* x x))
 (<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">sum-of-squares-of-largest</span> a b c)
   (- (+ (square a) (square b) (square c))
      (<span style="color: #a020f0;">cond</span> ((<span style="color: #a020f0;">and</span> (&lt; a b) (&lt; a c)) a)
@@ -239,146 +449,64 @@ MathJax.Hub.Config({
            (<span style="color: #a020f0;">else</span> c))))
 </pre>
 </div>
-<p>
-A recursive procedure is simply one that calls itself by name. It is
-not necessarily a recursive process.
-</p>
-
-<p>
-“Programs must be written for people to read, and only incidentally
-for computers to execute”
-</p>
 </div>
 </div>
-<div id="outline-container-sec-1-1-2" class="outline-4">
-<h4 id="sec-1-1-2">Exercise 1.6</h4>
-<div class="outline-text-4" id="text-1-1-2">
+<div id="outline-container-org27873f1" class="outline-4">
+<h4 id="org27873f1">Exercise 1.6</h4>
+<div class="outline-text-4" id="text-org27873f1">
 <p>
-Enters a recursive loop not because a cond structure is used instead
-of an if structure but because a function is called instead of using
-an if (or cond) structure. If new-if were implemented with if instead
-of cond, the code would also enter an infinite loop.
-</p>
-
-<p>
-“The set of expressions for which a binding defines a name is called
-the scope of that name”
+Enters a recursive loop not because <kbd>cond</kbd> is used instead of <kbd>if</kbd> but
+because a function call is used instead of <kbd>if</kbd> or <kbd>cond</kbd>. If <kbd>new-if</kbd>
+were implemented with <kbd>if</kbd> instead of <kbd>cond</kbd>, the code would also
+enter an infinite loop.
 </p>
 </div>
 </div>
 </div>
-<div id="outline-container-sec-1-2" class="outline-3">
-<h3 id="sec-1-2">Section 1.2</h3>
-<div class="outline-text-3" id="text-1-2">
-</div><div id="outline-container-sec-1-2-1" class="outline-4">
-<h4 id="sec-1-2-1">Exercise 1.9</h4>
-<div class="outline-text-4" id="text-1-2-1">
+<div id="outline-container-orgdff8735" class="outline-3">
+<h3 id="orgdff8735">Section 1.2</h3>
+<div class="outline-text-3" id="text-orgdff8735">
+</div>
+<div id="outline-container-orgd495443" class="outline-4">
+<h4 id="orgd495443">Exercise 1.9</h4>
+<div class="outline-text-4" id="text-orgd495443">
 <p>
-First (recursive)
+Recursive:
 </p>
-
-<p>
-(+ 4 5)
-</p>
-
-<p>
-(inc (+ (dec 4) 5))
-</p>
-
-<p>
-(inc (+ 3 5))
-</p>
-
-<p>
-(inc (inc (+ (dec 3) 5)))
-</p>
-
-<p>
-(inc (inc (+ 2 5)))
-</p>
-
-<p>
-(inc (inc (inc (+ (dec 2) 5))))
-</p>
-
-<p>
-(inc (inc (inc (+ 1 5))))
-</p>
-
-<p>
-(inc (inc (inc (inc (+ (dec 1) 5)))))
-</p>
-
-<p>
-(inc (inc (inc (inc (+ 0 5)))))
-</p>
-
-<p>
-(inc (inc (inc (inc 5))))
-</p>
-
-<p>
-(inc (inc (inc 6)))
-</p>
-
-<p>
-(inc (inc 7))
-</p>
-
-<p>
-(inc 8)
-</p>
-
-<p>
-9
-</p>
-
-<p>
-Second (iterative)
-</p>
-
-<p>
-(+ 4 5)
-</p>
-
-<p>
-(+ (dec 4) (inc 5))
-</p>
-
-<p>
-(+ 3 6)
-</p>
-
-<p>
-(+ (dec 3) (inc 6))
-</p>
-
-<p>
-(+ 2 7)
-</p>
-
-<p>
-(+ (dec 2) (inc 7))
-</p>
-
-<p>
-(+ 1 8)
-</p>
-
-<p>
-(+ (dec 1) (inc 8))
-</p>
-
-<p>
-(+ 0 9)
-</p>
-
-<p>
-9
-</p>
-
 <div class="org-src-container">
-
+<pre class="src src-scheme">(+ 4 5)
+(inc (+ (dec 4) 5))
+(inc (+ 3 5))
+(inc (inc (+ (dec 3) 5)))
+(inc (inc (+ 2 5)))
+(inc (inc (inc (+ (dec 2) 5))))
+(inc (inc (inc (+ 1 5))))
+(inc (inc (inc (inc (+ (dec 1) 5)))))
+(inc (inc (inc (inc (+ 0 5)))))
+(inc (inc (inc (inc 5))))
+(inc (inc (inc 6)))
+(inc (inc 7))
+(inc 8)
+9
+</pre>
+</div>
+<p>
+Iterative:
+</p>
+<div class="org-src-container">
+<pre class="src src-scheme">(+ 4 5)
+(+ (dec 4) (inc 5))
+(+ 3 6)
+(+ (dec 3) (inc 6))
+(+ 2 7)
+(+ (dec 2) (inc 7))
+(+ 1 8)
+(+ (dec 1) (inc 8))
+(+ 0 9)
+9
+</pre>
+</div>
+<div class="org-src-container">
 <pre class="src src-scheme">(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">my-count-change</span> amt values)
   (<span style="color: #a020f0;">cond</span> ((null? values) 0)
         ((&lt; amt 0) 0)
@@ -406,11 +534,10 @@ Second (iterative)
 </div>
 </div>
 </div>
-<div id="outline-container-sec-1-2-2" class="outline-4">
-<h4 id="sec-1-2-2">Exercise 1.11</h4>
-<div class="outline-text-4" id="text-1-2-2">
+<div id="outline-container-orgd85fdc5" class="outline-4">
+<h4 id="orgd85fdc5">Exercise 1.11</h4>
+<div class="outline-text-4" id="text-orgd85fdc5">
 <div class="org-src-container">
-
 <pre class="src src-scheme">(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">f</span> n)
   (<span style="color: #a020f0;">if</span> (&lt; n 3)
       n
@@ -432,11 +559,10 @@ Second (iterative)
 </div>
 </div>
 </div>
-<div id="outline-container-sec-1-2-3" class="outline-4">
-<h4 id="sec-1-2-3">Exercise 1.12</h4>
-<div class="outline-text-4" id="text-1-2-3">
+<div id="outline-container-org42ac906" class="outline-4">
+<h4 id="org42ac906">Exercise 1.12</h4>
+<div class="outline-text-4" id="text-org42ac906">
 <div class="org-src-container">
-
 <pre class="src src-scheme">(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">pascal</span> n m)
   (<span style="color: #a020f0;">if</span> (<span style="color: #a020f0;">or</span> (= m 0)
           (= m n))
@@ -447,46 +573,20 @@ Second (iterative)
 </div>
 </div>
 </div>
-<div id="outline-container-sec-1-2-4" class="outline-4">
-<h4 id="sec-1-2-4">Exercise 1.16</h4>
-<div class="outline-text-4" id="text-1-2-4">
+<div id="outline-container-org18f7aa4" class="outline-4">
+<h4 id="org18f7aa4">Exercise 1.16</h4>
+<div class="outline-text-4" id="text-org18f7aa4">
 <p>
-If n even
-</p>
-
-<p>
-b -&gt; b2
-</p>
-
-<p>
-n -&gt; n/2 - 1
-</p>
-
-<p>
-c -&gt; cb2
-</p>
-
-<p>
-If n odd
-</p>
-
-<p>
-b -&gt; b
-</p>
-
-<p>
-n -&gt; n - 1
-</p>
-
-<p>
-c -&gt; cb
-</p>
-
-<p>
-Fibonacci numbers can be computed logarithmically too!
+If \(n\) is even:
+\[b \to b^{2}\]
+\[n \to \frac{n}{2} - 1\]
+\[c \to cb^{2}\]
+If \(n\) is odd:
+\[b \to b\]
+\[n \to n - 1\]
+\[c \to cb\]
 </p>
 <div class="org-src-container">
-
 <pre class="src src-scheme">(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">fast-expt</span> base exp)
   (<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">fast-iter</span> b n c)
     (<span style="color: #a020f0;">cond</span> ((= n 0) c)
@@ -525,11 +625,10 @@ Fibonacci numbers can be computed logarithmically too!
 </div>
 </div>
 </div>
-<div id="outline-container-sec-1-2-5" class="outline-4">
-<h4 id="sec-1-2-5">Exercise 1.17</h4>
-<div class="outline-text-4" id="text-1-2-5">
+<div id="outline-container-org4a02bb4" class="outline-4">
+<h4 id="org4a02bb4">Exercise 1.17</h4>
+<div class="outline-text-4" id="text-org4a02bb4">
 <div class="org-src-container">
-
 <pre class="src src-scheme">(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">halve</span> b)
   (/ b 2))
 (<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">double</span> b)
@@ -542,11 +641,10 @@ Fibonacci numbers can be computed logarithmically too!
 </div>
 </div>
 </div>
-<div id="outline-container-sec-1-2-6" class="outline-4">
-<h4 id="sec-1-2-6">Exercise 1.18</h4>
-<div class="outline-text-4" id="text-1-2-6">
+<div id="outline-container-org044953f" class="outline-4">
+<h4 id="org044953f">Exercise 1.18</h4>
+<div class="outline-text-4" id="text-org044953f">
 <div class="org-src-container">
-
 <pre class="src src-scheme">(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">fast-mult</span> x y)
   (<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">fast-mult-iter</span> a b c)
     (<span style="color: #a020f0;">cond</span> ((= b 0) c)
@@ -557,11 +655,10 @@ Fibonacci numbers can be computed logarithmically too!
 </div>
 </div>
 </div>
-<div id="outline-container-sec-1-2-7" class="outline-4">
-<h4 id="sec-1-2-7">Exercise 1.19</h4>
-<div class="outline-text-4" id="text-1-2-7">
+<div id="outline-container-orge17c774" class="outline-4">
+<h4 id="orge17c774">Exercise 1.19</h4>
+<div class="outline-text-4" id="text-orge17c774">
 <div class="org-src-container">
-
 <pre class="src src-scheme">(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">fib</span> n)
   (<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">fib-iter</span> a b p q count)
     (<span style="color: #a020f0;">cond</span> ((= count 0) b)
@@ -589,11 +686,10 @@ Fibonacci numbers can be computed logarithmically too!
 </div>
 </div>
 </div>
-<div id="outline-container-sec-1-2-8" class="outline-4">
-<h4 id="sec-1-2-8">Exercise 1.22</h4>
-<div class="outline-text-4" id="text-1-2-8">
+<div id="outline-container-org3814d4e" class="outline-4">
+<h4 id="org3814d4e">Exercise 1.22</h4>
+<div class="outline-text-4" id="text-org3814d4e">
 <div class="org-src-container">
-
 <pre class="src src-scheme">(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">timed-prime-test</span> n)
   (newline)
   (display n)
@@ -617,26 +713,25 @@ Fibonacci numbers can be computed logarithmically too!
 </div>
 </div>
 </div>
-<div id="outline-container-sec-1-2-9" class="outline-4">
-<h4 id="sec-1-2-9">Exercise 1.26</h4>
-<div class="outline-text-4" id="text-1-2-9">
+<div id="outline-container-org938a5b0" class="outline-4">
+<h4 id="org938a5b0">Exercise 1.26</h4>
+<div class="outline-text-4" id="text-org938a5b0">
 <p>
-From a high level, calling expmod with (/ exp 2) halves the
+From a high level, calling <kbd>expmod</kbd> with <kbd>(/ exp 2)</kbd> halves the
 problem. It is this halving, at each iteration of the process, that
 allows it to run in a number of steps that is logarithmically
-related to the size of the input. When Louis calls expmod twice,
+related to the size of the input. When Louis calls <kbd>expmod</kbd> twice,
 each with a halved problem (the same half) he is doing twice of
 half of the original amount of work. Therefore he is doing the
 original amount of work, which in the case of computing an exponent
-would be n multiplications where n is the power being raised to.
+would be \(n\) multiplications where \(n\) is the power being raised to.
 </p>
 </div>
 </div>
-<div id="outline-container-sec-1-2-10" class="outline-4">
-<h4 id="sec-1-2-10">Exercise 1.27</h4>
-<div class="outline-text-4" id="text-1-2-10">
+<div id="outline-container-org12c4a89" class="outline-4">
+<h4 id="org12c4a89">Exercise 1.27</h4>
+<div class="outline-text-4" id="text-org12c4a89">
 <div class="org-src-container">
-
 <pre class="src src-scheme">(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">fermat-condition?</span> a n)
   (= (my-expmod a n n) (remainder a n)))
 (<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">fermat-test?</span> n)
@@ -652,14 +747,14 @@ would be n multiplications where n is the power being raised to.
 </div>
 </div>
 </div>
-<div id="outline-container-sec-1-3" class="outline-3">
-<h3 id="sec-1-3">Section 1.3</h3>
-<div class="outline-text-3" id="text-1-3">
-</div><div id="outline-container-sec-1-3-1" class="outline-4">
-<h4 id="sec-1-3-1">Exercise 1.29</h4>
-<div class="outline-text-4" id="text-1-3-1">
+<div id="outline-container-org9919842" class="outline-3">
+<h3 id="org9919842">Section 1.3</h3>
+<div class="outline-text-3" id="text-org9919842">
+</div>
+<div id="outline-container-org5b7e25f" class="outline-4">
+<h4 id="org5b7e25f">Exercise 1.29</h4>
+<div class="outline-text-4" id="text-org5b7e25f">
 <div class="org-src-container">
-
 <pre class="src src-scheme">(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">simp</span> f a b n)
   (<span style="color: #a020f0;">define</span> <span style="color: #0000ff;">h</span> (/ (- b a) n))
   (<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">step</span> x) (+ x h h))
@@ -675,11 +770,10 @@ would be n multiplications where n is the power being raised to.
 </div>
 </div>
 </div>
-<div id="outline-container-sec-1-3-2" class="outline-4">
-<h4 id="sec-1-3-2">Exercise 1.30</h4>
-<div class="outline-text-4" id="text-1-3-2">
+<div id="outline-container-org9381477" class="outline-4">
+<h4 id="org9381477">Exercise 1.30</h4>
+<div class="outline-text-4" id="text-org9381477">
 <div class="org-src-container">
-
 <pre class="src src-scheme">(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">sum</span> term a next b)
   (<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">iter</span> a result)
      (<span style="color: #a020f0;">if</span> (&gt; a b)
@@ -690,11 +784,10 @@ would be n multiplications where n is the power being raised to.
 </div>
 </div>
 </div>
-<div id="outline-container-sec-1-3-3" class="outline-4">
-<h4 id="sec-1-3-3">Exercise 1.31</h4>
-<div class="outline-text-4" id="text-1-3-3">
+<div id="outline-container-org3adc820" class="outline-4">
+<h4 id="org3adc820">Exercise 1.31</h4>
+<div class="outline-text-4" id="text-org3adc820">
 <div class="org-src-container">
-
 <pre class="src src-scheme">(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">product-iter</span> term a next b)
   (<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">iter</span> a result)
     (<span style="color: #a020f0;">if</span> (&gt; a b)
@@ -710,11 +803,10 @@ would be n multiplications where n is the power being raised to.
 </div>
 </div>
 </div>
-<div id="outline-container-sec-1-3-4" class="outline-4">
-<h4 id="sec-1-3-4">Exercise 1.32</h4>
-<div class="outline-text-4" id="text-1-3-4">
+<div id="outline-container-org696a9b0" class="outline-4">
+<h4 id="org696a9b0">Exercise 1.32</h4>
+<div class="outline-text-4" id="text-org696a9b0">
 <div class="org-src-container">
-
 <pre class="src src-scheme">(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">accumulate</span> combiner null-val term a next b)
   (<span style="color: #a020f0;">if</span> (&gt; a b)
       null-val
@@ -730,11 +822,10 @@ would be n multiplications where n is the power being raised to.
 </div>
 </div>
 </div>
-<div id="outline-container-sec-1-3-5" class="outline-4">
-<h4 id="sec-1-3-5">Exercise 1.33</h4>
-<div class="outline-text-4" id="text-1-3-5">
+<div id="outline-container-orgfc6054a" class="outline-4">
+<h4 id="orgfc6054a">Exercise 1.33</h4>
+<div class="outline-text-4" id="text-orgfc6054a">
 <div class="org-src-container">
-
 <pre class="src src-scheme">(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">filtered-accumulate</span> filter combiner null-val term a next b)
   (<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">iter</span> a result)
     (<span style="color: #a020f0;">cond</span> ((&gt; a b) result)
@@ -756,16 +847,7 @@ would be n multiplications where n is the power being raised to.
   (product (<span style="color: #a020f0;">lambda</span> (x) x) 2 (<span style="color: #a020f0;">lambda</span> (x) (+ x 1)) b))
 </pre>
 </div>
-
-<p>
-Let is syntactic sugar for the underlying lambda application!
-</p>
-
-<p>
-Iterative approximation of pi
-</p>
 <div class="org-src-container">
-
 <pre class="src src-scheme">(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">4square</span> x)
   (* 4 (square x)))
 (<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">4square1</span> x)
@@ -779,31 +861,21 @@ Iterative approximation of pi
 </div>
 </div>
 </div>
-<div id="outline-container-sec-1-3-6" class="outline-4">
-<h4 id="sec-1-3-6">Exercise 1.35</h4>
-<div class="outline-text-4" id="text-1-3-6">
+<div id="outline-container-org43447c3" class="outline-4">
+<h4 id="org43447c3">Exercise 1.35</h4>
+<div class="outline-text-4" id="text-org43447c3">
 <p>
-x<sup>2</sup> |-&gt; x + 1
-</p>
-
-<p>
-x<sup>2</sup> - x - 1 = 0
-</p>
-
-<p>
-(-(-1) +- sqrt((-1)<sup>2</sup> - 4(-1)))/2
-</p>
-
-<p>
-(1 +- sqrt(5))/2
+\[x^{2} \mapsto x + 1\]
+\[x^{2} - x - 1 = 0\]
+\[x = \frac{-(-1) \pm \sqrt{(-1)^{2} - 4(-1)}}{2}\]
+\[x = \frac{1 \pm \sqrt{5}}{2}\]
 </p>
 </div>
 </div>
-<div id="outline-container-sec-1-3-7" class="outline-4">
-<h4 id="sec-1-3-7">Exercise 1.36</h4>
-<div class="outline-text-4" id="text-1-3-7">
+<div id="outline-container-org5d53b46" class="outline-4">
+<h4 id="org5d53b46">Exercise 1.36</h4>
+<div class="outline-text-4" id="text-org5d53b46">
 <div class="org-src-container">
-
 <pre class="src src-scheme">(<span style="color: #a020f0;">define</span> <span style="color: #0000ff;">tolerance</span> 0.00001)
 (<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">fixed-point</span> f first-guess)
   (<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">close-enough?</span> v1 v2)
@@ -820,11 +892,10 @@ x<sup>2</sup> - x - 1 = 0
 </div>
 </div>
 </div>
-<div id="outline-container-sec-1-3-8" class="outline-4">
-<h4 id="sec-1-3-8">Exercise 1.37</h4>
-<div class="outline-text-4" id="text-1-3-8">
+<div id="outline-container-orgea27843" class="outline-4">
+<h4 id="orgea27843">Exercise 1.37</h4>
+<div class="outline-text-4" id="text-orgea27843">
 <div class="org-src-container">
-
 <pre class="src src-scheme">(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">cont-frac</span> n d k)
   (<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">recurse</span> i)
     (<span style="color: #a020f0;">if</span> (= i k)
@@ -843,11 +914,10 @@ x<sup>2</sup> - x - 1 = 0
 </div>
 </div>
 </div>
-<div id="outline-container-sec-1-3-9" class="outline-4">
-<h4 id="sec-1-3-9">Exercise 1.38</h4>
-<div class="outline-text-4" id="text-1-3-9">
+<div id="outline-container-org9e359f4" class="outline-4">
+<h4 id="org9e359f4">Exercise 1.38</h4>
+<div class="outline-text-4" id="text-org9e359f4">
 <div class="org-src-container">
-
 <pre class="src src-scheme">(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">e-approx</span> k)
   (<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">d</span> k)
     (<span style="color: #a020f0;">if</span> (= (remainder k 3) 2)
@@ -858,11 +928,10 @@ x<sup>2</sup> - x - 1 = 0
 </div>
 </div>
 </div>
-<div id="outline-container-sec-1-3-10" class="outline-4">
-<h4 id="sec-1-3-10">Exercise 1.39</h4>
-<div class="outline-text-4" id="text-1-3-10">
+<div id="outline-container-org441c516" class="outline-4">
+<h4 id="org441c516">Exercise 1.39</h4>
+<div class="outline-text-4" id="text-org441c516">
 <div class="org-src-container">
-
 <pre class="src src-scheme">(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">tan-cf</span> x k)
   (cont-frac (<span style="color: #a020f0;">lambda</span> (i) (<span style="color: #a020f0;">if</span> (= i 1)
                              x
@@ -874,46 +943,40 @@ x<sup>2</sup> - x - 1 = 0
 </div>
 </div>
 </div>
-<div id="outline-container-sec-1-3-11" class="outline-4">
-<h4 id="sec-1-3-11">Exercise 1.40</h4>
-<div class="outline-text-4" id="text-1-3-11">
+<div id="outline-container-org7b44dd4" class="outline-4">
+<h4 id="org7b44dd4">Exercise 1.40</h4>
+<div class="outline-text-4" id="text-org7b44dd4">
 <div class="org-src-container">
-
 <pre class="src src-scheme">(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">cubic</span> a b c)
   (<span style="color: #a020f0;">lambda</span> (x) (+ (cube x) (* a (square x)) (* b x) c)))
-
 </pre>
 </div>
 </div>
 </div>
-<div id="outline-container-sec-1-3-12" class="outline-4">
-<h4 id="sec-1-3-12">Exercise 1.41</h4>
-<div class="outline-text-4" id="text-1-3-12">
+<div id="outline-container-orgebb32e3" class="outline-4">
+<h4 id="orgebb32e3">Exercise 1.41</h4>
+<div class="outline-text-4" id="text-orgebb32e3">
 <div class="org-src-container">
-
 <pre class="src src-scheme">(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">double</span> f)
   (<span style="color: #a020f0;">lambda</span> (x) (f (f x))))
 </pre>
 </div>
 </div>
 </div>
-<div id="outline-container-sec-1-3-13" class="outline-4">
-<h4 id="sec-1-3-13">Exercise 1.42</h4>
-<div class="outline-text-4" id="text-1-3-13">
+<div id="outline-container-orgb516110" class="outline-4">
+<h4 id="orgb516110">Exercise 1.42</h4>
+<div class="outline-text-4" id="text-orgb516110">
 <div class="org-src-container">
-
 <pre class="src src-scheme">(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">compose</span> f g)
   (<span style="color: #a020f0;">lambda</span> (x) (f (g x))))
-
 </pre>
 </div>
 </div>
 </div>
-<div id="outline-container-sec-1-3-14" class="outline-4">
-<h4 id="sec-1-3-14">Exercise 1.43</h4>
-<div class="outline-text-4" id="text-1-3-14">
+<div id="outline-container-orge4ebc4d" class="outline-4">
+<h4 id="orge4ebc4d">Exercise 1.43</h4>
+<div class="outline-text-4" id="text-orge4ebc4d">
 <div class="org-src-container">
-
 <pre class="src src-scheme">(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">repeated</span> f n)
   (<span style="color: #a020f0;">if</span> (= n 1)
       f
@@ -933,11 +996,10 @@ x<sup>2</sup> - x - 1 = 0
 </div>
 </div>
 </div>
-<div id="outline-container-sec-1-3-15" class="outline-4">
-<h4 id="sec-1-3-15">Exercise 1.44</h4>
-<div class="outline-text-4" id="text-1-3-15">
+<div id="outline-container-orgdb62506" class="outline-4">
+<h4 id="orgdb62506">Exercise 1.44</h4>
+<div class="outline-text-4" id="text-orgdb62506">
 <div class="org-src-container">
-
 <pre class="src src-scheme">(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">sum-list</span> l)
   (<span style="color: #a020f0;">if</span> (null? l)
       0
@@ -955,26 +1017,21 @@ x<sup>2</sup> - x - 1 = 0
 </div>
 </div>
 </div>
-<div id="outline-container-sec-1-3-16" class="outline-4">
-<h4 id="sec-1-3-16">Exercise 1.45</h4>
-<div class="outline-text-4" id="text-1-3-16">
+<div id="outline-container-orgd6cd235" class="outline-4">
+<h4 id="orgd6cd235">Exercise 1.45</h4>
+<div class="outline-text-4" id="text-orgd6cd235">
 <p>
-One average-damp works until fourth roots
+In the REPL I see the following:
 </p>
-
-<p>
-Two average-damp's work until eighth roots
-</p>
-
-<p>
-Three average-damp's work until sixteenth roots
-</p>
-
+<ul class="org-ul">
+<li>One average-damp works until fourth roots</li>
+<li>Two average-damp's work until eighth roots</li>
+<li>Three average-damp's work until sixteenth roots</li>
+</ul>
 <p>
 I see a pattern&#x2026;
 </p>
 <div class="org-src-container">
-
 <pre class="src src-scheme">(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">average-damp</span> f)
   (<span style="color: #a020f0;">lambda</span> (x) (average (list x (f x)))))
 (<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">sqrt</span> x)
@@ -997,11 +1054,10 @@ I see a pattern&#x2026;
 </div>
 </div>
 </div>
-<div id="outline-container-sec-1-3-17" class="outline-4">
-<h4 id="sec-1-3-17">Exercise 1.46</h4>
-<div class="outline-text-4" id="text-1-3-17">
+<div id="outline-container-org081453e" class="outline-4">
+<h4 id="org081453e">Exercise 1.46</h4>
+<div class="outline-text-4" id="text-org081453e">
 <div class="org-src-container">
-
 <pre class="src src-scheme">(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">iterative-improve</span> good-enough? improve-guess)
   (<span style="color: #a020f0;">lambda</span> (guess)
     (<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">iterate</span> g)
@@ -1015,30 +1071,24 @@ I see a pattern&#x2026;
 (<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">iterative-improve-fixed-point</span> func first-guess)
   ((iterative-improve (<span style="color: #a020f0;">lambda</span> (g) (&lt; (difference g (func g)) 0.00001))
                       func) first-guess))
-
 </pre>
 </div>
-<p>
-The general technique of isolating the parts of a program that deal
-with how data objects are represented from the parts of a program
-that deal with how data objects are used is a powerful design
-methodology called "data abstraction".
-</p>
 </div>
 </div>
 </div>
 </div>
-<div id="outline-container-sec-2" class="outline-2">
-<h2 id="sec-2">Chapter 2</h2>
-<div class="outline-text-2" id="text-2">
-</div><div id="outline-container-sec-2-1" class="outline-3">
-<h3 id="sec-2-1">Section 2.1</h3>
-<div class="outline-text-3" id="text-2-1">
-</div><div id="outline-container-sec-2-1-1" class="outline-4">
-<h4 id="sec-2-1-1">Exercise 2.1</h4>
-<div class="outline-text-4" id="text-2-1-1">
+<div id="outline-container-org2c53aad" class="outline-2">
+<h2 id="org2c53aad">Chapter 2</h2>
+<div class="outline-text-2" id="text-org2c53aad">
+</div>
+<div id="outline-container-org4e28f8d" class="outline-3">
+<h3 id="org4e28f8d">Section 2.1</h3>
+<div class="outline-text-3" id="text-org4e28f8d">
+</div>
+<div id="outline-container-org559ada8" class="outline-4">
+<h4 id="org559ada8">Exercise 2.1</h4>
+<div class="outline-text-4" id="text-org559ada8">
 <div class="org-src-container">
-
 <pre class="src src-scheme">(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">same-sign?</span> a b)
   (&gt; (* a b) 0))
 (<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">make-rat</span> n d)
@@ -1059,11 +1109,10 @@ methodology called "data abstraction".
 </div>
 </div>
 </div>
-<div id="outline-container-sec-2-1-2" class="outline-4">
-<h4 id="sec-2-1-2">Exercise 2.2</h4>
-<div class="outline-text-4" id="text-2-1-2">
+<div id="outline-container-org0b5e766" class="outline-4">
+<h4 id="org0b5e766">Exercise 2.2</h4>
+<div class="outline-text-4" id="text-org0b5e766">
 <div class="org-src-container">
-
 <pre class="src src-scheme">(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">make-point</span> x y)
   (cons x y))
 (<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">x-point</span> p) (car p))
@@ -1102,11 +1151,10 @@ methodology called "data abstraction".
 </div>
 </div>
 </div>
-<div id="outline-container-sec-2-1-3" class="outline-4">
-<h4 id="sec-2-1-3">Exercise 2.3</h4>
-<div class="outline-text-4" id="text-2-1-3">
+<div id="outline-container-orgc45e052" class="outline-4">
+<h4 id="orgc45e052">Exercise 2.3</h4>
+<div class="outline-text-4" id="text-orgc45e052">
 <div class="org-src-container">
-
 <pre class="src src-scheme">(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">make-rectangle</span> corner1 corner2)
   (<span style="color: #a020f0;">cond</span> ((<span style="color: #a020f0;">or</span> (= (x-point corner1) (x-point corner2))
              (= (y-point corner1) (y-point corner2)))
@@ -1124,11 +1172,10 @@ I won't get much more out of this by continuing&#x2026;
 </p>
 </div>
 </div>
-<div id="outline-container-sec-2-1-4" class="outline-4">
-<h4 id="sec-2-1-4">Exercise 2.4</h4>
-<div class="outline-text-4" id="text-2-1-4">
+<div id="outline-container-org189a224" class="outline-4">
+<h4 id="org189a224">Exercise 2.4</h4>
+<div class="outline-text-4" id="text-org189a224">
 <div class="org-src-container">
-
 <pre class="src src-scheme">(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">my-cons</span> x y)
   (<span style="color: #a020f0;">lambda</span> (m) (m x y)))
 (<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">my-car</span> z)
@@ -1138,31 +1185,22 @@ I won't get much more out of this by continuing&#x2026;
 </pre>
 </div>
 <p>
-(my-cdr (my-cons 1 2))
+Expansion:
 </p>
-
-<p>
-((my-cons 1 2) (lambda (p q) q))
-</p>
-
-<p>
-((lambda (m) (m 1 2)) (lambda (p q) q))
-</p>
-
-<p>
-((lambda (p q) q) 1 2)
-</p>
-
-<p>
-2
-</p>
-</div>
-</div>
-<div id="outline-container-sec-2-1-5" class="outline-4">
-<h4 id="sec-2-1-5">Exercise 2.5</h4>
-<div class="outline-text-4" id="text-2-1-5">
 <div class="org-src-container">
-
+<pre class="src src-scheme">(my-cdr (my-cons 1 2))
+((my-cons 1 2) (<span style="color: #a020f0;">lambda</span> (p q) q))
+((<span style="color: #a020f0;">lambda</span> (m) (m 1 2)) (<span style="color: #a020f0;">lambda</span> (p q) q))
+((<span style="color: #a020f0;">lambda</span> (p q) q) 1 2)
+2
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-org8b60b4d" class="outline-4">
+<h4 id="org8b60b4d">Exercise 2.5</h4>
+<div class="outline-text-4" id="text-org8b60b4d">
+<div class="org-src-container">
 <pre class="src src-scheme">(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">log-base</span> base value)
   (/ (log value) (log base)))
 (<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">factor-out</span> factor value)
@@ -1180,68 +1218,42 @@ I won't get much more out of this by continuing&#x2026;
 </div>
 </div>
 </div>
-<div id="outline-container-sec-2-1-6" class="outline-4">
-<h4 id="sec-2-1-6">Exercise 2.6</h4>
-<div class="outline-text-4" id="text-2-1-6">
+<div id="outline-container-org5a3b8a5" class="outline-4">
+<h4 id="org5a3b8a5">Exercise 2.6</h4>
+<div class="outline-text-4" id="text-org5a3b8a5">
 <div class="org-src-container">
-
 <pre class="src src-scheme">(<span style="color: #a020f0;">define</span> <span style="color: #0000ff;">zero</span> (<span style="color: #a020f0;">lambda</span> (f) (<span style="color: #a020f0;">lambda</span> (x) x)))
 (<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">add-1</span> n)
   (<span style="color: #a020f0;">lambda</span> (f) (<span style="color: #a020f0;">lambda</span> (x) (f ((n f) x)))))
 </pre>
 </div>
 <p>
-(add-1 zero)
-</p>
-
-<p>
-(lambda (f) (lambda (x) (f ((zero f) x))))
-</p>
-
-<p>
-(lambda (f) (lambda (x) (f (((lambda (q) (lambda (z) z)) f) x))))
-</p>
-
-<p>
-(lambda (f) (lambda (x) (f ((lambda (z) z) x))))
-</p>
-
-<p>
-(lambda (f) (lambda (x) (f x)))
-</p>
-
-<p>
-(lambda (f) (lambda (x) (f x)))
-</p>
-
-<p>
-(add-1 (lambda (f) (lambda (x) (f x))))
-</p>
-
-<p>
-(lambda (f) (lambda (x) (f (((lambda (g) (lambda (x) (g x))) f) x))))
-</p>
-
-<p>
-(lambda (f) (lambda (x) (f ((lambda (x) (f x)) x))))
-</p>
-
-<p>
-(lambda (f) (lambda (x) (f (f x))))
+Expansion:
 </p>
 <div class="org-src-container">
-
+<pre class="src src-scheme">(add-1 zero)
+(<span style="color: #a020f0;">lambda</span> (f) (<span style="color: #a020f0;">lambda</span> (x) (f ((zero f) x))))
+(<span style="color: #a020f0;">lambda</span> (f) (<span style="color: #a020f0;">lambda</span> (x) (f (((<span style="color: #a020f0;">lambda</span> (q) (<span style="color: #a020f0;">lambda</span> (z) z)) f) x))))
+(<span style="color: #a020f0;">lambda</span> (f) (<span style="color: #a020f0;">lambda</span> (x) (f ((<span style="color: #a020f0;">lambda</span> (z) z) x))))
+(<span style="color: #a020f0;">lambda</span> (f) (<span style="color: #a020f0;">lambda</span> (x) (f x)))
+(<span style="color: #a020f0;">lambda</span> (f) (<span style="color: #a020f0;">lambda</span> (x) (f x)))
+(add-1 (<span style="color: #a020f0;">lambda</span> (f) (<span style="color: #a020f0;">lambda</span> (x) (f x))))
+(<span style="color: #a020f0;">lambda</span> (f) (<span style="color: #a020f0;">lambda</span> (x) (f (((<span style="color: #a020f0;">lambda</span> (g) (<span style="color: #a020f0;">lambda</span> (x) (g x))) f) x))))
+(<span style="color: #a020f0;">lambda</span> (f) (<span style="color: #a020f0;">lambda</span> (x) (f ((<span style="color: #a020f0;">lambda</span> (x) (f x)) x))))
+(<span style="color: #a020f0;">lambda</span> (f) (<span style="color: #a020f0;">lambda</span> (x) (f (f x))))
+</pre>
+</div>
+<div class="org-src-container">
 <pre class="src src-scheme">(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">plus</span> a b)
   (<span style="color: #a020f0;">lambda</span> (f) (compose (a f) (b f))))
 </pre>
 </div>
 </div>
 </div>
-<div id="outline-container-sec-2-1-7" class="outline-4">
-<h4 id="sec-2-1-7">Exercise 2.7</h4>
-<div class="outline-text-4" id="text-2-1-7">
+<div id="outline-container-org28ea4f4" class="outline-4">
+<h4 id="org28ea4f4">Exercise 2.7</h4>
+<div class="outline-text-4" id="text-org28ea4f4">
 <div class="org-src-container">
-
 <pre class="src src-scheme">(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">make-interval</span> a b) (cons a b))
 (<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">lower-bound</span> int)
   (min (car int) (cdr int)))
@@ -1251,11 +1263,10 @@ I won't get much more out of this by continuing&#x2026;
 </div>
 </div>
 </div>
-<div id="outline-container-sec-2-1-8" class="outline-4">
-<h4 id="sec-2-1-8">Exercise 2.8</h4>
-<div class="outline-text-4" id="text-2-1-8">
+<div id="outline-container-org229cdef" class="outline-4">
+<h4 id="org229cdef">Exercise 2.8</h4>
+<div class="outline-text-4" id="text-org229cdef">
 <div class="org-src-container">
-
 <pre class="src src-scheme">(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">sub-interval</span> x y)
   (make-interval (- (lower-bound x) (upper-bound y))
                  (- (upper-bound x) (lower-bound y))))
@@ -1264,29 +1275,32 @@ I won't get much more out of this by continuing&#x2026;
 </div>
 </div>
 </div>
-<div id="outline-container-sec-2-1-9" class="outline-4">
-<h4 id="sec-2-1-9">Exercise 2.9</h4>
-<div class="outline-text-4" id="text-2-1-9">
+<div id="outline-container-org8396d08" class="outline-4">
+<h4 id="org8396d08">Exercise 2.9</h4>
+<div class="outline-text-4" id="text-org8396d08">
 <p>
-Let x = (a b) and y = (c d) be intervals. Then width(x) = (b-a)/2 and
-width(y) = (d-c)/2. Well width(x+y) = width((a+c b+d)) = (b+d-a-c)/2 =
-(b-a)/2 + (d-c)/2 = width(x)+width(y). And width(x-y) = width((a-d
-b-c)) = (b-c-a+d)/2 = width(x) + width(y). Now let x1 = (1 2), x2 =
-(3 4) and x3 = (5 6). Well width(x1) = width(x2) = width(x3) =
-1/2. But width(x1*x2) = width((3 8)) = 5/2 and width(x2*x3) =
-width(15 24) = 9/2. If product width were a function only of factor
-widths then width(x1*x2) would equal width(x2*x3) (because width(x1) =
-width(x2) = width(x3) = 1/2) but this is not the case. Similarly,
-width(x1/x2) = width((1/4 2/3)) = 5/24 != width(x2/x3) = width((1/3
-4/5)) = 7/30.
+Let \(x = (a,b)\) and \(y = (c,d)\) be intervals. Then \(width(x) =
+\frac{b-a}{2}\) and \(width(y) = \frac{d-c}{2}\). Well: \[width(x+y) =
+width((a+c,b+d))\] \[= \frac{b+d-a-c}{2}\] \[= \frac{b-a}{2} +
+\frac{d-c}{2}\] \[= width(x)+width(y)\] And: \[width(x-y) =
+width((a-d,b-c))\] \[= \frac{b-c-a+d}{2}\] \[= width(x) + width(y)\]
+Now let \(x_{1} = (1,2)\), \(x_{2} = (3,4)\), and \(x_{3} = (5,6)\). Then
+\[width(x_{1}) = width(x_{2}) = width(x_{3}) = \frac{1}{2}\] But
+\(width(x_{1}*x_{2}) = width((3,8)) = \frac{5}{2}\) and
+\(width(x_{2}*x_{3}) = width(15 24) = \frac{9}{2}\). If product width
+were a function only of factor widths then \(width(x_{1}*x_{2})\) would
+equal \(width(x_{2}*x_{3})\) (because \(width(x_{1}) = width(x_{2}) =
+width(x_{3})\)) but this is not the case. Similarly,
+\[width(\frac{x_{1}}{x_{2}}) = width((\frac{1}{4},\frac{2}{3})) =
+\frac{5}{24}\] \[\neq width(\frac{x_{2}}{x_{3}}) =
+width((\frac{1}{3},\frac{4}{5})) = \frac{7}{30}\]
 </p>
 </div>
 </div>
-<div id="outline-container-sec-2-1-10" class="outline-4">
-<h4 id="sec-2-1-10">Exercise 2.10</h4>
-<div class="outline-text-4" id="text-2-1-10">
+<div id="outline-container-orgee962c1" class="outline-4">
+<h4 id="orgee962c1">Exercise 2.10</h4>
+<div class="outline-text-4" id="text-orgee962c1">
 <div class="org-src-container">
-
 <pre class="src src-scheme">(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">width-interval</span> x)
   (/ (- (upper-bound x) (lower-bound x)) 2))
 (<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">mul-interval</span> x y)
@@ -1306,53 +1320,53 @@ width(x1/x2) = width((1/4 2/3)) = 5/24 != width(x2/x3) = width((1/3
 </div>
 </div>
 </div>
-<div id="outline-container-sec-2-1-11" class="outline-4">
-<h4 id="sec-2-1-11">Exercise 2.11</h4>
-<div class="outline-text-4" id="text-2-1-11">
+<div id="outline-container-org555c05e" class="outline-4">
+<h4 id="org555c05e">Exercise 2.11</h4>
+<div class="outline-text-4" id="text-org555c05e">
 <p>
 If we're multiplying intervals \(i=(a,b)\) and \(j=(x,y)\) then we must have \(a \leq
 b\) and \(x \leq y\) and so we have the following cases:
 </p>
-<table class="table table-striped table-bordered table-hover table-condensed" border="2" rules="all" frame="border">
+<table border="2" cellspacing="0" cellpadding="6" rules="all" frame="border">
 
 
 <colgroup>
-<col  class="left">
+<col  class="org-left" />
 
-<col  class="left">
+<col  class="org-left" />
 
-<col  class="left">
+<col  class="org-left" />
 
-<col  class="left">
+<col  class="org-left" />
 </colgroup>
 <thead>
 <tr>
-<th scope="col" class="text-left">&#xa0;</th>
-<th scope="col" class="text-left">\(a \leq b < 0\)</th>
-<th scope="col" class="text-left">\(a < 0 \leq b\)</th>
-<th scope="col" class="text-left">\(0 \leq a \leq b\)</th>
+<th scope="col" class="org-left">&#xa0;</th>
+<th scope="col" class="org-left">\(a \leq b < 0\)</th>
+<th scope="col" class="org-left">\(a < 0 \leq b\)</th>
+<th scope="col" class="org-left">\(0 \leq a \leq b\)</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td class="text-left">\(x \leq y < 0\)</td>
-<td class="text-left">\((by,ax)\)</td>
-<td class="text-left">\((bx,ax)\)</td>
-<td class="text-left">\((bx,ay)\)</td>
+<td class="org-left">\(x \leq y < 0\)</td>
+<td class="org-left">\((by,ax)\)</td>
+<td class="org-left">\((bx,ax)\)</td>
+<td class="org-left">\((bx,ay)\)</td>
 </tr>
 
 <tr>
-<td class="text-left">\(x < 0 \leq y\)</td>
-<td class="text-left">\((ay,ax)\)</td>
-<td class="text-left">\((min(ay,bx),min(ax,by))\)</td>
-<td class="text-left">\((bx,by)\)</td>
+<td class="org-left">\(x < 0 \leq y\)</td>
+<td class="org-left">\((ay,ax)\)</td>
+<td class="org-left">\((min(ay,bx),min(ax,by))\)</td>
+<td class="org-left">\((bx,by)\)</td>
 </tr>
 
 <tr>
-<td class="text-left">\(0 \leq x \leq y\)</td>
-<td class="text-left">\((ay,bx)\)</td>
-<td class="text-left">\((ay,by)\)</td>
-<td class="text-left">\((ax,by)\)</td>
+<td class="org-left">\(0 \leq x \leq y\)</td>
+<td class="org-left">\((ay,bx)\)</td>
+<td class="org-left">\((ay,by)\)</td>
+<td class="org-left">\((ax,by)\)</td>
 </tr>
 </tbody>
 </table>
@@ -1360,51 +1374,50 @@ b\) and \(x \leq y\) and so we have the following cases:
 For simplicity's sake, we notice that multiplication is commutative
 and simplify our table:
 </p>
-<table class="table table-striped table-bordered table-hover table-condensed" border="2" rules="all" frame="border">
+<table border="2" cellspacing="0" cellpadding="6" rules="all" frame="border">
 
 
 <colgroup>
-<col  class="left">
+<col  class="org-left" />
 
-<col  class="left">
+<col  class="org-left" />
 
-<col  class="left">
+<col  class="org-left" />
 
-<col  class="left">
+<col  class="org-left" />
 </colgroup>
 <thead>
 <tr>
-<th scope="col" class="text-left">&#xa0;</th>
-<th scope="col" class="text-left">\(a \leq b < 0\)</th>
-<th scope="col" class="text-left">\(a < 0 \leq b\)</th>
-<th scope="col" class="text-left">\(0 \leq a \leq b\)</th>
+<th scope="col" class="org-left">&#xa0;</th>
+<th scope="col" class="org-left">\(a \leq b < 0\)</th>
+<th scope="col" class="org-left">\(a < 0 \leq b\)</th>
+<th scope="col" class="org-left">\(0 \leq a \leq b\)</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td class="text-left">\(x \leq y < 0\)</td>
-<td class="text-left">\((by,ax)\)</td>
-<td class="text-left">\((bx,ax)\)</td>
-<td class="text-left">\((bx,ay)\)</td>
+<td class="org-left">\(x \leq y < 0\)</td>
+<td class="org-left">\((by,ax)\)</td>
+<td class="org-left">\((bx,ax)\)</td>
+<td class="org-left">\((bx,ay)\)</td>
 </tr>
 
 <tr>
-<td class="text-left">\(x < 0 \leq y\)</td>
-<td class="text-left">\(j*i\)</td>
-<td class="text-left">\((min(ay,bx),min(ax,by))\)</td>
-<td class="text-left">\((bx,by)\)</td>
+<td class="org-left">\(x < 0 \leq y\)</td>
+<td class="org-left">\(j*i\)</td>
+<td class="org-left">\((min(ay,bx),min(ax,by))\)</td>
+<td class="org-left">\((bx,by)\)</td>
 </tr>
 
 <tr>
-<td class="text-left">\(0 \leq x \leq y\)</td>
-<td class="text-left">\(j*i\)</td>
-<td class="text-left">\(j*i\)</td>
-<td class="text-left">\((ax,by)\)</td>
+<td class="org-left">\(0 \leq x \leq y\)</td>
+<td class="org-left">\(j*i\)</td>
+<td class="org-left">\(j*i\)</td>
+<td class="org-left">\((ax,by)\)</td>
 </tr>
 </tbody>
 </table>
 <div class="org-src-container">
-
 <pre class="src src-scheme">(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">mul-interval</span> i j)
   (<span style="color: #a020f0;">let</span> ((a (lower-bound i))
         (b (upper-bound i))
@@ -1424,11 +1437,10 @@ and simplify our table:
 </div>
 </div>
 </div>
-<div id="outline-container-sec-2-1-12" class="outline-4">
-<h4 id="sec-2-1-12">Exercise 2.12</h4>
-<div class="outline-text-4" id="text-2-1-12">
+<div id="outline-container-org247478b" class="outline-4">
+<h4 id="org247478b">Exercise 2.12</h4>
+<div class="outline-text-4" id="text-org247478b">
 <div class="org-src-container">
-
 <pre class="src src-scheme">(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">make-center-width</span> c w)
   (make-interval (- c w) (+ c w)))
 (<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">center</span> i)
@@ -1443,9 +1455,9 @@ and simplify our table:
 </div>
 </div>
 </div>
-<div id="outline-container-sec-2-1-13" class="outline-4">
-<h4 id="sec-2-1-13">Exercise 2.13</h4>
-<div class="outline-text-4" id="text-2-1-13">
+<div id="outline-container-org4323988" class="outline-4">
+<h4 id="org4323988">Exercise 2.13</h4>
+<div class="outline-text-4" id="text-org4323988">
 <p>
 Let interval \(i\) have center \(c_{i}\) and tolerance \(p_{i}\). Let
 interval \(j\) have center \(c_{j}\) and tolerance \(p_{j}\). Then \(i =
@@ -1462,11 +1474,10 @@ is an interval centered at \(c_{i}c_{j}\) with tolerance
 </p>
 </div>
 </div>
-<div id="outline-container-sec-2-1-14" class="outline-4">
-<h4 id="sec-2-1-14">Exercise 2.14</h4>
-<div class="outline-text-4" id="text-2-1-14">
+<div id="outline-container-orgc83d97e" class="outline-4">
+<h4 id="orgc83d97e">Exercise 2.14</h4>
+<div class="outline-text-4" id="text-orgc83d97e">
 <div class="org-src-container">
-
 <pre class="src src-scheme">(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">add-interval</span> x y)
   (make-interval (+ (lower-bound x) (lower-bound y))
                  (+ (upper-bound x) (upper-bound y))))
@@ -1492,14 +1503,14 @@ can be verified in the REPL.
 </div>
 </div>
 </div>
-<div id="outline-container-sec-2-2" class="outline-3">
-<h3 id="sec-2-2">Section 2.2</h3>
-<div class="outline-text-3" id="text-2-2">
-</div><div id="outline-container-sec-2-2-1" class="outline-4">
-<h4 id="sec-2-2-1">Exercise 2.17</h4>
-<div class="outline-text-4" id="text-2-2-1">
+<div id="outline-container-org2a64ba4" class="outline-3">
+<h3 id="org2a64ba4">Section 2.2</h3>
+<div class="outline-text-3" id="text-org2a64ba4">
+</div>
+<div id="outline-container-org45882bb" class="outline-4">
+<h4 id="org45882bb">Exercise 2.17</h4>
+<div class="outline-text-4" id="text-org45882bb">
 <div class="org-src-container">
-
 <pre class="src src-scheme">(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">last-pair</span> l)
   (<span style="color: #a020f0;">if</span> (null? (cdr l))
       l
@@ -1508,11 +1519,14 @@ can be verified in the REPL.
 </div>
 </div>
 </div>
-<div id="outline-container-sec-2-2-2" class="outline-4">
-<h4 id="sec-2-2-2">Exercise 2.18</h4>
-<div class="outline-text-4" id="text-2-2-2">
+<div id="outline-container-org5312d70" class="outline-4">
+<h4 id="org5312d70">Exercise 2.18</h4>
+<div class="outline-text-4" id="text-org5312d70">
+<p>
+Note that "nil" is no longer a part of the Scheme standard; we'll use
+<kbd>()</kbd> instead. See this <a href="https://stackoverflow.com/questions/9115703/null-value-in-mit-scheme">stackoverflow post</a> for more.
+</p>
 <div class="org-src-container">
-
 <pre class="src src-scheme">(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">reverse</span> l)
   (<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">helper</span> in out)
     (<span style="color: #a020f0;">if</span> (null? in)
@@ -1523,11 +1537,10 @@ can be verified in the REPL.
 </div>
 </div>
 </div>
-<div id="outline-container-sec-2-2-3" class="outline-4">
-<h4 id="sec-2-2-3">Exercise 2.19</h4>
-<div class="outline-text-4" id="text-2-2-3">
+<div id="outline-container-org264fb7b" class="outline-4">
+<h4 id="org264fb7b">Exercise 2.19</h4>
+<div class="outline-text-4" id="text-org264fb7b">
 <div class="org-src-container">
-
 <pre class="src src-scheme">(<span style="color: #a020f0;">define</span> <span style="color: #0000ff;">no-more?</span> null?)
 (<span style="color: #a020f0;">define</span> <span style="color: #0000ff;">except-first-denomination</span> cdr)
 (<span style="color: #a020f0;">define</span> <span style="color: #0000ff;">first-denomination</span> car)
@@ -1549,11 +1562,10 @@ regarding the order of coin-values.
 </p>
 </div>
 </div>
-<div id="outline-container-sec-2-2-4" class="outline-4">
-<h4 id="sec-2-2-4">Exercise 2.20</h4>
-<div class="outline-text-4" id="text-2-2-4">
+<div id="outline-container-org9fd410c" class="outline-4">
+<h4 id="org9fd410c">Exercise 2.20</h4>
+<div class="outline-text-4" id="text-org9fd410c">
 <div class="org-src-container">
-
 <pre class="src src-scheme">(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">same-parity?</span> a b)
   (= (remainder a 2) (remainder b 2)))
 (<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">same-parity</span> x . l)
@@ -1567,11 +1579,10 @@ regarding the order of coin-values.
 </div>
 </div>
 </div>
-<div id="outline-container-sec-2-2-5" class="outline-4">
-<h4 id="sec-2-2-5">Exercise 2.21</h4>
-<div class="outline-text-4" id="text-2-2-5">
+<div id="outline-container-org0b31535" class="outline-4">
+<h4 id="org0b31535">Exercise 2.21</h4>
+<div class="outline-text-4" id="text-org0b31535">
 <div class="org-src-container">
-
 <pre class="src src-scheme">(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">square-list</span> items)
   (<span style="color: #a020f0;">if</span> (null? items)
       items
@@ -1583,9 +1594,9 @@ regarding the order of coin-values.
 </div>
 </div>
 </div>
-<div id="outline-container-sec-2-2-6" class="outline-4">
-<h4 id="sec-2-2-6">Exercise 2.22</h4>
-<div class="outline-text-4" id="text-2-2-6">
+<div id="outline-container-org60b3dfd" class="outline-4">
+<h4 id="org60b3dfd">Exercise 2.22</h4>
+<div class="outline-text-4" id="text-org60b3dfd">
 <p>
 Elements appearing first in the input list will be added to the head
 of the ouput list before elements appearing later. Therefore, elements
@@ -1597,28 +1608,22 @@ Now, the output isn't a list.
 </p>
 </div>
 </div>
-<div id="outline-container-sec-2-2-7" class="outline-4">
-<h4 id="sec-2-2-7">Exercise 2.23</h4>
-<div class="outline-text-4" id="text-2-2-7">
+<div id="outline-container-org5323a89" class="outline-4">
+<h4 id="org5323a89">Exercise 2.23</h4>
+<div class="outline-text-4" id="text-org5323a89">
 <div class="org-src-container">
-
 <pre class="src src-scheme">(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">for-each</span> f l)
   (<span style="color: #a020f0;">if</span> (not (null? l))
       (<span style="color: #a020f0;">begin</span> (f (car l))
              (<span style="color: #a020f0;">for-each</span> f (cdr l)))))
 </pre>
 </div>
-<p>
-Note that "nil" is no longer a part of the Scheme standard. See this
-<a href="https://stackoverflow.com/questions/9115703/null-value-in-mit-scheme">stackoverflow post</a> for more.
-</p>
 </div>
 </div>
-<div id="outline-container-sec-2-2-8" class="outline-4">
-<h4 id="sec-2-2-8">Exercise 2.25</h4>
-<div class="outline-text-4" id="text-2-2-8">
+<div id="outline-container-org90e2a81" class="outline-4">
+<h4 id="org90e2a81">Exercise 2.25</h4>
+<div class="outline-text-4" id="text-org90e2a81">
 <div class="org-src-container">
-
 <pre class="src src-scheme">(<span style="color: #a020f0;">define</span> <span style="color: #0000ff;">l1</span> (list 1 3 (list 5 7) 9))
 (car (cdr (car (cdr (cdr l1)))))
 (<span style="color: #a020f0;">define</span> <span style="color: #0000ff;">l2</span> (list (list 7)))
@@ -1629,11 +1634,10 @@ Note that "nil" is no longer a part of the Scheme standard. See this
 </div>
 </div>
 </div>
-<div id="outline-container-sec-2-2-9" class="outline-4">
-<h4 id="sec-2-2-9">Exercise 2.27</h4>
-<div class="outline-text-4" id="text-2-2-9">
+<div id="outline-container-org56d4ce3" class="outline-4">
+<h4 id="org56d4ce3">Exercise 2.27</h4>
+<div class="outline-text-4" id="text-org56d4ce3">
 <div class="org-src-container">
-
 <pre class="src src-scheme">(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">deep-reverse</span> l)
   (<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">helper</span> in out)
     (<span style="color: #a020f0;">if</span> (null? in)
@@ -1646,11 +1650,10 @@ Note that "nil" is no longer a part of the Scheme standard. See this
 </div>
 </div>
 </div>
-<div id="outline-container-sec-2-2-10" class="outline-4">
-<h4 id="sec-2-2-10">Exercise 2.28</h4>
-<div class="outline-text-4" id="text-2-2-10">
+<div id="outline-container-orgaf060e0" class="outline-4">
+<h4 id="orgaf060e0">Exercise 2.28</h4>
+<div class="outline-text-4" id="text-orgaf060e0">
 <div class="org-src-container">
-
 <pre class="src src-scheme">(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">fringe</span> tree)
   (<span style="color: #a020f0;">cond</span> ((not (list? tree)) (list tree))
         ((not (pair? tree)) tree)
@@ -1659,11 +1662,10 @@ Note that "nil" is no longer a part of the Scheme standard. See this
 </div>
 </div>
 </div>
-<div id="outline-container-sec-2-2-11" class="outline-4">
-<h4 id="sec-2-2-11">Exercise 2.29</h4>
-<div class="outline-text-4" id="text-2-2-11">
+<div id="outline-container-orgd6fc44a" class="outline-4">
+<h4 id="orgd6fc44a">Exercise 2.29</h4>
+<div class="outline-text-4" id="text-orgd6fc44a">
 <div class="org-src-container">
-
 <pre class="src src-scheme">(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">left-branch</span> m) (car m))
 (<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">right-branch</span> m) (car (cdr m)))
 (<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">branch-length</span> b) (car b))
@@ -1693,11 +1695,10 @@ Note that "nil" is no longer a part of the Scheme standard. See this
 </div>
 </div>
 </div>
-<div id="outline-container-sec-2-2-12" class="outline-4">
-<h4 id="sec-2-2-12">Exercise 2.30</h4>
-<div class="outline-text-4" id="text-2-2-12">
+<div id="outline-container-org5a8ea68" class="outline-4">
+<h4 id="org5a8ea68">Exercise 2.30</h4>
+<div class="outline-text-4" id="text-org5a8ea68">
 <div class="org-src-container">
-
 <pre class="src src-scheme">(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">square-tree</span> tree)
   (<span style="color: #a020f0;">cond</span> ((null? tree) tree)
         ((not (pair? tree)) (square tree))
@@ -1713,11 +1714,10 @@ Note that "nil" is no longer a part of the Scheme standard. See this
 </div>
 </div>
 </div>
-<div id="outline-container-sec-2-2-13" class="outline-4">
-<h4 id="sec-2-2-13">Exercise 2.31</h4>
-<div class="outline-text-4" id="text-2-2-13">
+<div id="outline-container-org7231783" class="outline-4">
+<h4 id="org7231783">Exercise 2.31</h4>
+<div class="outline-text-4" id="text-org7231783">
 <div class="org-src-container">
-
 <pre class="src src-scheme">(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">tree-map</span> f t)
   (<span style="color: #a020f0;">cond</span> ((null? t) t)
         ((not (pair? t)) (f t))
@@ -1727,9 +1727,9 @@ Note that "nil" is no longer a part of the Scheme standard. See this
 </div>
 </div>
 </div>
-<div id="outline-container-sec-2-2-14" class="outline-4">
-<h4 id="sec-2-2-14">Exercise 2.32</h4>
-<div class="outline-text-4" id="text-2-2-14">
+<div id="outline-container-org16a8ccd" class="outline-4">
+<h4 id="org16a8ccd">Exercise 2.32</h4>
+<div class="outline-text-4" id="text-org16a8ccd">
 <p>
 The procedure takes advantage of the following observation. If \(x\) is
 an element of set \(S\) then we can partition the subsets of \(S\) into
@@ -1740,7 +1740,6 @@ that do contain \(x\) are of the form \(x \cup U\) where \(U \in \wp (S
 \setminus {x})\).
 </p>
 <div class="org-src-container">
-
 <pre class="src src-scheme">(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">subsets</span> s)
   (<span style="color: #a020f0;">if</span> (null? s)
       (list ())
@@ -1750,11 +1749,10 @@ that do contain \(x\) are of the form \(x \cup U\) where \(U \in \wp (S
 </div>
 </div>
 </div>
-<div id="outline-container-sec-2-2-15" class="outline-4">
-<h4 id="sec-2-2-15">Exercise 2.33</h4>
-<div class="outline-text-4" id="text-2-2-15">
+<div id="outline-container-org4753d39" class="outline-4">
+<h4 id="org4753d39">Exercise 2.33</h4>
+<div class="outline-text-4" id="text-org4753d39">
 <div class="org-src-container">
-
 <pre class="src src-scheme">(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">accumulate</span> op initial sequence)
   (<span style="color: #a020f0;">if</span> (null? sequence)
       initial
@@ -1770,11 +1768,10 @@ that do contain \(x\) are of the form \(x \cup U\) where \(U \in \wp (S
 </div>
 </div>
 </div>
-<div id="outline-container-sec-2-2-16" class="outline-4">
-<h4 id="sec-2-2-16">Exercise 2.34</h4>
-<div class="outline-text-4" id="text-2-2-16">
+<div id="outline-container-org3ab1d76" class="outline-4">
+<h4 id="org3ab1d76">Exercise 2.34</h4>
+<div class="outline-text-4" id="text-org3ab1d76">
 <div class="org-src-container">
-
 <pre class="src src-scheme">(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">horner-eval</span> x coefficient-sequence)
   (accumulate (<span style="color: #a020f0;">lambda</span> (this-coeff higher-terms)
                 (+ (* higher-terms x)
@@ -1785,11 +1782,10 @@ that do contain \(x\) are of the form \(x \cup U\) where \(U \in \wp (S
 </div>
 </div>
 </div>
-<div id="outline-container-sec-2-2-17" class="outline-4">
-<h4 id="sec-2-2-17">Exercise 2.35</h4>
-<div class="outline-text-4" id="text-2-2-17">
+<div id="outline-container-orgad11e42" class="outline-4">
+<h4 id="orgad11e42">Exercise 2.35</h4>
+<div class="outline-text-4" id="text-orgad11e42">
 <div class="org-src-container">
-
 <pre class="src src-scheme">(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">count-leaves</span> t)
   (accumulate +
               0
@@ -1802,11 +1798,10 @@ that do contain \(x\) are of the form \(x \cup U\) where \(U \in \wp (S
 </div>
 </div>
 </div>
-<div id="outline-container-sec-2-2-18" class="outline-4">
-<h4 id="sec-2-2-18">Exercise 2.36</h4>
-<div class="outline-text-4" id="text-2-2-18">
+<div id="outline-container-orgdf1653b" class="outline-4">
+<h4 id="orgdf1653b">Exercise 2.36</h4>
+<div class="outline-text-4" id="text-orgdf1653b">
 <div class="org-src-container">
-
 <pre class="src src-scheme">(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">accumulate-n</span> op init seqs)
   (<span style="color: #a020f0;">if</span> (null? (car seqs))
       ()
@@ -1816,11 +1811,10 @@ that do contain \(x\) are of the form \(x \cup U\) where \(U \in \wp (S
 </div>
 </div>
 </div>
-<div id="outline-container-sec-2-2-19" class="outline-4">
-<h4 id="sec-2-2-19">Exercise 2.37</h4>
-<div class="outline-text-4" id="text-2-2-19">
+<div id="outline-container-org5dc61c1" class="outline-4">
+<h4 id="org5dc61c1">Exercise 2.37</h4>
+<div class="outline-text-4" id="text-org5dc61c1">
 <div class="org-src-container">
-
 <pre class="src src-scheme">(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">dot-product</span> v w)
   (accumulate + 0 (<span style="color: #a020f0;">map</span> * v w)))
 (<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">matrix-*-vector</span> m v)
@@ -1840,11 +1834,10 @@ that do contain \(x\) are of the form \(x \cup U\) where \(U \in \wp (S
 </div>
 </div>
 </div>
-<div id="outline-container-sec-2-2-20" class="outline-4">
-<h4 id="sec-2-2-20">Exercise 2.38</h4>
-<div class="outline-text-4" id="text-2-2-20">
+<div id="outline-container-org7914ad3" class="outline-4">
+<h4 id="org7914ad3">Exercise 2.38</h4>
+<div class="outline-text-4" id="text-org7914ad3">
 <div class="org-src-container">
-
 <pre class="src src-scheme">(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">fold-left</span> op initial sequence)
   (<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">iter</span> result rest)
     (<span style="color: #a020f0;">if</span> (null? rest)
@@ -1862,11 +1855,10 @@ that do contain \(x\) are of the form \(x \cup U\) where \(U \in \wp (S
 </div>
 </div>
 </div>
-<div id="outline-container-sec-2-2-21" class="outline-4">
-<h4 id="sec-2-2-21">Exercise 2.39</h4>
-<div class="outline-text-4" id="text-2-2-21">
+<div id="outline-container-orgeb2f9ca" class="outline-4">
+<h4 id="orgeb2f9ca">Exercise 2.39</h4>
+<div class="outline-text-4" id="text-orgeb2f9ca">
 <div class="org-src-container">
-
 <pre class="src src-scheme">(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">reverse</span> sequence)
   (fold-right (<span style="color: #a020f0;">lambda</span> (x y) (append y (list x))) () sequence))
 (<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">reverse</span> sequence)
@@ -1875,11 +1867,10 @@ that do contain \(x\) are of the form \(x \cup U\) where \(U \in \wp (S
 </div>
 </div>
 </div>
-<div id="outline-container-sec-2-2-22" class="outline-4">
-<h4 id="sec-2-2-22">Exercise 2.40</h4>
-<div class="outline-text-4" id="text-2-2-22">
+<div id="outline-container-orga0162c2" class="outline-4">
+<h4 id="orga0162c2">Exercise 2.40</h4>
+<div class="outline-text-4" id="text-orga0162c2">
 <div class="org-src-container">
-
 <pre class="src src-scheme">(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">enumerate-interval</span> k)
   (<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">iter</span> curr result)
     (<span style="color: #a020f0;">if</span> (= curr 0)
@@ -1896,11 +1887,10 @@ that do contain \(x\) are of the form \(x \cup U\) where \(U \in \wp (S
 </div>
 </div>
 </div>
-<div id="outline-container-sec-2-2-23" class="outline-4">
-<h4 id="sec-2-2-23">Exercise 2.41</h4>
-<div class="outline-text-4" id="text-2-2-23">
+<div id="outline-container-org60c9fdd" class="outline-4">
+<h4 id="org60c9fdd">Exercise 2.41</h4>
+<div class="outline-text-4" id="text-org60c9fdd">
 <div class="org-src-container">
-
 <pre class="src src-scheme"><span style="color: #b22222;">;; </span><span style="color: #b22222;">This is slow...</span>
 (<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">unique-tuples</span> n max)
   (<span style="color: #a020f0;">cond</span> ((= n 0) (list ()))
@@ -1948,11 +1938,10 @@ that do contain \(x\) are of the form \(x \cup U\) where \(U \in \wp (S
 </div>
 </div>
 </div>
-<div id="outline-container-sec-2-2-24" class="outline-4">
-<h4 id="sec-2-2-24">Exercise 2.42</h4>
-<div class="outline-text-4" id="text-2-2-24">
+<div id="outline-container-orgb7f7a93" class="outline-4">
+<h4 id="orgb7f7a93">Exercise 2.42</h4>
+<div class="outline-text-4" id="text-orgb7f7a93">
 <div class="org-src-container">
-
 <pre class="src src-scheme">(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">make-queen</span> row col)
   (list row col))
 (<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">get-row</span> queen)
@@ -2012,11 +2001,11 @@ that do contain \(x\) are of the form \(x \cup U\) where \(U \in \wp (S
 </div>
 </div>
 </div>
-<div id="outline-container-sec-2-2-25" class="outline-4">
-<h4 id="sec-2-2-25">Exercise 2.43</h4>
-<div class="outline-text-4" id="text-2-2-25">
+<div id="outline-container-orgc1430d4" class="outline-4">
+<h4 id="orgc1430d4">Exercise 2.43</h4>
+<div class="outline-text-4" id="text-orgc1430d4">
 <p>
-In the provided <code>queens</code> procedure, the \(n \times (k-1)\) subproblem is
+In the provided <kbd>queens</kbd> procedure, the \(n \times (k-1)\) subproblem is
 solved once. Then, for each solution of the subproblem, several
 candidate solutions for the \(n \times k\) problem are created by adding
 a new column with a queen in each possible row.
@@ -2024,20 +2013,19 @@ a new column with a queen in each possible row.
 
 <p>
 Louis's procedure calculates each possible row once (in the call to
-<code>enumerate-interval</code>). Then, for each row, the procedure calculates
+<kbd>enumerate-interval</kbd>). Then, for each row, the procedure calculates
 the \(n \times (k-1)\) subproblem. So, at each level of the process, the
 subproblem is solved \(n\) times. Therefore, in Louis' procedure, the
-base-case \(n \times 0\) problem, computed by <code>(queens 0)</code>, is
+base-case \(n \times 0\) problem, computed by <kbd>(queens 0)</kbd>, is
 calculated \(n^{n}\) times. Louis' procedure solves the puzzle in
 approximately time \(n^{n}T\).
 </p>
 </div>
 </div>
-<div id="outline-container-sec-2-2-26" class="outline-4">
-<h4 id="sec-2-2-26">Exercise 2.44</h4>
-<div class="outline-text-4" id="text-2-2-26">
+<div id="outline-container-orga0a3945" class="outline-4">
+<h4 id="orga0a3945">Exercise 2.44</h4>
+<div class="outline-text-4" id="text-orga0a3945">
 <div class="org-src-container">
-
 <pre class="src src-scheme">(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">up-split</span> painter n)
   (<span style="color: #a020f0;">if</span> (= n 0)
       painter
@@ -2047,11 +2035,10 @@ approximately time \(n^{n}T\).
 </div>
 </div>
 </div>
-<div id="outline-container-sec-2-2-27" class="outline-4">
-<h4 id="sec-2-2-27">Exercise 2.45</h4>
-<div class="outline-text-4" id="text-2-2-27">
+<div id="outline-container-org01ecff8" class="outline-4">
+<h4 id="org01ecff8">Exercise 2.45</h4>
+<div class="outline-text-4" id="text-org01ecff8">
 <div class="org-src-container">
-
 <pre class="src src-scheme">(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">split</span> outer inner)
   (<span style="color: #a020f0;">lambda</span> (painter n)
     (<span style="color: #a020f0;">if</span> (= n 0)
@@ -2062,11 +2049,10 @@ approximately time \(n^{n}T\).
 </div>
 </div>
 </div>
-<div id="outline-container-sec-2-2-28" class="outline-4">
-<h4 id="sec-2-2-28">Exercise 2.46</h4>
-<div class="outline-text-4" id="text-2-2-28">
+<div id="outline-container-org48a3b61" class="outline-4">
+<h4 id="org48a3b61">Exercise 2.46</h4>
+<div class="outline-text-4" id="text-org48a3b61">
 <div class="org-src-container">
-
 <pre class="src src-scheme">(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">make-vect</span> x y) (cons x y))
 (<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">xcor-vect</span> v) (car v))
 (<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">ycor-vect</span> v) (cdr v))
@@ -2078,11 +2064,10 @@ I'll leave this exercise here.
 </p>
 </div>
 </div>
-<div id="outline-container-sec-2-2-29" class="outline-4">
-<h4 id="sec-2-2-29">Exercise 2.47</h4>
-<div class="outline-text-4" id="text-2-2-29">
+<div id="outline-container-org339d705" class="outline-4">
+<h4 id="org339d705">Exercise 2.47</h4>
+<div class="outline-text-4" id="text-org339d705">
 <div class="org-src-container">
-
 <pre class="src src-scheme">(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">make-frame</span> origin edge1 edge2)
   (list origin edge1 edge2))
 (<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">origin-frame</span> frame)
@@ -2094,7 +2079,6 @@ I'll leave this exercise here.
 </pre>
 </div>
 <div class="org-src-container">
-
 <pre class="src src-scheme">(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">make-frame</span> origin edge1 edge2)
   (cons origin (cons edge1 edge2)))
 (<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">origin-frame</span> frame)
@@ -2107,11 +2091,10 @@ I'll leave this exercise here.
 </div>
 </div>
 </div>
-<div id="outline-container-sec-2-2-30" class="outline-4">
-<h4 id="sec-2-2-30">Exercise 2.48</h4>
-<div class="outline-text-4" id="text-2-2-30">
+<div id="outline-container-orgf4e85d0" class="outline-4">
+<h4 id="orgf4e85d0">Exercise 2.48</h4>
+<div class="outline-text-4" id="text-orgf4e85d0">
 <div class="org-src-container">
-
 <pre class="src src-scheme">(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">make-segment</span> v1 v2)
   (cons v1 v2))
 (<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">start-segment</span> v) (car v))
@@ -2120,121 +2103,960 @@ I'll leave this exercise here.
 </div>
 </div>
 </div>
+<div id="outline-container-org2978a93" class="outline-4">
+<h4 id="org2978a93">Exercise 2.49</h4>
+<div class="outline-text-4" id="text-org2978a93">
+<div class="org-src-container">
+<pre class="src src-scheme">(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">fold-right</span> op null l)
+  (<span style="color: #a020f0;">if</span> (null? l)
+      null
+      (op (car l) (fold-right op null (cdr l)))))
+(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">fold-left-iter</span> op null l)
+  (<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">iter</span> curr result)
+    (<span style="color: #a020f0;">if</span> (null? curr)
+        result
+        (iter (cdr curr) (op result (car curr)))))
+  (iter l null))
+(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">take</span> n l)
+  (<span style="color: #a020f0;">if</span> (= n 0)
+      ()
+      (cons (car l) (take (- n 1) (cdr l)))))
+(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">rotate-left</span> l n)
+  (fold-right cons
+              (take n l)
+              ((repeated cdr n) l)))
+(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">outline</span> f)
+  (segments-&gt;painter
+   (<span style="color: #a020f0;">let</span> ((rotl (<span style="color: #a020f0;">lambda</span> (l) (fold-right cons (list (car l)) (cdr l)))))
+     (<span style="color: #a020f0;">let</span> ((x-cors (list 0 0 1 1)))
+       (<span style="color: #a020f0;">let</span> ((corners (<span style="color: #a020f0;">map</span> make-vect x-cors (rotl x-cors))))
+         (<span style="color: #a020f0;">map</span> make-segment
+              corners
+              (rotl corners)))))))
+(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">x-painter</span> f)
+  (segments-painter
+   (<span style="color: #a020f0;">map</span> make-segment
+        (<span style="color: #a020f0;">map</span> make-vect
+             (list 0 0)
+             (list 0 1))
+        (<span style="color: #a020f0;">map</span> make-vect
+             (list 1 1)
+             (list 1 0)))))
+</pre>
 </div>
 </div>
-</div><div class="col-md-3"><nav id="table-of-contents">
-<div id="text-table-of-contents" class="bs-docs-sidebar">
-<ul class="nav">
-<li><a href="#sec-1">Chapter 1</a>
-<ul class="nav">
-<li><a href="#sec-1-1">Section 1.1</a>
-<ul class="nav">
-<li><a href="#sec-1-1-1">Exercise 1.3</a></li>
-<li><a href="#sec-1-1-2">Exercise 1.6</a></li>
+</div>
+<div id="outline-container-org3bc60ce" class="outline-4">
+<h4 id="org3bc60ce">Exercise 2.51</h4>
+<div class="outline-text-4" id="text-org3bc60ce">
+<div class="org-src-container">
+<pre class="src src-scheme">(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">below</span> p1 p2)
+  (rotate90 (beside (rotate270 p2)
+                    (rotate270 p1))))
+</pre>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-org33ff3aa" class="outline-3">
+<h3 id="org33ff3aa">Section 2.3</h3>
+<div class="outline-text-3" id="text-org33ff3aa">
+</div>
+<div id="outline-container-org1150912" class="outline-4">
+<h4 id="org1150912">Exercise 2.53</h4>
+<div class="outline-text-4" id="text-org1150912">
+<div class="org-src-container">
+<pre class="src src-scheme">(list 'a 'b 'c)
+(list (list 'george))
+(cdr '((x1 x2) (y1 y2)))
+(cadr '((x1 x2) (y1 y2)))
+(pair? (car '(a short list)))
+(memq 'red '((red shoes) (blue socks)))
+(memq 'red '(red shoes blue socks))
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-org1db27ba" class="outline-4">
+<h4 id="org1db27ba">Exercise 2.54</h4>
+<div class="outline-text-4" id="text-org1db27ba">
+<div class="org-src-container">
+<pre class="src src-scheme">(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">equal?</span> a b)
+  (<span style="color: #a020f0;">if</span> (<span style="color: #a020f0;">and</span> (pair? a) (pair? b))
+      (<span style="color: #a020f0;">and</span> (equal? (car a) (car b))
+           (equal? (cdr a) (cdr b)))
+      (eq? a b)))
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-orgbad9df6" class="outline-4">
+<h4 id="orgbad9df6">Exercise 2.55</h4>
+<div class="outline-text-4" id="text-orgbad9df6">
+<p>
+Eva types <kbd>(car ''abracadabra)</kbd> and the interpreter prints
+<kbd>quote</kbd>. A footnote mentions that <kbd>'</kbd> is implemented as procedure
+application, and so <kbd>(car ''abracadabra)</kbd> is evaluated to <kbd>(car (quote
+(quote abracadabra)))</kbd>. Then it makes sense for <kbd>car</kbd> of <kbd>(quote
+abracadabra)</kbd> to be <kbd>quote</kbd>. To verify this we run the following:
+</p>
+<div class="org-src-container">
+<pre class="src src-scheme">(cdr ''abracadabra)
+abracadabra
+</pre>
+</div>
+<p>
+This is consistent with our explanation.
+</p>
+</div>
+</div>
+<div id="outline-container-org23c9833" class="outline-4">
+<h4 id="org23c9833">Exercise 2.56</h4>
+<div class="outline-text-4" id="text-org23c9833">
+<p>
+The provided code:
+</p>
+<div class="org-src-container">
+<pre class="src src-scheme">(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">same-variable?</span> v1 v2)
+  (<span style="color: #a020f0;">and</span> (variable? v1) (variable? v2) (eq? v1 v2)))
+(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">make-sum</span> a1 a2) (list '+ a1 a2))
+(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">make-product</span> m1 m2) (list '* m1 m2))
+(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">sum?</span> x)
+  (<span style="color: #a020f0;">and</span> (pair? x) (eq? (car x) '+)))
+(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">addend</span> s) (cadr s))
+(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">augend</span> s) (caddr s))
+(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">product?</span> x)
+  (<span style="color: #a020f0;">and</span> (pair? x) (eq? (car x) '*)))
+(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">multiplier</span> p) (cadr p))
+(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">multiplicand</span> p) (caddr p))
+(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">deriv</span> exp var)
+  (<span style="color: #a020f0;">cond</span> ((number? exp) 0)
+        ((variable? exp)
+         (<span style="color: #a020f0;">if</span> (same-variable? exp var) 1 0))
+        ((sum? exp)
+         (make-sum (deriv (addend exp) var)
+                   (deriv (augend exp) var)))
+        ((product? exp)
+         (make-sum
+          (make-product (multiplier exp)
+                        (deriv (multiplicand exp) var))
+          (make-product (deriv (multiplier exp) var)
+                        (multiplicand exp))))
+        (<span style="color: #a020f0;">else</span>
+         (error <span style="color: #8b2252;">"unknown expression type -- DERIV"</span> exp))))
+</pre>
+</div>
+<div class="org-src-container">
+<pre class="src src-scheme">(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">exponentiation?</span> x)
+  (<span style="color: #a020f0;">and</span> (pair? x) (eq? (car x) '**)))
+(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">base</span> e) (cadr e))
+(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">exponent</span> e) (caddr e))
+(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">make-exponentiation</span> b p)
+  (<span style="color: #a020f0;">cond</span> ((=number? p 0) 1)
+        ((=number? p 1) b)
+        ((<span style="color: #a020f0;">and</span> (number? b) (number? p)) (expt b p))
+        (<span style="color: #a020f0;">else</span> (list '** b p))))
+(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">make-difference</span> a b)
+  (make-sum a (make-product b -1)))
+(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">deriv</span> exp var)
+  (<span style="color: #a020f0;">cond</span> ((number? exp) 0)
+        ((variable? exp)
+         (<span style="color: #a020f0;">if</span> (same-variable? exp var) 1 0))
+        ((sum? exp)
+         (make-sum (deriv (addend exp) var)
+                   (deriv (augend exp) var)))
+        ((product? exp)
+         (make-sum
+          (make-product (multiplier exp)
+                        (deriv (multiplicand exp) var))
+          (make-product (deriv (multiplier exp) var)
+                        (multiplicand exp))))
+        ((exponentiation? exp)
+         (make-product
+          (exponent exp)
+          (make-product (make-exponentiation
+                         (base exp)
+                         (make-difference (exponent exp)
+                                          1))
+                        (deriv (base exp) var))))
+        (<span style="color: #a020f0;">else</span>
+         (error <span style="color: #8b2252;">"unknown expression type -- DERIV"</span> exp))))
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-orgaeac6be" class="outline-4">
+<h4 id="orgaeac6be">Exercise 2.57</h4>
+<div class="outline-text-4" id="text-orgaeac6be">
+<div class="org-src-container">
+<pre class="src src-scheme">(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">augend</span> s)
+  (<span style="color: #a020f0;">if</span> (null? (cdddr s))
+      (caddr s)
+      (cons '+ (cddr s))))
+(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">make-sum</span> a b)
+  (<span style="color: #a020f0;">let*</span> ((flat (flatmap (<span style="color: #a020f0;">lambda</span> (t) (<span style="color: #a020f0;">if</span> (sum? t) (cdr t) t))
+                        (list a b)))
+         (sum (foldl + 0 (filter number? flat)))
+         (rest (filter! number? flat)))
+    (<span style="color: #a020f0;">cond</span> ((null? rest) sum)
+          ((= sum 0) (<span style="color: #a020f0;">if</span> (null? (cdr rest)) (car rest) (cons '+ rest)))
+          (<span style="color: #a020f0;">else</span> (cons '+ (cons acc rest))))))
+(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">multiplicand</span> p)
+  (<span style="color: #a020f0;">if</span> (null? (cdddr p))
+      (caddr p)
+      (cons '* (cddr p))))
+(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">make-product</span> a b)
+  (<span style="color: #a020f0;">let*</span> ((flat (flatmap (<span style="color: #a020f0;">lambda</span> (t) (<span style="color: #a020f0;">if</span> (sum? t) (cdr t) t))
+                        (list a b)))
+         (prod (foldl * 1 (filter number? flat)))
+         (rest (filter! number? flat)))
+    (<span style="color: #a020f0;">cond</span> ((null? rest) prod)
+          ((= sum 1) (<span style="color: #a020f0;">if</span> (null? (cdr rest)) (car rest) (cons '+ rest)))
+          ((= sum 0) 0)
+          (<span style="color: #a020f0;">else</span> (cons '+ (cons acc rest))))))
+</pre>
+</div>
+<p>
+I tried to refactor <kbd>make-sum</kbd> and <kbd>make-product</kbd> into a simpler yet
+meaningful-enough function, to no avail. I'll heed the <a href="https://en.wikipedia.org/wiki/Rule_of_three_(computer_programming)">rule of three</a>
+for now.
+</p>
+</div>
+</div>
+<div id="outline-container-org6a421ff" class="outline-4">
+<h4 id="org6a421ff">Exercise 2.58</h4>
+<div class="outline-text-4" id="text-org6a421ff">
+<ol class="org-ol">
+<li><p>
+Infix addition:
+</p>
+<div class="org-src-container">
+<pre class="src src-scheme">(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">sum?</span> e)
+  (<span style="color: #a020f0;">and</span> (pair? e)
+       (pair? (cdr e))
+       (eq? (cadr e) '+)))
+(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">addend</span> s) (cadr s))
+(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">augend</span> s) (caddr s))
+(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">make-sum</span> a1 a2)
+  (<span style="color: #a020f0;">cond</span> ((=number? a1 0) a2)
+        ((=number? a2 0) a1)
+        ((<span style="color: #a020f0;">and</span> (number? a1) (number? a2)) (+ a1 a2))
+        (<span style="color: #a020f0;">else</span> (list a1 '+ a2))))
+</pre>
+</div>
+<p>
+The same modifications apply to <kbd>product?</kbd>, <kbd>multiplier</kbd>,
+<kbd>multiplicand</kbd>, and <kbd>make-product</kbd>, mutatis mutandis.
+</p></li>
+<li>Each element in a given list is a number, a variable, a sum, a
+product, or a parenthesized expression. If a list has more than one
+element, it must by a product or a sum. If the list contains both
+<kbd>+</kbd> and <kbd>*</kbd>, such as <kbd>(x + 3 * y)</kbd> then the list represents a sum,
+because <kbd>*</kbd> binds tighter than <kbd>+</kbd>. Therefore, if the list contains
+even one <kbd>+</kbd> then we can consider the expression to the left of the
+first <kbd>+</kbd> the addend and the expression to the right the augend. If
+a list that has more than one element is not a sum, then it must be
+a product.</li>
+</ol>
+</div>
+</div>
+<div id="outline-container-org6808a0b" class="outline-4">
+<h4 id="org6808a0b">Exercise 2.59</h4>
+<div class="outline-text-4" id="text-org6808a0b">
+<p>
+Provided code:
+</p>
+<div class="org-src-container">
+<pre class="src src-scheme">(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">adjoin-set</span> x set)
+  (<span style="color: #a020f0;">if</span> (element-of-set? x set)
+      set
+      (cons x set)))
+(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">element-of-set?</span> x set)
+  (<span style="color: #a020f0;">cond</span> ((null? set) false)
+        ((equal? x (car set)) true)
+        (<span style="color: #a020f0;">else</span> (element-of-set? x (cdr set)))))
+(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">intersection-set</span> set1 set2)
+  (<span style="color: #a020f0;">cond</span> ((<span style="color: #a020f0;">or</span> (null? set1) (null? set2)) '())
+        ((element-of-set? (car set1) set2)
+         (cons (car set1)
+               (intersection-set (cdr set1) set2)))
+        (<span style="color: #a020f0;">else</span> (intersection-set (cdr set1) set2))))
+</pre>
+</div>
+<div class="org-src-container">
+<pre class="src src-scheme">(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">union-set</span> set1 set2)
+  (<span style="color: #a020f0;">cond</span> ((null? set1) set2)
+        ((null? set2) set1)
+        (<span style="color: #a020f0;">else</span> (adjoin-set (car set1) (union-set (cdr set1) set2)))))
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-orged916a5" class="outline-4">
+<h4 id="orged916a5">Exercise 2.60</h4>
+<div class="outline-text-4" id="text-orged916a5">
+<div class="org-src-container">
+<pre class="src src-scheme">(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">element-of-set?</span> x set) (memq x set))
+(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">adjoin-set</span> x set) (cons x set))
+(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">union-set</span> set1 set2) (append set1 set2))
+(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">intersection-set</span> set1 set2)
+  (filter (<span style="color: #a020f0;">lambda</span> (x) (element-of-set? x set2)) set1))
+</pre>
+</div>
+<p>
+<kbd>element-of-set?</kbd> is still an \(O(n)\) operation; there's no getting
+around this. But <kbd>adjoin-set</kbd> is now an \(O(1)\) operation, and
+<kbd>union-set</kbd>, which is \(O(n^{2})\) in my implementation above, is now
+\(O(n)\). <kbd>intersection-set</kbd> is still an \(O(n^{2})\) operation.
+</p>
+</div>
+</div>
+<div id="outline-container-orgf0d85f3" class="outline-4">
+<h4 id="orgf0d85f3">Exercise 2.61</h4>
+<div class="outline-text-4" id="text-orgf0d85f3">
+<div class="org-src-container">
+<pre class="src src-scheme">(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">adjoin-set</span> x set)
+  (<span style="color: #a020f0;">cond</span> ((null? set) (cons x set))
+        ((&gt; x (car set)) (cons (car set) (adjoin-set x (cdr set))))
+        ((= x (car set)) set)
+        (<span style="color: #a020f0;">else</span> (cons x set))))
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-orgc3df2e8" class="outline-4">
+<h4 id="orgc3df2e8">Exercise 2.62</h4>
+<div class="outline-text-4" id="text-orgc3df2e8">
+<div class="org-src-container">
+<pre class="src src-scheme">(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">union-set</span> set1 set2)
+  (<span style="color: #a020f0;">cond</span> ((null? set1) set2)
+        ((null? set2) set1)
+        (<span style="color: #a020f0;">else</span> (<span style="color: #a020f0;">let</span> ((x1 (car set1))
+                    (x2 (car set2)))
+                (<span style="color: #a020f0;">cond</span> ((= x1 x2)
+                       (cons x1 (union-set (cdr set1)
+                                           (cdr set2))))
+                      ((&lt; x1 x2)
+                       (cons x1 (union-set (cdr set1)
+                                           set2)))
+                      ((&gt; x1 x2)
+                       (cons x2 (union-set set1
+                                           (cdr set2)))))))))
+</pre>
+</div>
+<p>
+&lt;s
+</p>
+</div>
+</div>
+<div id="outline-container-org8ff9ed6" class="outline-4">
+<h4 id="org8ff9ed6">Exercise 2.63</h4>
+<div class="outline-text-4" id="text-org8ff9ed6">
+<p>
+The trees from<a href="https://mitpress.mit.edu/sites/default/files/sicp/full-text/book/book-Z-H-16.html#%25_fig_2.16"> Figure 2.16</a>:
+</p>
+<div class="org-src-container">
+<pre class="src src-scheme">(<span style="color: #a020f0;">define</span> <span style="color: #0000ff;">tree-a</span>
+  (make-tree
+   7
+   (make-tree
+    3
+    (make-tree 1 () ())
+    (make-tree 5 () ()))
+   (make-tree
+    9
+    ()
+    (make-tree 11 () ()))))
+(<span style="color: #a020f0;">define</span> <span style="color: #0000ff;">tree-b</span>
+  (make-tree
+   3
+   (make-tree 1 () ())
+   (make-tree
+    7
+    (make-tree 5 () ())
+    (make-tree
+     9
+     ()
+     (make-tree 11 () ())))))
+(<span style="color: #a020f0;">define</span> <span style="color: #0000ff;">tree-c</span>
+  (make-tree
+   5
+   (make-tree
+    3
+    (make-tree 1 () ())
+    ())
+   (make-tree
+    9
+    (make-tree 7 () ())
+    (make-tree 11 () ()))))
+</pre>
+</div>
+<ol class="org-ol">
+<li><kbd>tree-&gt;list-1</kbd> and <kbd>tree-&gt;list-2</kbd> result in <kbd>(1 3 5 7 9 11)</kbd> for
+every tree above. Moreover, <kbd>tree-&gt;list-1</kbd> and <kbd>tree-&gt;list-2</kbd>
+produce the same result for for any two trees that represent the same
+set.</li>
+<li><p>
+<kbd>tree-&gt;list-1</kbd> uses <kbd>append</kbd> to combine the solutions to the
+recursively-solved subproblems. This procedure takes time
+proportional to the size of its first input, namely the left
+subtree of any given node.
+</p>
+
+<p>
+Suppose we have a balanced tree of \(n = 2^{k}-1\) nodes (meaning
+that \(k\) is the number of levels in the tree). Level \(i\) of the
+tree (call the root level \(0\)) has \(2^{i}\) nodes. Each of these
+nodes combines its subproblems in time proportional to the size of
+its left subtree, which is \(2^{k-i-1}\). The total time of the tree
+is therefore proportional to the following: \[\sum_{i=0}^{k-1}
+   2^{i}2^{k-i-1} = \sum_{i=0}^{k-1} 2^{k-1} = k2^{k-1} =
+   k\frac{n+1}{2} = \log(n+1)\frac{n+1}{2}\] Therefore the order of
+growth of <kbd>tree-&gt;list-1</kbd> is \(O(n\log(n))\).
+</p>
+
+<p>
+Perhaps a simpler formula:
+\[\frac{n}{2}+2\frac{n}{4}+4\frac{n}{8}+\ldots\]
+\[\frac{n}{2}+\frac{n}{2}+\frac{n}{2}+\ldots\]
+\[\log(n)\frac{n}{2}\]
+</p>
+
+<p>
+On the other hand, <kbd>tree-&gt;list-2</kbd> uses <kbd>cons</kbd> to combine
+subproblems, and therefore take \(O(1)\) time for each of the \(n\)
+nodes in the tree, for a total of \(O(n)\) time.
+</p></li>
+</ol>
+</div>
+</div>
+<div id="outline-container-org1b83e1d" class="outline-4">
+<h4 id="org1b83e1d">Exercise 2.64</h4>
+<div class="outline-text-4" id="text-org1b83e1d">
+<ol class="org-ol">
+<li><kbd>partial-tree</kbd> recurses once left and once right at each node to
+build the tree. Therefore each of the \(n\) elements is tree-ified by
+one call to <kbd>partial-tree</kbd>. All of the operations <kbd>partial-tree</kbd>
+used to combine the solutions to the subproblems are \(O(1)\),
+therefore <kbd>partial-tree</kbd> takes \(O(n)\) time.</li>
+</ol>
+</div>
+</div>
+<div id="outline-container-orge27f686" class="outline-4">
+<h4 id="orge27f686">Exercise 2.65</h4>
+<div class="outline-text-4" id="text-orge27f686">
+<div class="org-src-container">
+<pre class="src src-scheme">(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">union-set</span> set1 set2)
+  (list-&gt;tree (union-set-list (tree-&gt;list-2 set1)
+                              (tree-&gt;list-2 set2))))
+</pre>
+</div>
+<p>
+Mutatis mutandis for <kbd>intersection-set</kbd>.
+</p>
+</div>
+</div>
+<div id="outline-container-org3f5f504" class="outline-4">
+<h4 id="org3f5f504">Exercise 2.67</h4>
+<div class="outline-text-4" id="text-org3f5f504">
+<p>
+<kbd>(a d a b b c a)</kbd>
+</p>
+</div>
+</div>
+<div id="outline-container-org8c63945" class="outline-4">
+<h4 id="org8c63945">Exercise 2.68</h4>
+<div class="outline-text-4" id="text-org8c63945">
+<div class="org-src-container">
+<pre class="src src-scheme">(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">encode-symbol</span> symbol tree)
+  (<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">encode-1</span> bits branch)
+    (<span style="color: #a020f0;">if</span> (leaf? branch)
+        bits
+        (<span style="color: #a020f0;">let</span> ((left (left-branch branch)))
+          (<span style="color: #a020f0;">if</span> (memq symbol (symbols left))
+              (encode-1 (cons 0 bits) left)
+              (encode-1 (cons 1 bits) (right-branch branch))))))
+  (<span style="color: #a020f0;">if</span> (memq symbol (symbols tree))
+      (reverse (encode-1 () tree))
+      (error <span style="color: #8b2252;">"not in tree"</span>)))
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-org9958d17" class="outline-4">
+<h4 id="org9958d17">Exercise 2.69</h4>
+<div class="outline-text-4" id="text-org9958d17">
+<div class="org-src-container">
+<pre class="src src-scheme">(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">successive-merge</span> tree-set)
+  (<span style="color: #a020f0;">cond</span> ((null? tree-set) ())
+        ((null? (cdr tree-set)) (car tree-set))
+        (<span style="color: #a020f0;">else</span>
+         (successive-merge (adjoin-set (make-code-tree (car tree-set)
+                                                       (cadr tree-set))
+                                       (cddr tree-set))))))
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-org865ab1c" class="outline-4">
+<h4 id="org865ab1c">Exercise 2.70</h4>
+<div class="outline-text-4" id="text-org865ab1c">
+<div class="org-src-container">
+<pre class="src src-scheme">(length (encode '(GET A JOB
+                  SHA NA NA NA NA NA NA NA NA
+                  GET A JOB
+                  SHA NA NA NA NA NA NA NA NA
+                  WAH YIP YIP YIP YIP YIP YIP YIP YIP YIP
+                  SHA BOOM)
+                (generate-huffman-tree
+                 '((A 2) (NA 16)
+                   (BOOM 1) (SHA 3)
+                   (GET 2) (YIP 9)
+                   (JOB 2) (WAH 1)))))
+<span style="color: #b22222;">;</span><span style="color: #b22222;">Value: 84</span>
+</pre>
+</div>
+<p>
+A fixed-length code would take at least 3 bits per symbol times 36
+symbols for a total of 108 bits.
+</p>
+</div>
+</div>
+<div id="outline-container-org6abd4b9" class="outline-4">
+<h4 id="org6abd4b9">Exercise 2.71</h4>
+<div class="outline-text-4" id="text-org6abd4b9">
+<p>
+The trees look like lists: each non-leaf node has one leaf child and
+one non-leaf child. The most frequent symbol takes one bit, and the
+least frequent symbol takes \(n-1\) bits.
+</p>
+</div>
+</div>
+<div id="outline-container-org493be07" class="outline-4">
+<h4 id="org493be07">Exercise 2.72</h4>
+<div class="outline-text-4" id="text-org493be07">
+<p>
+If the relative frequencies are as described in exercise 2.71, then
+the <kbd>memq</kbd> call in <kbd>encode-1</kbd> searches a list of length one at each
+node, which is a constant-time operation. Therefore each of the \(n\)
+iterations (in the worst case) of <kbd>encode-1</kbd> are
+constant-time. Therefore <kbd>encode-1</kbd> has growth \(O(n)\). <kbd>reverse</kbd> and
+the <kbd>memq</kbd> call in <kbd>encode</kbd> also have growth \(O(n)\), so <kbd>encode</kbd> has
+time-complexity \(O(n)\) where \(n\) is the number of symbols in the
+alphabet.
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-orgdede9c5" class="outline-3">
+<h3 id="orgdede9c5">Section 2.4</h3>
+<div class="outline-text-3" id="text-orgdede9c5">
+</div>
+<div id="outline-container-orgbd47114" class="outline-4">
+<h4 id="orgbd47114">Exercise 2.73</h4>
+<div class="outline-text-4" id="text-orgbd47114">
+<div class="org-src-container">
+<pre class="src src-scheme">(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">same-variable?</span> v1 v2)
+  (<span style="color: #a020f0;">and</span> (variable? v1) (variable? v2) (eq? v1 v2)))
+(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">deriv</span> exp var)
+  (<span style="color: #a020f0;">cond</span> ((number? exp) 0)
+        ((variable? exp) (<span style="color: #a020f0;">if</span> (same-variable? exp var) 1 0))
+        (<span style="color: #a020f0;">else</span> ((get 'deriv (operator exp)) (operands exp)
+               var))))
+(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">operator</span> exp) (car exp))
+(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">operands</span> exp) (cdr exp))
+</pre>
+</div>
+<ol class="org-ol">
+<li></li>
+</ol>
+<div class="org-src-container">
+<pre class="src src-scheme">(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">install-prefix-system</span>)
+  (<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">deriv-sum</span> sum)
+    (make-sum (deriv (addend exp) var)
+              (deriv (augend exp) var)))
+  (<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">deriv-product</span> prod)
+    (make-sum
+     (make-product (multiplier exp)
+                   (deriv (multiplicand exp) var))
+     (make-product (deriv (multiplier exp) var)
+                   (multiplicand exp))))
+  (put 'deriv '+ deriv-sum)
+  (put 'deriv '* deriv-product))
+</pre>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-orgfac3fb6" class="outline-3">
+<h3 id="orgfac3fb6">Section 2.5</h3>
+<div class="outline-text-3" id="text-orgfac3fb6">
+</div>
+<div id="outline-container-org26684d3" class="outline-4">
+<h4 id="org26684d3">Exercise 2.77</h4>
+<div class="outline-text-4" id="text-org26684d3">
+<p>
+<kbd>magnitude</kbd> was already defined in 2.4.3 as:
+</p>
+<div class="org-src-container">
+<pre class="src src-scheme">(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">magnitude</span> z) (apply-generic 'magnitude z))
+</pre>
+</div>
+<p>
+This was done to provide a generic interface for getting the magnitude
+of a complex number whether it's represented in rectangular or polar
+coordinates. A function taking a complex number tagged with
+<kbd>'polar</kbd> and a function taking a complex number tagged with
+<kbd>'rectangular</kbd> were already added to the table.
+</p>
+</div>
+</div>
+<div id="outline-container-orgadd2c47" class="outline-4">
+<h4 id="orgadd2c47">Exercise 2.78</h4>
+<div class="outline-text-4" id="text-orgadd2c47">
+<div class="org-src-container">
+<pre class="src src-scheme">(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">attach-tag</span> type-tag contents)
+  (<span style="color: #a020f0;">if</span> (eq? type-tag 'scheme-number)
+      contents
+      (cons type-tag contents)))
+(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">type-tag</span> datum)
+  (<span style="color: #a020f0;">cond</span> ((number? datum) 'scheme-number)
+        ((pair? datum) (car datum))
+        (<span style="color: #a020f0;">else</span> (error <span style="color: #8b2252;">"Bad tagged datum -- TYPE-TAG"</span> datum))))
+(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">contents</span> datum)
+  (<span style="color: #a020f0;">cond</span> ((number? datum) datum)
+        ((pair? datum) (cdr datum))
+        (<span style="color: #a020f0;">else</span> (error <span style="color: #8b2252;">"Bad tagged datum -- CONTENTS"</span> datum))))
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-org01def75" class="outline-4">
+<h4 id="org01def75">Exercise 2.79</h4>
+<div class="outline-text-4" id="text-org01def75">
+<p>
+The following solution tests equality of numbers in the arithmetic
+package that have the same type. For a more general approach that
+allows compation numbers with different types, see Exercise 2.85.
+</p>
+<div class="org-src-container">
+<pre class="src src-scheme">(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">equ?-num</span> a b) (= a b))
+(put 'equ? '(scheme-number scheme-number) equ?-num)
+(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">equ?-rat</span> a b) (<span style="color: #a020f0;">and</span> (= (numer a) (numer b))
+                            (= (denom a) (denom b))))
+(put 'equ? '(rational rational) equ?-rat)
+(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">equ?-complex</span> a b) (<span style="color: #a020f0;">and</span> (= (real-part a) (real-part b))
+                                (= (imag-part a) (imag-part b))))
+(put 'equ? '(complex complex) equ?-complex)
+(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">equ?</span> a b) (apply-generic 'equ? a b))
+</pre>
+</div>
+<p>
+With the current implementation of complex and rational numbers as
+pairs of scheme numbers, using <kbd>=</kbd> within <kbd>equ?-rat</kbd> and
+<kbd>equ?-complex</kbd> should work. But because <kbd>equ?</kbd> works with
+scheme-numbers too, recursively testing the components of complex and
+rational numbers by replacing <kbd>=</kbd> with <kbd>equ?</kbd> in <kbd>equ?-rat</kbd> and
+<kbd>equ?-complex</kbd> will also work with future representations of complex
+and rational numbers that internally use numbers from our number
+package&#x2026;
+</p>
+</div>
+</div>
+<div id="outline-container-org1748131" class="outline-4">
+<h4 id="org1748131">Exercise 2.80</h4>
+<div class="outline-text-4" id="text-org1748131">
+<div class="org-src-container">
+<pre class="src src-scheme">(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">=zero?</span> x) (apply-generic '=zero? x))
+(put '=zero? '(scheme-number) (<span style="color: #a020f0;">lambda</span> (x) (= x 0)))
+(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">=zero?-complex</span> x)
+  (= (magnitude x) 0))
+(put '=zero? '(complex) =zero?-complex)
+(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">=zero?-rat</span> x)
+  (= (numer x) 0))
+(put '=zero?-rat '(rational) =zero?-rat)
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-org717aa90" class="outline-4">
+<h4 id="org717aa90">Exercise 2.81</h4>
+<div class="outline-text-4" id="text-org717aa90">
+<ol class="org-ol">
+<li>Infinite recursion: <kbd>apply-generic</kbd> coerces the first complex
+number to a complex number, and calls itself.</li>
+<li><p>
+Code:
+</p>
+<div class="org-src-container">
+<pre class="src src-scheme">(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">apply-generic</span> op . args)
+  (<span style="color: #a020f0;">let</span> ((type-tags (<span style="color: #a020f0;">map</span> type-tag args)))
+    (<span style="color: #a020f0;">let</span> ((proc (get op type-tags)))
+      (<span style="color: #a020f0;">if</span> proc
+          (apply proc (<span style="color: #a020f0;">map</span> contents args))
+          (<span style="color: #a020f0;">if</span> (= (length args) 2)
+              (<span style="color: #a020f0;">let</span> ((type1 (car type-tags))
+                    (type2 (cadr type-tags))
+                    (a1 (car args))
+                    (a2 (cadr args)))
+                (<span style="color: #a020f0;">if</span> (eq? type1 type2)
+                    (error <span style="color: #8b2252;">"No method for these types"</span>
+                           (list op type-tags))
+                    (<span style="color: #a020f0;">let</span> ((t1-&gt;t2 (get-coercion type1 type2))
+                          (t2-&gt;t1 (get-coercion type2 type1)))
+                      (<span style="color: #a020f0;">cond</span> (t1-&gt;t2
+                             (apply-generic op (t1-&gt;t2 a1) a2))
+                            (t2-&gt;t1
+                             (apply-generic op a1 (t2-&gt;t1 a2)))
+                            (<span style="color: #a020f0;">else</span>
+                             (error <span style="color: #8b2252;">"No method for these types"</span>
+                                    (list op type-tags)))))))
+              (error <span style="color: #8b2252;">"No method for these types"</span>
+                     (list op type-tags)))))))
+</pre>
+</div></li>
+</ol>
+</div>
+</div>
+<div id="outline-container-orgc2f36e8" class="outline-4">
+<h4 id="orgc2f36e8">Exercise 2.82</h4>
+<div class="outline-text-4" id="text-orgc2f36e8">
+<p>
+Imagine an arithmetic package for complex, real, and imaginary
+numbers. Both real and imaginary numbers are subtypes of complex
+numbers, but real and imaginary numbers are unrelated to each
+other. If one tried to <kbd>add</kbd> a real number and a complex number, this
+would only be possible if each was converted (raised) to a complex
+number. With the current type-coercion algorithm, this is not possible.
+</p>
+
+<p>
+One way to approach a fully general coercion system for two arguments
+would be to determine all possible types that the first argument can
+be coerced into, and, for each of these types, coerce the first
+argument and retry the operation with each of the possible types of
+the second argument in turn.
+</p>
+
+<p>
+After thinking about this for a while, I do not know enough about the
+use case to make a satisfactory general procedure. I can imagine
+situations where:
+</p>
+<ul class="org-ul">
+<li>The arguments can be coereced into new types in multiple valid
+ways. Which coercions should be preferred?</li>
+<li>The arguments can be "downcast". For example, a quadrilateral may
+happen to be a square, and so it is valid to coerce such a
+quadrilateral into a square. Should implicit coercion be allowed
+here?</li>
+<li>The only coercion that allows the operation to succeed requires that
+an argument be coerced into a distant type. Should such coercion
+happen automatically, or require that the caller be more explicit?</li>
 </ul>
-</li>
-<li><a href="#sec-1-2">Section 1.2</a>
-<ul class="nav">
-<li><a href="#sec-1-2-1">Exercise 1.9</a></li>
-<li><a href="#sec-1-2-2">Exercise 1.11</a></li>
-<li><a href="#sec-1-2-3">Exercise 1.12</a></li>
-<li><a href="#sec-1-2-4">Exercise 1.16</a></li>
-<li><a href="#sec-1-2-5">Exercise 1.17</a></li>
-<li><a href="#sec-1-2-6">Exercise 1.18</a></li>
-<li><a href="#sec-1-2-7">Exercise 1.19</a></li>
-<li><a href="#sec-1-2-8">Exercise 1.22</a></li>
-<li><a href="#sec-1-2-9">Exercise 1.26</a></li>
-<li><a href="#sec-1-2-10">Exercise 1.27</a></li>
-</ul>
-</li>
-<li><a href="#sec-1-3">Section 1.3</a>
-<ul class="nav">
-<li><a href="#sec-1-3-1">Exercise 1.29</a></li>
-<li><a href="#sec-1-3-2">Exercise 1.30</a></li>
-<li><a href="#sec-1-3-3">Exercise 1.31</a></li>
-<li><a href="#sec-1-3-4">Exercise 1.32</a></li>
-<li><a href="#sec-1-3-5">Exercise 1.33</a></li>
-<li><a href="#sec-1-3-6">Exercise 1.35</a></li>
-<li><a href="#sec-1-3-7">Exercise 1.36</a></li>
-<li><a href="#sec-1-3-8">Exercise 1.37</a></li>
-<li><a href="#sec-1-3-9">Exercise 1.38</a></li>
-<li><a href="#sec-1-3-10">Exercise 1.39</a></li>
-<li><a href="#sec-1-3-11">Exercise 1.40</a></li>
-<li><a href="#sec-1-3-12">Exercise 1.41</a></li>
-<li><a href="#sec-1-3-13">Exercise 1.42</a></li>
-<li><a href="#sec-1-3-14">Exercise 1.43</a></li>
-<li><a href="#sec-1-3-15">Exercise 1.44</a></li>
-<li><a href="#sec-1-3-16">Exercise 1.45</a></li>
-<li><a href="#sec-1-3-17">Exercise 1.46</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li><a href="#sec-2">Chapter 2</a>
-<ul class="nav">
-<li><a href="#sec-2-1">Section 2.1</a>
-<ul class="nav">
-<li><a href="#sec-2-1-1">Exercise 2.1</a></li>
-<li><a href="#sec-2-1-2">Exercise 2.2</a></li>
-<li><a href="#sec-2-1-3">Exercise 2.3</a></li>
-<li><a href="#sec-2-1-4">Exercise 2.4</a></li>
-<li><a href="#sec-2-1-5">Exercise 2.5</a></li>
-<li><a href="#sec-2-1-6">Exercise 2.6</a></li>
-<li><a href="#sec-2-1-7">Exercise 2.7</a></li>
-<li><a href="#sec-2-1-8">Exercise 2.8</a></li>
-<li><a href="#sec-2-1-9">Exercise 2.9</a></li>
-<li><a href="#sec-2-1-10">Exercise 2.10</a></li>
-<li><a href="#sec-2-1-11">Exercise 2.11</a></li>
-<li><a href="#sec-2-1-12">Exercise 2.12</a></li>
-<li><a href="#sec-2-1-13">Exercise 2.13</a></li>
-<li><a href="#sec-2-1-14">Exercise 2.14</a></li>
-</ul>
-</li>
-<li><a href="#sec-2-2">Section 2.2</a>
-<ul class="nav">
-<li><a href="#sec-2-2-1">Exercise 2.17</a></li>
-<li><a href="#sec-2-2-2">Exercise 2.18</a></li>
-<li><a href="#sec-2-2-3">Exercise 2.19</a></li>
-<li><a href="#sec-2-2-4">Exercise 2.20</a></li>
-<li><a href="#sec-2-2-5">Exercise 2.21</a></li>
-<li><a href="#sec-2-2-6">Exercise 2.22</a></li>
-<li><a href="#sec-2-2-7">Exercise 2.23</a></li>
-<li><a href="#sec-2-2-8">Exercise 2.25</a></li>
-<li><a href="#sec-2-2-9">Exercise 2.27</a></li>
-<li><a href="#sec-2-2-10">Exercise 2.28</a></li>
-<li><a href="#sec-2-2-11">Exercise 2.29</a></li>
-<li><a href="#sec-2-2-12">Exercise 2.30</a></li>
-<li><a href="#sec-2-2-13">Exercise 2.31</a></li>
-<li><a href="#sec-2-2-14">Exercise 2.32</a></li>
-<li><a href="#sec-2-2-15">Exercise 2.33</a></li>
-<li><a href="#sec-2-2-16">Exercise 2.34</a></li>
-<li><a href="#sec-2-2-17">Exercise 2.35</a></li>
-<li><a href="#sec-2-2-18">Exercise 2.36</a></li>
-<li><a href="#sec-2-2-19">Exercise 2.37</a></li>
-<li><a href="#sec-2-2-20">Exercise 2.38</a></li>
-<li><a href="#sec-2-2-21">Exercise 2.39</a></li>
-<li><a href="#sec-2-2-22">Exercise 2.40</a></li>
-<li><a href="#sec-2-2-23">Exercise 2.41</a></li>
-<li><a href="#sec-2-2-24">Exercise 2.42</a></li>
-<li><a href="#sec-2-2-25">Exercise 2.43</a></li>
-<li><a href="#sec-2-2-26">Exercise 2.44</a></li>
-<li><a href="#sec-2-2-27">Exercise 2.45</a></li>
-<li><a href="#sec-2-2-28">Exercise 2.46</a></li>
-<li><a href="#sec-2-2-29">Exercise 2.47</a></li>
-<li><a href="#sec-2-2-30">Exercise 2.48</a></li>
-</ul>
-</li>
-</ul>
-</li>
+
+<p>
+Instead, we will try the more naive method suggested in the exercise:
+</p>
+<div class="org-src-container">
+<pre class="src src-scheme">(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">apply-generic</span> op . args)
+  (<span style="color: #a020f0;">let</span> ((type-tags (<span style="color: #a020f0;">map</span> type-tag args)))
+    (<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">fail</span>) (error <span style="color: #8b2252;">"No method for these types"</span>
+                          (list op type-tags)))
+    (<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">try-coerce</span> targets)
+      (<span style="color: #a020f0;">if</span> (null? targets)
+          (fail)
+          (<span style="color: #a020f0;">let*</span> ((targ (car targets))
+                 (funcs (filter! null?
+                                 (<span style="color: #a020f0;">map</span> (<span style="color: #a020f0;">lambda</span> (type) (get-coercion type targ))
+                                      type-tags))))
+            (<span style="color: #a020f0;">if</span> (= (length funcs) (length args))
+                (<span style="color: #a020f0;">let</span> ((proc (get op (repeat (length args) targ))))
+                  (<span style="color: #a020f0;">if</span> proc
+                      (apply proc (<span style="color: #a020f0;">map</span> contents (<span style="color: #a020f0;">map</span> apply
+                                                     funcs
+                                                     (<span style="color: #a020f0;">map</span> list args))))
+                      (try-coerce (cdr targets))))))))
+    (<span style="color: #a020f0;">let</span> ((proc (get op type-tags)))
+      (<span style="color: #a020f0;">if</span> proc
+          (apply proc (<span style="color: #a020f0;">map</span> contents args))
+          (<span style="color: #a020f0;">let</span> ((all-types (remove-duplicates type-tags)))
+            (<span style="color: #a020f0;">if</span> (length-1 all-types)
+                (fail)
+                (try-coerce all-types)))))))
+</pre>
+</div>
+<p>
+Usually, circular inheritance does not make sense. Therefore there
+cannot be cycles in a general graph of type relationships. Therefore,
+given two types a and b, at most one type can be an ancestor of the
+other. If downcasting is to be explicit, then method of attempting to
+coerce all of the args into the type of the first arg, then the second
+arg, etc. is equivalent to attempting to coerce all of the args into
+the type of the arg with the highest type in the hierarchy (because
+all of the coercions that attempt to coerce the arg with the highest
+type to any lower type will fail because we've said downcasting is
+explicit).
+</p>
+</div>
+</div>
+<div id="outline-container-org22827f2" class="outline-4">
+<h4 id="org22827f2">Exercise 2.83</h4>
+<div class="outline-text-4" id="text-org22827f2">
+<div class="org-src-container">
+<pre class="src src-scheme">(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">int-&gt;rat</span> int)
+  (make-rational int 1))
+(put 'raise 'int int-&gt;rat)
+(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">rat-&gt;real</span> rat)
+  (make-real (/ (numer rat) (denom rat))))
+(put 'raise 'rat rat-&gt;real)
+(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">real-&gt;complex</span> real)
+  (make-complex-real-imag real 0))
+(put 'raise 'real raise-real)
+(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">raise</span> num)
+  ((get 'raise (type-tag num)) (contents num)))
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-org1a422e8" class="outline-4">
+<h4 id="org1a422e8">Exercise 2.84</h4>
+<div class="outline-text-4" id="text-org1a422e8">
+<div class="org-src-container">
+<pre class="src src-scheme">(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">ancestor?</span> arg1 arg2)
+  (<span style="color: #a020f0;">let</span> ((func (get 'raise (tag arg2))))
+    (<span style="color: #a020f0;">if</span> func
+        (<span style="color: #a020f0;">let</span> ((super (func (contents arg2))))
+          (<span style="color: #a020f0;">if</span> (= (tag super) (tag arg1))
+              super
+              (ancestor? arg1 super)))
+        #f)))
+(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">apply-generic</span> op . args)
+  (<span style="color: #a020f0;">let</span> ((type-tags (<span style="color: #a020f0;">map</span> type-tag args)))
+    (<span style="color: #a020f0;">let</span> ((proc (get op type-tags)))
+      (<span style="color: #a020f0;">if</span> proc
+          (apply proc (<span style="color: #a020f0;">map</span> contents args))
+          (<span style="color: #a020f0;">if</span> (= (length args) 2)
+              (<span style="color: #a020f0;">let</span> ((a1 (car args))
+                    (a2 (cadr args)))
+                (<span style="color: #a020f0;">let</span> ((a2-&gt;type1 (ancestor? a1 a2))
+                      (a1-&gt;type2 (ancestor? a2 a1)))
+                  (<span style="color: #a020f0;">cond</span> (a2-&gt;type1
+                         (apply-generic op a1 a2-&gt;type1))
+                        (a1-&gt;type2
+                         (apply-generic op a1-&gt;type2 a2))
+                        (<span style="color: #a020f0;">else</span>
+                         (error <span style="color: #8b2252;">"No method for these types"</span>
+                                (list op type-tags))))))
+              (error <span style="color: #8b2252;">"No method for these types"</span>
+                     (list op type-tags)))))))
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-org3ba3d7c" class="outline-4">
+<h4 id="org3ba3d7c">Exercise 2.85</h4>
+<div class="outline-text-4" id="text-org3ba3d7c">
+<div class="org-src-container">
+<pre class="src src-scheme">(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">project-complex</span> complex)
+  (make-real (real-part complex)))
+(put 'project 'complex 'project-complex)
+(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">project-real</span> real)
+  (make-rat (round real) 1))
+(put 'project 'real 'project-real)
+(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">project-rat</span> rat)
+  (make-int (round (/ (numer rat) (denom rat)))))
+(put 'project 'rat 'project-rat)
+(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">project</span> num) (apply-generic 'project num))
+(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">drop</span> num)
+  (<span style="color: #a020f0;">if</span> (get 'project (type-tag num))
+      (<span style="color: #a020f0;">let</span> ((projection (project num)))
+        (<span style="color: #a020f0;">if</span> (equ? num (raise projection))
+            (drop (projection))
+            num))
+      num))
+(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">apply-generic</span> op . args)
+  (<span style="color: #a020f0;">let</span> ((type-tags (<span style="color: #a020f0;">map</span> type-tag args)))
+    (<span style="color: #a020f0;">let</span> ((proc (get op type-tags)))
+      (<span style="color: #a020f0;">if</span> proc
+          (drop (apply proc (<span style="color: #a020f0;">map</span> contents args)))
+          (<span style="color: #a020f0;">if</span> (= (length args) 2)
+              (<span style="color: #a020f0;">let</span> ((a1 (car args))
+                    (a2 (cadr args)))
+                (<span style="color: #a020f0;">let</span> ((a2-&gt;type1 (ancestor? a1 a2))
+                      (a1-&gt;type2 (ancestor? a2 a1)))
+                  (<span style="color: #a020f0;">cond</span> (a2-&gt;type1
+                         (apply-generic op a1 a2-&gt;type1))
+                        (a1-&gt;type2
+                         (apply-generic op a1-&gt;type2 a2))
+                        (<span style="color: #a020f0;">else</span>
+                         (error <span style="color: #8b2252;">"No method for these types"</span>
+                                (list op type-tags))))))
+              (error <span style="color: #8b2252;">"No method for these types"</span>
+                     (list op type-tags)))))))
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-org0b3f40f" class="outline-4">
+<h4 id="org0b3f40f">Exercise 2.86</h4>
+<div class="outline-text-4" id="text-org0b3f40f">
+<p>
+Depending on whether we want to store complex numbers internally as
+rational numbers (or other future numbers), or just to handle making
+complex numbers from rational numbers (or other future numbers) we
+would need to:
+</p>
+<ul class="org-ul">
+<li>Make both of the <kbd>make-complex-from-</kbd> procedures generic</li>
+<li>Replace <kbd>+</kbd>, <kbd>-</kbd>, <kbd>*</kbd>, and <kbd>/</kbd> with <kbd>add</kbd>, <kbd>sub</kbd>, <kbd>mul</kbd>, and <kbd>div</kbd>
+in internal procedures <kbd>add-complex</kbd>, <kbd>sub-complex</kbd>, etc</li>
+<li>Rewrite polar- and rectangular- complex-number pacakges to use
+generic procedures <kbd>sine</kbd>, <kbd>cosine</kbd>, <kbd>atangent</kbd>, <kbd>sqrt</kbd>, <kbd>plus</kbd></li>
+<li>Rewrite <kbd>project-complex</kbd> and <kbd>raise-complex</kbd></li>
 </ul>
 </div>
-</nav>
-</div></div></div>
-<footer id="postamble" class="">
-<div><p class="author">Author: Tanner Hoelzel</p>
-<p class="date">Created: 2020-05-21 Thu 02:05</p>
-<p class="creator"><a href="http://www.gnu.org/software/emacs/">Emacs</a> 26.3 (<a href="http://orgmode.org">Org-mode</a> 9.1.9)</p>
 </div>
-</footer>
+<div id="outline-container-org6c81fdc" class="outline-4">
+<h4 id="org6c81fdc">Exercise 2.87</h4>
+<div class="outline-text-4" id="text-org6c81fdc">
+<p>
+Because <kbd>=zero?</kbd> is used in <kbd>adjoin-term</kbd>, zero coefficients are left
+out of polynomials constructed with <kbd>add</kbd> and <kbd>mul</kbd>. If we rewrite
+<kbd>make-poly</kbd> so that terms with zero coefficients are not actually
+stored, then any polynomial that can be created will not no terms with
+zero coefficients. Therefore the zero polynomial will simply have no
+terms:
+</p>
+<div class="org-src-container">
+<pre class="src src-scheme">(put '=zero? 'poly empty-termlist?)
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-orgdb9e2be" class="outline-4">
+<h4 id="orgdb9e2be">Exercise 2.88</h4>
+<div class="outline-text-4" id="text-orgdb9e2be">
+<div class="org-src-container">
+<pre class="src src-scheme">(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">neg-poly</span> poly)
+  (<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">neg-terms</span> terms)
+    (<span style="color: #a020f0;">if</span> (empty-termlist? terms)
+        terms
+        (<span style="color: #a020f0;">let</span> ((first (first-term terms)))
+          (adjoin-term (make-term (order first)
+                                  (neg (coeff first)))
+                       (neg-terms (rest-terms terms))))))
+  (make-poly (variable poly)
+             (neg-terms (term-list poly))))
+(put 'neg 'poly neg-poly)
+(<span style="color: #a020f0;">define</span> (<span style="color: #0000ff;">sub-poly</span> p1 p2) (add-poly p1 (neg p2)))
+(put 'sub 'poly sub-poly)
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
 </body>
 </html>

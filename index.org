@@ -1,0 +1,9 @@
+#+TITLE: Tanner Hoelzel
+* About Me
+- [[file:resume.pdf][Resume]]
+- [[http://github.com/thoelze1][Git]]
+* Blog
+- 2022-02-01: [[file:uploading-garmin-routes.org][Uploading Large Files to the Garmin inReach Explorer+]]
+- 2022-02-01: [[file:hacking-my-laptop.org][Breaking into my MacBookPro10,2]]
+- 2021-12-29: [[file:cracking-windows-7.org][Cracking a Windows 7 Password]]
+- 2020-08-18: [[file:sicp-exercises.org][SICP Exercises]]

@@ -1907,8 +1907,3 @@ terms:
   (define (sub-poly p1 p2) (add-poly p1 (neg p2)))
   (put 'sub 'poly sub-poly)
 #+END_SRC
-* this is simply a test of what is finally implemented on my macbook pro running macos.
-I truly never thought that I would see this day. This is fucking
-wonderful. It's not based on the time of the hold, and there's
-absolutely zero need to change how I type to accomodate for the double
-functionality underneath my fingertips. This. Is. Awesome.

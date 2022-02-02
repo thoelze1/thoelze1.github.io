@@ -1,4 +1,4 @@
-#+TITLE: Emacs Golf
+#+TITLE: EmacsGolf: VimGolf Challenges in Emacs
 * Challenge: https://www.vimgolf.com/challenges/53b473a3ac0ceb00022303bd
     Solution:
         C-k M-& v i <return> s-' C-y C-j C-j <return> M-w

@@ -1,3 +1,0 @@
-* My website
-I build [[tannerhoelzel.com]] using org files to structure web content and
-~org-publish~ to export them to html.

@@ -1,8 +1,0 @@
-#+TITLE: Tanner Hoelzel
-#+OPTIONS: toc:nil
-* [[./resources.html][Educational resources]]
-* [[file:sicp-exercises.org][Solutions to SICP exercises]]
-* [[file:emacs-golf.org][EmacsGolf]]
-Solutions to some [[https://vimgolf.com][VimGolf]] challenges in Emacs.
-* [[https://github.com/thoelze1][GitHub]]
-* [[file:../resume/resume.pdf][Resume]]

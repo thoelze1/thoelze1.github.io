@@ -1,0 +1,42 @@
+#+TITLE: Uploading Large Files to the Garmin inReach Explorer+
+
+Garmin imposes a size limit on routes uploaded to the
+=Explorer+=. Nowhere could I find a definitive presentation of what
+can and can't be uploaded to the device, so for the purposes of this
+post let's say that routes consisting of up to 200 points can be
+uploaded.
+
+There are many free tools that claim to split =.gpx= files into
+smaller parts:
+- [[https://sites.google.com/site/gpxtracksplitter/][gpxtracksplitter]] (Windows)
+- [[http://iamdanfox.github.io/gpxsplitter/][gpxsplitter]] (Browser)
+- Numerous repos on GitHub
+
+I couldn't get any of these to work, but I found an [[https://gis.stackexchange.com/questions/193168/how-to-split-a-gpx-track-file-into-several-files-of-n-trackpoints-each][SO post]] that
+explained how to achieve my goal with [[http://gpsbabel.org][gpsbabel]]. The described script
+worked well, but produced many files that needed to be uploaded
+one-by-one to Garmin's online portal. I edited the script to recompose
+the resulting files:
+
+#+begin_src bash
+  #!/bin/bash
+
+  # $1 is input
+  # $2 is output
+  # $3 is (optionally) max number of points per file
+
+  prefix="${1%.*}-"
+  gpsbabel -i gpx -f "$1" -t -o csv -F - \
+    | gsplit -d -l ${3:-200} --additional-suffix=.csv - "$prefix"
+
+  echo -e "<?xml version=\"1.0\" ?>\n<gpx>\n</gpx>" > "$2"
+  for f in "$prefix"*.csv; do
+      gpsbabel -i csv -f "$f"                              \
+               -i gpx -f "$2"                              \
+               -x transform,trk=wpt -x nuketypes,waypoints \
+               -o gpx -F "$2"
+      rm "$f"
+  done
+#+end_src
+
+The output file can be uploaded in one shot.

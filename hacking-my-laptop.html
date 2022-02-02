@@ -3,10 +3,10 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2021-12-28 Tue 00:05 -->
+<!-- 2022-02-02 Wed 00:14 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Breaking into my old laptop</title>
+<title>Breaking into my MacBookPro10,2</title>
 <meta name="generator" content="Org mode" />
 <meta name="author" content="Tanner Hoelzel" />
 <style type="text/css">
@@ -40,7 +40,7 @@
   }
   pre.src {
     position: relative;
-    overflow: visible;
+    overflow: auto;
     padding-top: 1.2em;
   }
   pre.src:before {
@@ -52,7 +52,7 @@
     padding: 3px;
     border: 1px solid black;
   }
-  pre.src:hover:before { display: inline;}
+  pre.src:hover:before { display: inline; margin-top: 14px;}
   /* Languages per Org manual */
   pre.src-asymptote:before { content: 'Asymptote'; }
   pre.src-awk:before { content: 'Awk'; }
@@ -193,72 +193,40 @@
   .org-svg { width: 90%; }
   /*]]>*/-->
 </style>
-<style type="text/css">
-    /*<![CDATA[*/
-      pre.src {
-        height: 100px;
-        overflow: auto;
-      }
-    /*]]>*/
-   </style>
 <script type="text/javascript">
-/*
-@licstart  The following is the entire license notice for the
-JavaScript code in this tag.
-
-Copyright (C) 2012-2020 Free Software Foundation, Inc.
-
-The JavaScript code in this tag is free software: you can
-redistribute it and/or modify it under the terms of the GNU
-General Public License (GNU GPL) as published by the Free Software
-Foundation, either version 3 of the License, or (at your option)
-any later version.  The code is distributed WITHOUT ANY WARRANTY;
-without even the implied warranty of MERCHANTABILITY or FITNESS
-FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
-
-As additional permission under GNU GPL version 3 section 7, you
-may distribute non-source (e.g., minimized or compacted) forms of
-that code without the copy of the GNU GPL normally required by
-section 4, provided you include this license notice and a URL
-through which recipients can access the Corresponding Source.
-
-
-@licend  The above is the entire license notice
-for the JavaScript code in this tag.
-*/
+// @license magnet:?xt=urn:btih:e95b018ef3580986a04669f1b5879592219e2a7a&dn=public-domain.txt Public Domain
 <!--/*--><![CDATA[/*><!--*/
- function CodeHighlightOn(elem, id)
- {
-   var target = document.getElementById(id);
-   if(null != target) {
-     elem.cacheClassElem = elem.className;
-     elem.cacheClassTarget = target.className;
-     target.className = "code-highlighted";
-     elem.className   = "code-highlighted";
-   }
- }
- function CodeHighlightOff(elem, id)
- {
-   var target = document.getElementById(id);
-   if(elem.cacheClassElem)
-     elem.className = elem.cacheClassElem;
-   if(elem.cacheClassTarget)
-     target.className = elem.cacheClassTarget;
- }
-/*]]>*///-->
+     function CodeHighlightOn(elem, id)
+     {
+       var target = document.getElementById(id);
+       if(null != target) {
+         elem.classList.add("code-highlighted");
+         target.classList.add("code-highlighted");
+       }
+     }
+     function CodeHighlightOff(elem, id)
+     {
+       var target = document.getElementById(id);
+       if(null != target) {
+         elem.classList.remove("code-highlighted");
+         target.classList.remove("code-highlighted");
+       }
+     }
+    /*]]>*///-->
+// @license-end
 </script>
 </head>
 <body>
 <div id="content">
-<h1 class="title">Breaking into my old laptop</h1>
+<h1 class="title">Breaking into my MacBookPro10,2</h1>
 <p>
 I recently found my old 2012 Macbook Pro, but I forgot the password. I
 decided to try to get in without it. Here's what happened&#x2026;
 </p>
 
-<div id="outline-container-org1c048d9" class="outline-2">
-<h2 id="org1c048d9">Accessing the filesystem</h2>
-<div class="outline-text-2" id="text-org1c048d9">
+<div id="outline-container-org22bb4c5" class="outline-2">
+<h2 id="org22bb4c5">Accessing the filesystem</h2>
+<div class="outline-text-2" id="text-org22bb4c5">
 <p>
 You can boot in single user mode to get into the filesystem (just hold
 ⌘-<kbd>S</kbd> at boot<sup><a id="fnr.1" class="footref" href="#fn.1">1</a></sup>). I thought it would be more fun to actually
@@ -267,9 +235,9 @@ log in, so I decided to keep trying&#x2026;
 </div>
 </div>
 
-<div id="outline-container-org42e0a57" class="outline-2">
-<h2 id="org42e0a57">Resetting the password</h2>
-<div class="outline-text-2" id="text-org42e0a57">
+<div id="outline-container-org2a08c53" class="outline-2">
+<h2 id="org2a08c53">Resetting the password</h2>
+<div class="outline-text-2" id="text-org2a08c53">
 <p>
 To reset a user's password, you can create a new administrator account
 from which any password can be overwritten<sup><a id="fnr.2" class="footref" href="#fn.2">2</a></sup>. An easy way is
@@ -289,14 +257,14 @@ more fun to recover my actual password&#x2026;
 </div>
 </div>
 
-<div id="outline-container-orgfed7112" class="outline-2">
-<h2 id="orgfed7112">Cracking the password</h2>
-<div class="outline-text-2" id="text-orgfed7112">
+<div id="outline-container-orge7aeaa2" class="outline-2">
+<h2 id="orge7aeaa2">Cracking the password</h2>
+<div class="outline-text-2" id="text-orge7aeaa2">
 <p>
 First, we need to find the hash stored by the OS. I found a nice
 guide<sup><a id="fnr.3" class="footref" href="#fn.3">3</a></sup> on cracking mac passwords: apparently, a user's password
-hash resides at <code>/Volumes/&lt;hard drive
-name&gt;/var/db/dslocal/nodes/Default/users/&lt;username&gt;.plist</code>. I grabbed
+hash resides at /Volumes/&lt;hard drive
+name&gt;/var/db/dslocal/nodes/Default/users/&lt;username&gt;.plist. I grabbed
 the relevant plist and attempted to extract the hash:
 </p>
 
@@ -387,7 +355,7 @@ conversion any way you want, so I just rewrote a popular script <sup><a id="fnr.
 I ran the script, and:
 </p>
 
-<pre class="example">
+<pre class="example" id="org1a27cc1">
 $ml$36900$0509f57e4c698b5e6d2eb23ab1509f66cf2b571c44fb4abc5bde1cc08c63df00$f7a92ade7a1b9b61bf8c5b5da08b1f8333fc9b748261b1a19c8d4e74ed2bbff6a0fbc5093940d466d4c8687e0632c04b30cf0716daa91f98c02a92624210f099835667ae19018a55d6152ded496cc032bc1ed9d339e675c7984808716477465b194ce230f44646e354bfae1a382da287114e0ec0246ee667aef8ec7d64c2059d
 </pre>
 
@@ -419,9 +387,9 @@ Stopped: Wed Dec 15 05:03:01 2021
 We got a "token length exception." It turns out that hashcat expects a
 64-byte hash, but we gave it a 128-byte one<sup><a id="fnr.6" class="footref" href="#fn.6">6</a></sup>. We'll just remove
 64 bytes from the hash and try again. Since each byte of the hash is
-represented in <code>hash.txt</code> in hexadecimal as two ASCII characters, each
+represented in hash.txt in hexadecimal as two ASCII characters, each
 of which occupies one byte, we need to remove <kbd>64*2</kbd> bytes from
-<code>hash.txt</code>:
+hash.txt:
 </p>
 
 <div class="org-src-container">
@@ -461,7 +429,6 @@ Dictionary cache built:
 * Runtime...: 7 secs
 
 $ml$36900$0509f57e4c698b5e6d2eb23ab1509f66cf2b571c44fb4abc5bde1cc08c63df00$f7a92ade7a1b9b61bf8c5b5da08b1f8333fc9b748261b1a19c8d4e74ed2bbff6a0fbc5093940d466d4c8687e0632c04b30cf0716daa91f98c02a92624210f099:[REDACTED]
-
 Session..........: hashcat
 Status...........: Cracked
 Hash.Type........: macOS v10.8+ (PBKDF2-SHA512)
@@ -490,9 +457,9 @@ We recovered the password in just over a minute!
 </div>
 </div>
 
-<div id="outline-container-org0a5f8e0" class="outline-2">
-<h2 id="org0a5f8e0">Notes</h2>
-<div class="outline-text-2" id="text-org0a5f8e0">
+<div id="outline-container-orgccaac6d" class="outline-2">
+<h2 id="orgccaac6d">Notes</h2>
+<div class="outline-text-2" id="text-orgccaac6d">
 <p>
 To prevent leaking the recovered password, I flipped bits in both the
 salt and the hash. However, I used a well-known password dictionary
@@ -535,10 +502,5 @@ from the above hash. Happy hunting!
 
 </div>
 </div></div>
-<div id="postamble" class="status">
-<p class="author">Author: Tanner Hoelzel</p>
-<p class="date">Created: 2021-12-28 Tue 00:05</p>
-<p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
-</div>
 </body>
 </html>

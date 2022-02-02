@@ -1,4 +1,4 @@
-#+TITLE: Breaking into my old laptop
+#+TITLE: Breaking into my MacBookPro10,2
 
 I recently found my old 2012 Macbook Pro, but I forgot the password. I
 decided to try to get in without it. Here's what happened...
