@@ -1,0 +1,146 @@
+#+TITLE: Running Linux on a MacBook
+
+There are many existing resources for installing and running Linux on
+Apple hardware. This guide attempts to serve as a table of contents
+for those resources, with additional tips and context included.
+
+Disclaimer: every single time I have adjusted the boot process of my
+macbook, something horrible has at some point /seemed/ to occur: the
+laptop bricked, macOS partition corrupted, etc. That being said, the
+situation has always been recoverable. If you mess with your boot
+process, expect something bad to happen but maybe don't let that stop
+you from experimenting.
+
+* Before installing
+It's good to understand some aspects of the OS X/macOS system
+(hereafter "macOS") before making adjustments. Most important
+are firmware updates, Apple's UEFI implementation, and ~bless(8)~.
+
+** Firmware updates
+The easiest (and only, AFAIK) way to update firmware is through the
+"Software Update" feature of macOS. For that reason, it's a good idea
+to retain a bootable copy of macOS, either as a partition on the same
+drive as Linux or on a separate drive entirely. It might also be a
+good idea to make a bootable macOS installer. See [[https://support.apple.com/en-us/HT201371][Apple's guide]] for
+instructions.
+
+** UEFI
+On startup, a macbook boots to whichever EFI entry has the highest
+priority. The process can be interrupted by holding a certain key
+combination at startup (see [[https://support.apple.com/en-us/HT201255][Mac startup key combinations]]) to trigger
+Apple's rudimentary boot manager. If you forget to hold the correct
+key combination at startup, the UEFI may boot an entry you did not
+intend, at which point you will have to reboot and try again.
+
+** ~bless(8)~
+The ~bless~ utility is widely reported to be buggy, which matches my
+experience with it. I would recommend using ~efibootmgr~ (the standard
+alternative on Linux) entirely.
+
+** EFI System Partition (ESP)
+By default, Apple's Disk Utility hides the ESP. You can still mount it
+from a terminal:
+#+begin_src bash
+  diskutil list
+  mkdir /Volumes/efi
+  sudo mount -t msdos /dev/diskXsY /Volumes/efi
+#+end_src
+(where ~diskXsY~ is the ESP as ascertained by ~diskutil list~)
+
+* Installing Linux
+There are a number of ways to structure the process of booting Linux,
+which will include some number of the following components:
+- Apple's UEFI implementation
+- A boot manager, such as rEFInd or rEFIt
+- A boot loader, such as GRUB2
+- An initial ramdisk (to be passed, along with the kernel, to the
+  bootloader)
+- A Linux kernel, perhaps with an EFI-stub
+  
+Your use case should dictate which structure you choose. If you plan
+on regularly booting to different operating systems, you should use
+the [[https://www.rodsbooks.com/refind/][rEFInd]] boot manager (if only so that you don't have to remember to
+press the correct key combination at every startup). If you want a
+user-friendly boot process that will (probably) "just work" then you
+should also use rEFInd. If you're installing a popular
+Linux distribution as-is OOTB, you'll probably use a Linux kernel
+(without EFI stub) and an initial ramdisk. If you want a simple boot
+process with as few steps as possible, you can get away with booting
+an EFI kernel stub (without even an initial ramdisk) directly from
+Apple's UEFI.
+
+** Using the rEFInd boot manager
+rEFInd has great documentation where you can find installation
+instructions and a detailed feature list. There are two primary ways
+to use rEFInd: invoke a Linux kernel bootloader (e.g. GRUB2) or load a
+Linux kernel EFI stub.
+
+*** Invoking the GRUB2 bootloader from rEFInd
+This is the "standard" way of dual-booting Linux. Installation might
+look like this:
+1. Install rEFInd
+2. Insert installation media of a chosen GNU/Linux distribution
+3. Reboot
+4. In the rEFInd menu, select the installation media as the boot target
+5. Follow installation instructions (at some point, the installer will
+   automatically add a boot entry to the ESP partition)
+6. Reboot
+7. In the rEFInd menu, you can choose from the boot targets that
+   rEFInd has found in the ESP partition
+You're dual-booting!
+  
+*** Loading a kernel EFI stub from rEFInd
+This method is very similar to the above, but may require a more
+manual installation process. For a how-to, see
+https://www.makeuseof.com/tag/install-linux-macbook-pro/.
+
+** Using Apple's boot manager
+You may be able to get by without a third-party boot manager. However,
+on some Apple hardware, booting non-macOS operating systems from EFI
+may result in improper hardware initialization (see [[https://regebro.wordpress.com/2008/11/16/installing-linux-on-a-macbook-without-os-x/][this story]] for an
+example). In such cases, it might be necessary to use rEFInd to force
+proper initialization (or at least to use a bootloader in BIOS compatibility
+mode, like GRUB2).
+
+Again, you can invoke a bootloader or load an EFI stub.
+
+*** Invoking GRUB2 from Apple's UEFI
+For a full guide, see:
+- This [[https://askubuntu.com/questions/831161/dual-booting-os-x-or-macos-with-linux-without-refind/1272785#1272785][stackoverflow post]]
+- https://glandium.org/blog/?p=2830
+
+*** Loading a Linux kernel with EFI stub from Apple's UEFI
+This [[https://stackoverflow.com/questions/28842865/passing-kernel-parametes-to-efi-stub-in-apples-efi-env/][stackoverflow post]] has full instructions. They boil down to:
+1. Create an ~HFS+~ partition large enough to hold a kernel stub and
+   (optionally) initial ramdisk (which were ~6MB and ~36MB in my
+   experience)
+2. Copy the kernel stub and initial ramdisk to the partition
+3. Rename the kernel stub so that it ends with ~.efi~
+4. Create a new boot entry pointing to your new partition:
+   #+begin_src bash
+     efibootmgr -d /dev/sdX -p Y -c -L "Debian (EFI-Stub)" -l /vmlinuz.efi -u "root=UUID=xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx ro quiet splash initrd=\initrd.img"
+   #+end_src
+Note: see this [[https://askubuntu.com/questions/831161/dual-booting-os-x-or-macos-with-linux-without-refind#comment2103658_832609][stackoverflow comment]] by the author of rEFInd for
+thoughts about this boot sequence.
+
+**** Without initial ramdisk
+The same steps apply, but you must use ~root=PARTUUID=...~ instead of
+~root=UUID=...~. See this [[https://www.reddit.com/r/Gentoo/comments/ivrfyf/comment/g5ujnm1/][reddit comment]] for an explanation.
+
+* Troubleshooting
+- Unable to partition disk, even though there should be room
+  - https://discussions.apple.com/thread/8501670
+- macOS partition unbootable after creating partition
+  - https://discussions.apple.com/thread/6511990
+  - https://ipfs-sec.stackexchange.cloudflare-ipfs.com/apple/A/question/282550.html
+  - https://apple.stackexchange.com/questions/238012/os-volume-shows-as-type-ffffffff-ffff-ffff-ffff-ffffffff-after-attempting-to-d/238088#238088
+  - https://apple.stackexchange.com/questions/307780/macos-partition-startup-volume-type-ffffffff-ffff-ffff-ffff-ffffffffffff
+
+* References
+- https://www.reddit.com/r/linux/comments/4rnufy/people_who_run_linux_on_macbooks_is_it_worth_it/
+- https://www.reddit.com/r/hackintosh/comments/7sprm3/is_it_possible_to_run_a_hackintosh_off_an/
+- https://wiki.archlinux.org/index.php/Mac#Firmware_updates
+- https://askubuntu.com/questions/894036/what-is-the-current-best-way-to-dual-boot-a-mac-with-ubuntu-on-the-latest-10-12
+- https://www.reddit.com/r/Gentoo/comments/ivrfyf/kernel_panic_on_boot/
+- https://askubuntu.com/questions/831161/dual-booting-os-x-or-macos-with-linux-without-refind
+- https://themacadmin.com/2012/02/15/mounting-the-efi-boot-partition-on-mac-os-x/
