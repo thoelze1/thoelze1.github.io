@@ -1,15 +1,17 @@
 #+TITLE: Writing a basic service for GNU Guix
+#+OPTIONS: toc:1
 
 Let's write a service for GNU Guix that will automatically start
 [[https://github.com/kmonad/kmonad][kmonad]] at boot, and keep it running until shutdown.
 
-Before we proceed, note that we could make a daemon of kmonad without
-going to the trouble of writing a Guix-specific daemon: we could start
-kmonad in a shell profile, write a cron job, or something else. The
-user experience of these methods might be the same, but writing a
-service keeps things organized and seems like the "right" way. If
-nothing else, it's a great learning opportunity.
+Note: before we proceed, we /could/ make a kmonad "daemon" without
+going to the trouble of writing a Guix-specific service: we could
+start kmonad in a shell profile, write a cron job, or something
+else. The user experience of these methods might be the same, but
+writing a service keeps things organized and seems like the "right"
+way. If nothing else, it's a great learning opportunity.
 
+* Reading the docs
 First let's read the documentation of [[https://guix.gnu.org/en/manual/en/guix.html][GNU Guix]]. We see that Guix
 offers "services" which extend the functionality of the operating
 system. The manual says:
@@ -27,8 +29,9 @@ the account service by passing it a list of required build user
 accounts (see Base Services).
 #+end_quote
 
-This sounds like what we want. Below, we see that the Guix daemon
-defines its own "service type":
+The Guix daemon sounds very similar to what we're looking to
+construct. Nearby, we see that the Guix daemon defines its own
+"service type":
 
 #+begin_src scheme
 (define guix-service-type
@@ -42,10 +45,16 @@ defines its own "service type":
 #+end_src
 
 Hm. I didn't expect we'd need to instatiate our own data type just to
-create a simple init daemon. Let's look at a simpler example-I saw
-some "Game Services" listed in the manual that might be pretty
-simple. The definition of the games services are apparently in
-[[https://git.savannah.gnu.org/cgit/guix.git/tree/gnu/services/games.scm][`/gnu/services/games.scm`]]:
+create a simple init daemon. After all, kmonad is simpler than the
+guix daemon - it just needs to start at boot, and that's it. The
+documentation is terse and it's not clear whether there's a better way
+to proceed. Maybe if we find a simple example of service, we can build
+off of it.
+
+* Reading some source
+I saw that "Game Services" were listed in the manual. Maybe there's a
+simple one we can make a template of. First, we find the definition of
+the games services [[https://git.savannah.gnu.org/cgit/guix.git/tree/gnu/services/games.scm][~/gnu/services/games.scm~]]:
 
 #+begin_src scheme
 ;;; GNU Guix --- Functional package management for GNU
@@ -132,20 +141,51 @@ simple. The definition of the games services are apparently in
    (default-value (wesnothd-configuration))))
 #+end_src
 
-The [[https://guix.gnu.org/manual/en/html_node/Game-Services.html][Game Services reference]] says
+There's only one game contained in ~(gnu services games)~ and that is
+The Battle for Wesnoth Server. The [[https://guix.gnu.org/manual/en/html_node/Game-Services.html][Game Services reference]] says
 
 #+begin_quote
 To run wesnothd in the default configuration, instantiate it as:
 
-`(service wesnothd-service-type)`
+~(service wesnothd-service-type)~
 #+end_quote
 
-Based on the `service` documentation, `(service some-service-type)` is
-equivalent to `(service some-service-type default-arguments)`. I can't
-think of sane defaults to provide to kmonad, so let's forego defaults
-and provide kmonad as `(service kmonad-service-type
-kmonad-arguments)`. With that in mind, let's apply
-`wesnothd-service-type` to write `kmonad-service-type`:
+So far, we have a module that exports ~wesnothd-service-type~ and a
+way to use that binding in our system config to declare a service.
+Apparently, a new ~service-type~ is what we're looking for after
+all. Let's start by implementing a ~kmonad-service-type~ and see where
+that takes us.
+
+* Writing ~kmonad-service-type~
+A ~service-type~ (see [[https://guix.gnu.org/manual/en/html_node/Service-Reference.html][Service Reference]]) takes a name, description,
+and a list of ~service-extension~ objects, each of which describes how
+to extend existing services. So what exactly is a
+~<service-extension>~ object? The ~service-extension~ documentation
+says:
+
+#+begin_quote
+Scheme Procedure: ~service-extension~ /target-type/ /compute/
+
+Return a new extension for services of type /target-type/. /compute/ must
+be a one-argument procedure: ~fold-services~ calls it, passing it the
+value associated with the service that provides the extension; it must
+return a valid value for the target service.
+#+end_quote
+
+So in the context of ~(define kmonad-service-type ...)~, a ~compute~
+function will receive the (single) value associated with
+~kmonad-service-type~ (a value which we have yet to define) and will
+return the value required by ~target-type~, which is the service being
+extended. The ~wesnothd-service-type~ extends two services: the
+[[https://guix.gnu.org/manual/en/html_node/Service-Types-and-Services.html][~account-service-type~]] which is extended by a list of ~user-group~ and
+~user-account~ objects; and the [[https://guix.gnu.org/manual/en/html_node/Shepherd-Services.html][~shepherd-root-service-type~]] which is
+extended by a list of ~<shepherd-service>~ objects.
+
+So which services should kmonad extend? It's recommended to make a
+dedicated user and group for a daemon (see [[https://unix.stackexchange.com/questions/29159/why-is-it-recommended-to-create-a-group-and-user-for-some-applications][stackoverflow]]), so let's
+extend the ~account-service-type~ with a new user and group to run the
+kmonad daemon. Let's also extend the ~shepherd-root-service-type~
+because we want our daemon managed by the init system, Shepherd:
 
 #+begin_src scheme
   (define kmonad-service-type
@@ -160,80 +200,57 @@ kmonad-arguments)`. With that in mind, let's apply
                                (compose list kmonad-shepherd-service))))))
 #+end_src
 
-First let's figure out how service-extension works. The documentation
-says:
+It looks pretty similar to ~wesnothd-service-type~, but without the
+~default-value~, which doesn't really apply to kmonad. Next, we've got
+to choose how to extend the ~account-service-type~ and the
+~shepherd-root-service-type~.
 
-#+begin_quote
-Scheme Procedure: service-extension target-type compute
+** Extending the ~account-service-type~
+As noted above, ~(const %kmonad-daemon-accounts)~ needs to evaluate to a
+function of a single argument that returns a list of users and
+groups. Well, ~const~ makes a function that takes some argument, and
+then just returns whatever was passed to ~const~--in this case,
+~%kmonad-daemon-accounts~. All we've got to do is define
+~%kmonad-daemon-accounts~.
 
-Return a new extension for services of type target-type. compute must
-be a one-argument procedure: fold-services calls it, passing it the
-value associated with the service that provides the extension; it must
-return a valid value for the target service.
-#+end_quote
-
-So in the context of `(define kmonad-service-type ...`, a `compute`
-function will receive the (single) value associated with
-`kmonad-service-type` (a value which we have yet to define) and will
-return the value required by the extended service
-`target-type`. According to the docs, [[https://guix.gnu.org/manual/en/html_node/Service-Types-and-Services.html][`account-service-type`]] gets
-extended with a list of `user-group` and `user-account` objects;
-[[https://guix.gnu.org/manual/en/html_node/Shepherd-Services.html][`shepherd-root-service-type`]] gets extended with a list of
-`<shepherd-service>`. We should be ready to define
-`%kmonad-daemon-accounts`:
+We need one daemon user and one group. Our daemon user won't require
+login, so we'll use ~/sbin/nologin~ (see ~man 8 nologin~) like
+~%wesnothd-accounts~. Similarly, it won't require a home directory. We
+can pretty much copy the ~%wesnothd-accounts~ to make
+~%kmonad-daemon-accounts~:
 
 #+begin_src scheme
-(define %kmonad-daemon-accounts
-  (list (user-account
-         (name "kmonad-daemon")
-         (group "kmonad-daemon")
-         (system? #t)
-         (comment "kmonad daemon user")
-         (home-directory "/var/empty")
-         (shell (file-append shadow "/sbin/nologin")))
-        (user-group
-         (name "kmonad-daemon")
-         (system? #t))))
+  (define %kmonad-daemon-accounts
+    (list (user-account
+           (name "kmonad-daemon")
+           (group "kmonad-daemon")
+           (system? #t)
+           (comment "kmonad daemon user")
+           (home-directory "/var/empty")
+           (shell (file-append shadow "/sbin/nologin")))
+          (user-group
+           (name "kmonad-daemon")
+           (system? #t))))
 #+end_src
 
-It's recommended to make a dedicated user and group for each service
-(see [[https://unix.stackexchange.com/questions/29159/why-is-it-recommended-to-create-a-group-and-user-for-some-applications][stackoverflow]]) so we will do the same with kmonad. It's also a
-good idea to disable login from this dedicated user by setting the
-default shell to `/sbin/nologin` (see `man 8 nologin`). Now, `(const
-%kmonad-daemon-accounts)` will evaluate to a function that takes some
-argument--specifically whichever argument is passed to it by
-`fold-services`--and return our newly-defined list of `user-account`
-and `user-group` objects. We've finished extending
-`account-service-type`.
+** Extending the ~shepherd-root-service-type~
+As noted above, ~(compose list kmonad-shepherd-service)~ needs to
+evaluate to a function of a single argument (a single argument of our
+choice) and return a list of ~<shepherd-service>~ objects. That means
+that ~kmonad-shepherd-service~ must take a single argument, and return
+a single ~shepherd-service~! Before we write
+~kmonad-shepherd-service~, let's decide what we want to pass
+it. Minimally, kmonad needs a ~.kbd~ file to run. In theory, a user
+could also specify other stuff (e.g. a log level), but let's just
+start with the ~.kbd~ path.
 
-Now let's extend `shepherd-root-service-type`. That means implementing
-`kmonad-shepherd-service` so that it takes whatever single argument we
-want it to, and outputs something that, when passed to `list`, yields
-a list of `<shepherd-service>`--in other words, a single
-<shepherd-service>. Before we write the function, let's decide what we
-want to pass to `kmonad-shepherd-service`. Minimally, kmonad needs a
-`.kbd` file to run. In theory, a user could also specify a user
-account to run the daemon, or a log level, or a log output
-location. But let's just start with the `.kbd` path as the single
-argument:
+If we're using ~wesnoth-shepherd-service~ as an example, we'll need to
+think about the ~requirement~, ~start~, and ~stop~ fields.
 
-#+begin_src scheme
-  (define (kmonad-shepherd-service kbd-path)
-    (shepherd-service
-     (documentation "Run the kmonad daemon (kmonad-daemon)." )
-     (provision '(kmonad-daemon))
-     (requirement '(udev user-processes))
-     (start #~(make-forkexec-constructor
-               (list #$(file-append kmonad "/bin/kmonad")
-                     #$kbd-path "-l info")
-               #:user "kmonad-daemon" #:group "kmonad-daemon"
-               #:log-file "/var/log/kmonad.log"))
-     (stop #~(make-kill-destructor))))
-#+end_src
-
-We definitely need to wait for `udev`, but maybe we should also wait
-for `user-processes` like the other daemons in the shepherd graph seem
-to. Looking at the [[https://git.savannah.gnu.org/cgit/guix.git/tree/gnu/services/shepherd.scm][source]] for `user-processes`:
+*** ~requirement~ field
+We definitely need to wait for ~udev~, but maybe we should also wait
+for ~user-processes~ like the other daemons in the shepherd graph
+do. Looking at the [[https://git.savannah.gnu.org/cgit/guix.git/tree/gnu/services/shepherd.scm][source]] for ~user-processes~:
 
 #+begin_quote
 This is a synchronization point used to make sure user processes and daemons
@@ -242,11 +259,30 @@ system mounts, etc.  This is similar to the 'sysvinit' target in systemd.
 #+end_quote
 
 In theory we could explicitly wait for other shepherd services, but it
-seems like this is a catch-all that applies perfectly to the
-circumstance. Come to think of it, I wonder why `wesnothd` doesn't
-depend on `user-processes` too. Finally, we need to specify the
-`start` and `stop` fields. The [[https://git.savannah.gnu.org/cgit/guix.git/tree/gnu/build/shepherd.scm][source]] for
-`make-forkexec-constructor/container` include:
+seems like this catch-all applies perfectly to our use case. Come to
+think of it, I wonder why ~wesnothd~ doesn't depend on
+~user-processes~ too.
+
+*** ~start~ and ~stop~ fields
+According to the Shepherd Services [[https://guix.gnu.org/manual/en/html_node/Shepherd-Services.html][documentation]], the ~start~ and
+~stop~ fields of ~shepherd-service~ take [[https://guix.gnu.org/manual/en/html_node/G_002dExpressions.html][G-Expressions]]. But what's a
+g-expression? Well, because Guix uses Scheme for both higher-level
+actions--like defining packages--and lower-level actions--like
+building derivations generated by packages-- it needs a faculty for
+embedding lower-level code in higher-level code. So in the ~start~
+field of ~wesnoth-shepherd-service~:
+
+#+begin_src scheme
+  (start #~(make-forkexec-constructor/container
+            (list #$(file-append package "/bin/wesnothd")
+                  "-p" #$(number->string port))
+            #:user "wesnothd" #:group "wesnothd"))
+#+end_src
+
+Some lower-level code is passed with ~#~(...)~, within which
+higher-level code is escaped with ~#$(...)~ which the compiler is able
+to "lower" to lower-level code. Looking at the [[https://git.savannah.gnu.org/cgit/guix.git/tree/gnu/build/shepherd.scm][source]] for
+~make-forkexec-constructor/container~, we see:
 
 #+begin_quote
 This is a variant of 'make-forkexec-constructor' that starts COMMAND in
@@ -255,7 +291,7 @@ list of <file-system-mapping> to make in the case of a separate mount
 namespace, in addition to essential bind-mounts such /proc.
 #+end_quote
 
-Wherease the [[https://www.gnu.org/software/shepherd/manual/html_node/Service-De_002d-and-Constructors.html#Service-De_002d-and-Constructors][docs]] for `make-forkexec-contructor` reads:
+And the [[https://www.gnu.org/software/shepherd/manual/html_node/Service-De_002d-and-Constructors.html#Service-De_002d-and-Constructors][documentation]] for ~make-forkexec-contructor~ reads:
 
 #+begin_quote
 Return a procedure that forks a child process, closes all file
@@ -280,11 +316,31 @@ standard output and standard error are redirected. log-file is created
 if it does not exist, otherwise it is appended to.
 #+end_quote
 
-The `wesnoth` source appears not to use the `NAMESPACES` feature of
+The ~wesnoth~ source appears not to use the ~NAMESPACES~ feature of
 the containerized-version, so we'll stick with
-`make-forexec-constructor` as is used in the [[https://guix.gnu.org/manual/en/html_node/Shepherd-Services.html][syslogd example]].
+~make-forkexec-constructor~ as is used in the [[https://guix.gnu.org/manual/en/html_node/Shepherd-Services.html][syslogd example]].
 
-Putting it all together, and adding imports, we have:
+*** ~kmonad-shepherd-service~
+Let's put it all together:
+
+#+begin_src scheme
+  (define (kmonad-shepherd-service kbd-path)
+    (shepherd-service
+     (documentation "Run the kmonad daemon (kmonad-daemon)." )
+     (provision '(kmonad-daemon))
+     (requirement '(udev user-processes))
+     (start #~(make-forkexec-constructor
+               (list #$(file-append kmonad "/bin/kmonad")
+                     #$kbd-path "-l info")
+               #:user "kmonad-daemon" #:group "kmonad-daemon"
+               #:log-file "/var/log/kmonad.log"))
+     (stop #~(make-kill-destructor))))
+#+end_src
+
+** Making a module
+Now let's package our code into a module. If the location where we
+keep local guix modules is ~~/local-guix~, then we can add our module
+at ~~/local-guix/my/services/kmonad.scm~ as:
 
 #+begin_src scheme
   (define-module (my services kmonad)
@@ -331,45 +387,43 @@ Putting it all together, and adding imports, we have:
                                (compose list kmonad-shepherd-service))))))
 #+end_src
 
-If the location where we keep local guix modules is `~/local-guix`,
-then we can save the above file as
-`~/local-guix/my/services/kmonad.scm`. Now we can adjust our system
-config to use the new service type:
+* Using ~kmonad-service-type~
+Now adding a kmonad service is straightforward. Let's add some other
+kmonad-specific configuration to our system while we're at it:
 
 #+begin_src scheme
-(use-modules (gnu))
-(use-package-modules haskell-apps) ;; contains kmonad
-(use-modules (my services kmonad))
-;; more modules
+  (use-modules (my services kmonad))
+  ;; more modules
 
-(operating-system
-  (users
-    (append (list (user-account
-                     (supplementary-groups
-                       '("input" ;; needed by kmonad
-                         ;; more groups
+  (operating-system
+    (users
+      (append (list (user-account
+                      (supplementary-groups
+                        '("input" ;; needed by kmonad
+                          ;; more groups
                          ))
-                     ;; more fields
-                   )
-                   ;; more users
-            )
-            %base-user-accounts))
-  (packages
-    (append (list "kmonad"
-             ;; more packages
-            )
-            %base-packages))
-  (services
-    (append (list (kmonad-service "/path/to/config.kbd")
-                  ;; more services
-            )
-            (modify-services %desktop-services ;; needed to add kmonad udev rules
-              (udev-service-type config =>
-                (udev-configuration (inherit config)
-                  (rules (cons kmonad
-                    (udev-configuration-rules config))))))))
-  ;; more fields
-)
+                      ;; more fields
+                    )
+                    ;; more users
+              )
+              %base-user-accounts))
+    (packages
+      (append (list
+               "kmonad"
+               ;; more packages
+              )
+              %base-packages))
+    (services
+      (append (list (service kmonad-service-type "/path/to/config.kbd")
+                    ;; more services
+              )
+              (modify-services %desktop-services ;; needed to add kmonad udev rules
+                (udev-service-type config =>
+                  (udev-configuration (inherit config)
+                    (rules (cons kmonad
+                      (udev-configuration-rules config))))))))
+    ;; more fields
+  )
 #+end_src
 
 And reconfigure:
@@ -378,7 +432,27 @@ And reconfigure:
 sudo guix system -L ~/local-guix reconfigure /path/to/config.scm
 #+end_src
 
-Final thoughts
-- Perhaps we could have added kmonad as a `simple-service` on top of
-  mcron?
-- We could submit this as a package to guix
+* A simpler daemon?
+I think it would be possible to add kmonad as a ~simple-service~ on top of
+~shepherd-root-service-type~. After looking at the ~simple-service~
+[[https://git.savannah.gnu.org/cgit/guix.git/tree/gnu/services.scm][source]], we can try:
+
+#+begin_src scheme
+  (simple-service 'kmonad-service shepherd-root-service-type
+                  (list (shepherd-service
+                         (documentation "Run the kmonad daemon (kmonad-daemon)." )
+                         (provision '(kmonad-daemon))
+                         (requirement '(udev user-processes))
+                         (start #~(make-forkexec-constructor
+                                   (list #$(file-append kmonad "/bin/kmonad")
+                                         #$kbd-path "-l info")
+                                   #:log-file "/var/log/kmonad.log"))
+                         (stop #~(make-kill-destructor)))))
+
+#+end_src
+
+* References
+- https://www.mndet.net/2016/05/04/guixsd-system-service.html
+- https://github.com/alezost/guix-config/blob/master/system-config/os-main.scm
+- https://serverfault.com/questions/819226/is-there-a-directory-equivalent-of-dev-null-in-linux
+- https://hal.inria.fr/hal-01580582/document
