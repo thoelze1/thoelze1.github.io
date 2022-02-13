@@ -1,0 +1,13 @@
+#+TITLE: Favorite Quotes
+
+#+begin_quote
+Computer science is not a science and it has little to do with
+computers -- Gerald Jay Sussman and Hal Abelson, Structure and
+Interpretation of Computer Programs
+#+end_quote
+
+#+begin_quote
+Programming languages are not merely technologies but habits of mind
+as well, and nothing changes slower -- Paul Graham,
+http://www.paulgraham.com/avg.html
+#+end_quote

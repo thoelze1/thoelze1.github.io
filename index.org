@@ -3,6 +3,7 @@
 - [[file:resume.pdf][Resume]]
 - [[http://github.com/thoelze1][Git]]
 * Blog
+- 2022-02-10: [[file:quotes.org][Favorite Quotes]]
 - 2022-02-09: [[file:running-linux-on-a-macbook.org][Running Linux on a MacBook]]
 - 2022-02-01: [[file:uploading-garmin-routes.org][Uploading Large Files to the Garmin inReach Explorer+]]
 - 2022-02-01: [[file:hacking-my-laptop.org][Breaking into my MacBookPro10,2]]
