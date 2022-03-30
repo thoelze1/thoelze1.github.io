@@ -3,10 +3,10 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2022-02-12 Sat 20:24 -->
+<!-- 2022-03-30 Wed 16:56 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Tanner Hoelzel</title>
+<title>How I Blog</title>
 <meta name="generator" content="Org mode" />
 <meta name="author" content="Tanner Hoelzel" />
 <style type="text/css">
@@ -218,29 +218,93 @@
 </head>
 <body>
 <div id="content">
-<h1 class="title">Tanner Hoelzel</h1>
-<div id="outline-container-orgcecabeb" class="outline-2">
-<h2 id="orgcecabeb">About Me</h2>
-<div class="outline-text-2" id="text-orgcecabeb">
-<ul class="org-ul">
-<li><a href="resume.pdf">Resume</a></li>
-<li><a href="http://github.com/thoelze1">Git</a></li>
-</ul>
+<h1 class="title">How I Blog</h1>
+<p>
+Using `org-publish` to generate my website offers a false distinction
+between data and code. On the one hand, there is a clear boundary
+between the publishing instructions that live in `init.el` and the
+website data within the `org` directory. But on the other hand, the
+details of the build instructions clearly depend on the structure of
+the `org` directory.
+</p>
+
+<p>
+The problem with org-publish. Consider the following:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-elisp"><span style="color: #DCDCCC;">(</span><span style="color: #F0DFAF; font-weight: bold;">setq</span> org-publish-project-alist
+      '<span style="color: #BFEBBF;">(</span><span style="color: #D0BF8F;">(</span><span style="color: #CC9393;">"test-blog"</span>
+         <span style="color: #DCDCCC; font-weight: bold;">:base-directory</span> <span style="color: #CC9393;">"~/publish/blog-posts"</span>
+         <span style="color: #DCDCCC; font-weight: bold;">:publishing-directory</span> <span style="color: #CC9393;">"~/publish"</span>
+         <span style="color: #DCDCCC; font-weight: bold;">:publishing-function</span> org-html-publish-to-html<span style="color: #D0BF8F;">)</span>
+        <span style="color: #D0BF8F;">(</span><span style="color: #CC9393;">"test-other"</span>
+         <span style="color: #DCDCCC; font-weight: bold;">:base-directory</span> <span style="color: #CC9393;">"~/git/publish/other"</span>
+         <span style="color: #DCDCCC; font-weight: bold;">:publishing-directory</span> <span style="color: #CC9393;">"~/git/publish"</span>
+         <span style="color: #DCDCCC; font-weight: bold;">:publishing-function</span> org-html-publish-to-html<span style="color: #D0BF8F;">)</span>
+        <span style="color: #D0BF8F;">(</span><span style="color: #CC9393;">"test"</span> <span style="color: #DCDCCC; font-weight: bold;">:components</span> <span style="color: #93E0E3;">(</span><span style="color: #CC9393;">"test-blog"</span> <span style="color: #CC9393;">"test-other"</span><span style="color: #93E0E3;">)</span><span style="color: #D0BF8F;">)</span><span style="color: #BFEBBF;">)</span><span style="color: #DCDCCC;">)</span>
+</pre>
+</div>
+
+<p>
+The links get broken. So on the one hand, `org-publish` offers a way
+to break up a large project into subprojects. But it doesn't
+immediately tell you that a large project may be broken up if and only
+if its links take certain assumptions to account (yes, it would
+probably be pretty easy to surmise this feature). So ideally, I would
+have just one org-publish project. However, some need different
+publishing-functions, e.g. my resume, so I'll have at least 2 functions
+</p>
+
+<div id="outline-container-org9a0d13c" class="outline-2">
+<h2 id="org9a0d13c">Org-mode sitemap bug</h2>
+<div class="outline-text-2" id="text-org9a0d13c">
+<p>
+<a href="https://emacs.stackexchange.com/questions/44534/org-mode-sitemap-not-updated-after-re-publish">https://emacs.stackexchange.com/questions/44534/org-mode-sitemap-not-updated-after-re-publish</a>
+</p>
 </div>
 </div>
-<div id="outline-container-orgfe08ea5" class="outline-2">
-<h2 id="orgfe08ea5">Blog</h2>
-<div class="outline-text-2" id="text-orgfe08ea5">
-<ul class="org-ul">
-<li>2022-02-12: <a href="gnu-shepherd-simple-service.html">Writing a basic service for GNU Guix</a></li>
-<li>2022-02-10: <a href="blog-tutorial.html">How I Blog</a></li>
-<li>2022-02-10: <a href="quotes.html">Favorite Quotes</a></li>
-<li>2022-02-09: <a href="running-linux-on-a-macbook.html">Running Linux on a MacBook</a></li>
-<li>2022-02-01: <a href="uploading-garmin-routes.html">Uploading Large Files to the Garmin inReach Explorer+</a></li>
-<li>2022-02-01: <a href="hacking-my-laptop.html">Breaking into my MacBookPro10,2</a></li>
-<li>2021-12-29: <a href="cracking-windows-7.html">Cracking a Windows 7 Password</a></li>
-<li>2020-08-18: <a href="sicp-exercises.html">SICP Exercises</a></li>
-</ul>
+
+<div id="outline-container-org189133c" class="outline-2">
+<h2 id="org189133c">File-specific <kbd>org-export</kbd> variables</h2>
+<div class="outline-text-2" id="text-org189133c">
+<p>
+See <a href="https://emacs.stackexchange.com/questions/47474/setting-variable-for-org-mode-html-export">https://emacs.stackexchange.com/questions/47474/setting-variable-for-org-mode-html-export</a>
+</p>
+</div>
+</div>
+<div id="outline-container-orga348fed" class="outline-2">
+<h2 id="orga348fed">Emacs</h2>
+</div>
+<div id="outline-container-orgb14546f" class="outline-2">
+<h2 id="orgb14546f">Org mode</h2>
+</div>
+<div id="outline-container-org1853ae4" class="outline-2">
+<h2 id="org1853ae4">Github pages</h2>
+</div>
+<div id="outline-container-org1bc564f" class="outline-2">
+<h2 id="org1bc564f">Optional</h2>
+<div class="outline-text-2" id="text-org1bc564f">
+</div>
+<div id="outline-container-org1aaaf4b" class="outline-3">
+<h3 id="org1aaaf4b">Domain name</h3>
+</div>
+<div id="outline-container-org2710fec" class="outline-3">
+<h3 id="org2710fec">Twitter bootstrap</h3>
+</div>
+</div>
+<div id="outline-container-org821a787" class="outline-2">
+<h2 id="org821a787">Examples</h2>
+<div class="outline-text-2" id="text-org821a787">
+</div>
+<div id="outline-container-org6124154" class="outline-3">
+<h3 id="org6124154"><a href="https://miikanissi.com/blog/website-with-emacs.html">https://miikanissi.com/blog/website-with-emacs.html</a></h3>
+</div>
+<div id="outline-container-orga66b8b6" class="outline-3">
+<h3 id="orga66b8b6"><a href="https://rkallos.com/blog/2017/01/02/static-site-generation-with-org-mode/">https://rkallos.com/blog/2017/01/02/static-site-generation-with-org-mode/</a></h3>
+</div>
+<div id="outline-container-orgf9f593f" class="outline-3">
+<h3 id="orgf9f593f"><a href="https://opensource.com/article/20/3/blog-emacs">https://opensource.com/article/20/3/blog-emacs</a></h3>
 </div>
 </div>
 </div>

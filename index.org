@@ -4,6 +4,7 @@
 - [[http://github.com/thoelze1][Git]]
 * Blog
 - 2022-02-12: [[file:gnu-shepherd-simple-service.org][Writing a basic service for GNU Guix]]
+- 2022-02-10: [[file:blog-tutorial.org][How I Blog]]
 - 2022-02-10: [[file:quotes.org][Favorite Quotes]]
 - 2022-02-09: [[file:running-linux-on-a-macbook.org][Running Linux on a MacBook]]
 - 2022-02-01: [[file:uploading-garmin-routes.org][Uploading Large Files to the Garmin inReach Explorer+]]
