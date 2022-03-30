@@ -3,10 +3,10 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2022-02-12 Sat 20:24 -->
+<!-- 2022-03-30 Wed 15:18 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Tanner Hoelzel</title>
+<title>Indexing (Tagging) Clojure/ClojureScript Source</title>
 <meta name="generator" content="Org mode" />
 <meta name="author" content="Tanner Hoelzel" />
 <style type="text/css">
@@ -218,29 +218,87 @@
 </head>
 <body>
 <div id="content">
-<h1 class="title">Tanner Hoelzel</h1>
-<div id="outline-container-orgcecabeb" class="outline-2">
-<h2 id="orgcecabeb">About Me</h2>
-<div class="outline-text-2" id="text-orgcecabeb">
-<ul class="org-ul">
-<li><a href="resume.pdf">Resume</a></li>
-<li><a href="http://github.com/thoelze1">Git</a></li>
-</ul>
+<h1 class="title">Indexing (Tagging) Clojure/ClojureScript Source</h1>
+<p>
+Typically source code is tagged statically, without running the code
+(see ctags/etags). For clojure, there is indeed a way to do this, and
+also a (better) way using Clojure's interaction mode, CIDER.
+</p>
+
+<div id="outline-container-orgda8b0df" class="outline-2">
+<h2 id="orgda8b0df">Static Tag Generation</h2>
+<div class="outline-text-2" id="text-orgda8b0df">
+<p>
+I found a question about using etags with emacs:
+</p>
+
+<p>
+<a href="https://stackoverflow.com/questions/1481842/clojure-emacs-etags">https://stackoverflow.com/questions/1481842/clojure-emacs-etags</a>
+</p>
+
+<p>
+The top response provides the following one-liner:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-bash">find . <span style="color: #CC9393;">\!</span> -name <span style="color: #CC9393;">'.*'</span> -name <span style="color: #CC9393;">'*.clj'</span> | xargs etags --regex=<span style="color: #CC9393;">'/[ \t\(]*def[a-z]* \([a-z-!]+\)/\1/'</span> --regex=<span style="color: #CC9393;">'/[ \t\(]*ns \([a-z.]+\)/\1/'</span>
+</pre>
+</div>
+
+<p>
+Running this failed with <kbd>etags: Invalid range end while compiling
+pattern</kbd>. I had to transpose the <kbd>!</kbd> and the <kbd>-</kbd> to get it to work:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-bash">find . <span style="color: #CC9393;">\!</span> -name <span style="color: #CC9393;">'.*'</span> -name <span style="color: #CC9393;">'*.cljs'</span> | xargs etags --regex=<span style="color: #CC9393;">'/[ \t\(]*def[a-z]* \([a-z!-]+\)/\1/'</span> --regex=<span style="color: #CC9393;">'/[ \t\(]*ns \([a-z.]+\)/\1/'</span>
+</pre>
+</div>
+
+<p>
+There is also a way to do this with ctags:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><span style="color: #DCDCCC;">(</span><span style="color: #F0DFAF; font-weight: bold;">defvar</span> <span style="color: #DFAF8F;">path-to-ctags</span> <span style="color: #CC9393;">"/usr/local/bin/ctags"</span><span style="color: #DCDCCC;">)</span>
+
+<span style="color: #5F7F5F;">;; </span><span style="color: #7F9F7F;">Recursively generate tags for all *.clj files, </span>
+<span style="color: #5F7F5F;">;; </span><span style="color: #7F9F7F;">creating tags for def* and namespaces</span>
+<span style="color: #DCDCCC;">(</span><span style="color: #F0DFAF; font-weight: bold;">defun</span> <span style="color: #93E0E3;">create-clj-tags</span> <span style="color: #BFEBBF;">(</span>dir-name<span style="color: #BFEBBF;">)</span>
+  <span style="color: #9FC59F;">"Create tags file."</span>
+  <span style="color: #BFEBBF;">(</span><span style="color: #F0DFAF; font-weight: bold;">interactive</span> <span style="color: #CC9393;">"DDirectory: "</span><span style="color: #BFEBBF;">)</span>
+  <span style="color: #BFEBBF;">(</span>shell-command
+   <span style="color: #D0BF8F;">(</span>format <span style="color: #CC9393;">"%s  --langdef=Clojure --langmap=Clojure:.clj --regex-Clojure='/[ \t</span><span style="color: #D0BF8F; font-weight: bold;">\</span><span style="color: #CC9393;">(]*def[a-z]* </span><span style="color: #D0BF8F; font-weight: bold;">\</span><span style="color: #CC9393;">([a-z!-]+</span><span style="color: #D0BF8F; font-weight: bold;">\</span><span style="color: #CC9393;">)/\1/'  --regex-Clojure='/[ \t</span><span style="color: #D0BF8F; font-weight: bold;">\</span><span style="color: #CC9393;">(]*ns </span><span style="color: #D0BF8F; font-weight: bold;">\</span><span style="color: #CC9393;">([a-z.]+</span><span style="color: #D0BF8F; font-weight: bold;">\</span><span style="color: #CC9393;">)/\1/' -f %s/TAGS -e -R %s"</span> path-to-ctags dir-name <span style="color: #93E0E3;">(</span>directory-file-name dir-name<span style="color: #93E0E3;">)</span><span style="color: #D0BF8F;">)</span><span style="color: #BFEBBF;">)</span><span style="color: #DCDCCC;">)</span>
+</pre>
+</div>
+
+<p>
+This solution did not work right away for me. It did work with the
+deprecated <kbd>find-tag</kbd>, but not with its replacement,
+<kbd>xref-find-definitions</kbd>, despite a test definition appearing in the
+generated tags table. I suspect its failure is related to differences
+in the output generated by etags and ctags.
+</p>
 </div>
 </div>
-<div id="outline-container-orgfe08ea5" class="outline-2">
-<h2 id="orgfe08ea5">Blog</h2>
-<div class="outline-text-2" id="text-orgfe08ea5">
-<ul class="org-ul">
-<li>2022-03-30: <a href="indexing_clojure.html">Indexing (Tagging) Clojure/ClojureScript Source</a></li>
-<li>2022-02-12: <a href="gnu-shepherd-simple-service.html">Writing a basic service for GNU Guix</a></li>
-<li>2022-02-10: <a href="quotes.html">Favorite Quotes</a></li>
-<li>2022-02-09: <a href="running-linux-on-a-macbook.html">Running Linux on a MacBook</a></li>
-<li>2022-02-01: <a href="uploading-garmin-routes.html">Uploading Large Files to the Garmin inReach Explorer+</a></li>
-<li>2022-02-01: <a href="hacking-my-laptop.html">Breaking into my MacBookPro10,2</a></li>
-<li>2021-12-29: <a href="cracking-windows-7.html">Cracking a Windows 7 Password</a></li>
-<li>2020-08-18: <a href="sicp-exercises.html">SICP Exercises</a></li>
-</ul>
+
+<div id="outline-container-org72ac1c8" class="outline-2">
+<h2 id="org72ac1c8">Browsing Source Code in CIDER</h2>
+<div class="outline-text-2" id="text-org72ac1c8">
+<p>
+CIDER implements an <kbd>xref</kbd> backend:
+</p>
+
+<p>
+<a href="https://github.com/clojure-emacs/cider/commit/15b6d205b6311453349144afc20d7ac4a820b0ab">https://github.com/clojure-emacs/cider/commit/15b6d205b6311453349144afc20d7ac4a820b0ab</a>
+</p>
+
+<p>
+Once a CIDER connection has been established and a source buffer
+compiled, <kbd>xref-find-definitions</kbd> can accurately jump to symbol
+definitions regardless of where they are (just as long as they have
+successfully compiled).
+</p>
 </div>
 </div>
 </div>
