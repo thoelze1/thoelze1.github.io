@@ -13,3 +13,11 @@ online.
 * [[https://www.debian.org/doc/manuals/debian-reference/][Debian Reference Manual]]
 A great walkthrough for installing and getting comfortable in a linux
 environment.
+* Blog posts
+- Packaging:
+  https://dustycloud.org/blog/javascript-packaging-dystopia/
+- https://www.vitavonni.de/blog/201503/2015031201-the-sad-state-of-sysadmin-in-the-age-of-containers.html
+- https://boilingsteam.com/i-love-arch-but-gnu-guix-is-my-new-distro/
+- Development philosophy: https://www.jwz.org/doc/worse-is-better.html
+* Podcasts
+- https://hackerpublicradio.org/eps.php?id=2198 (guix, elm)
