@@ -1,5 +1,5 @@
 * Uninstall binary installation of guix on Ubuntu
-  See this [[https://wiki.archlinux.org/title/Guix][Arch wiki entry]] and this [[https://old.reddit.com/r/GUIX/comments/m4f860/how_to_remove_or_reinstall/][reddit post]]
+See this [[https://wiki.archlinux.org/title/Guix][Arch wiki entry]] and this [[https://old.reddit.com/r/GUIX/comments/m4f860/how_to_remove_or_reinstall/][reddit post]]
 #+BEGIN_SRC bash
 sudo systemctl stop guix-daemon.service
 sudo systemctl stop gnu-store.mount
