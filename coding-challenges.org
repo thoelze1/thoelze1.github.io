@@ -1,0 +1,416 @@
+#+TITLE: Coding Challenges
+
+This is a place for me to record my work on various coding challenges
+for later reference.
+
+* Reverse a 32-bit Integer
+Link: https://leetcode.com/problems/reverse-integer/
+
+I used this one to try out Racket, rather than to practice word size
+constraint as the problem instructs. Leetcode unfortunately requires
+that your solution be called ~reverse~, which causes the builtin
+function of the same name to be shadowed. So we have to reimplement
+list reversal with a new name:
+#+begin_src scheme
+  (define/contract (reverse-list l)
+    (-> list? list?)
+    (reverse-list-helper l '()))
+
+  (define/contract (reverse-list-helper l aux)
+    (-> list? list? list?)
+    (if (null? l)
+        aux
+        (reverse-list-helper (cdr l) (cons (car l) aux))))
+#+end_src
+And then solve the problem:
+#+begin_src scheme
+  (define/contract (reverse x)
+    (-> exact-integer? number?)
+      (let* ([s (number->string x)]
+             [y (string->number
+                 (if (< x 0)
+                     (string-join (list "-" (reverse-string (substring s 1))) "")
+                     (reverse-string s)))])
+        (if (or (< y -2147483648) (>= y 2147483648)) 0 y)))
+
+  (define/contract (reverse-string s)
+    (-> string? string?)
+    (list->string (reverse-list (string->list s))))
+#+end_src
+
+* Sierpinski Triangles
+Link:
+https://www.hackerrank.com/challenges/functions-and-fractals-sierpinski-triangles/submissions/code/298875887
+
+The tricky part of this problem is choosing a way to represent and
+draw triangles that can be reused across iterations. One useful
+observation is that at each iteration, the canvas can cleanly be
+divided into rows of triangles. Using this observation, we need to
+devise a way of drawing a row of triangles and identify how these rows
+change at each "iteration" of generating the fractal.
+#+begin_src clojure
+  (def n (Integer/parseInt (read-line)))
+
+  (def num-rows 32)
+  (def num-cols 63)
+
+  (def mark "1")
+  (def unmark "_")
+
+  (def marks (repeat mark))
+  (def unmarks (repeat unmark))
+
+  (defn draw-line [height vertices width line]
+      (if (empty? vertices)
+          (let [num-left (- num-cols width)
+                complete (concat (take num-left unmarks) line)]
+              (apply str (reverse complete)))
+          (let [v (- (first vertices) height)
+                num-unmark (- v width)
+                num-mark (inc (* 2 height))
+                more (concat (take num-mark marks)
+                             (take num-unmark unmarks))]
+              (recur height (rest vertices) (+ width (count more)) (concat more line)))))
+
+  (defn draw-row [height vertices]
+      (clojure.string/join "\n" (for [h (range height)]
+                                    (draw-line h vertices 0 '()))))
+
+  (defn draw-rows [height sets]
+      (clojure.string/join "\n" (for [s sets]
+                                    (draw-row height s))))
+
+  (def n0 (draw-rows 32 '((31))))
+
+  (def n1 (draw-rows 16 '((31)
+                          (15 47))))
+                           
+  (def n2 (draw-rows 8 '((31)
+                         (23 39)
+                         (15 47)
+                         (7 23 39 55))))
+
+  (defn fractalize [num-iter curr-iter height verts]
+      (if (= curr-iter num-iter)
+          (draw-rows height verts)
+          (let [new-verts (apply concat (for [l verts]
+                                            (list l (apply concat (for [v l]
+                                                                      (list (- v (/ height 2))
+                                                                      (+ v (/ height 2))))))))]
+              (fractalize num-iter (inc curr-iter) (/ height 2) new-verts))))
+
+  (defn draw-fractal [n]
+    (fractalize n 0 num-rows (list (list (dec num-rows)))))
+
+  (println (draw-fractal n))
+#+end_src
+
+* Unique Paths in Chicago
+Link: https://leetcode.com/problems/unique-paths/
+
+I posed this question in a practice interview because I wanted to know
+how many different ways I could walk to the Y before I had to start
+repeating routes. Later I found it on Leetcode:
+https://leetcode.com/problems/unique-paths/
+
+The best solution I've found frames this problem as moving along one
+axis, and choosing at which of the cross streets to move along the
+other axis. This is an combinations with replacement problem, also
+known as multichoose. n multichoose k can also be thought of as a
+stars and bars problem with ~n+k-1~ objects: choose ~k~ of the objects
+to be stars (representing chosen elements), leaving ~n-1~ to be bars
+(separating each of ~n~ cells which contain some number of the ~k~
+elements). This [[https://math.stackexchange.com/a/3903700][stackoverflow post]] has more detail.
+
+I'm tempted to call this solution constant-time, but really the number
+of operations it performs grows as ~m+n~:
+#+begin_src python
+  def comb(n,k):
+      res = 1
+      i = n
+      while i > n - k:
+          res *= i
+          i -= 1
+      i = k
+      while i > 1:
+          res = res // i
+          i -= 1
+      return res
+
+  class Solution:
+      def uniquePaths(self, m: int, n: int) -> int:
+          return comb(m+n-2,m-1)
+#+end_src
+
+* Construct Binary Tree from Inorder and Preorder Traversals
+Link:
+https://leetcode.com/problems/construct-binary-tree-from-preorder-and-inorder-traversal/
+
+At first, I tried a solution where I constructed a candidate tree
+(leftward descending linked list according to preorder) and then using
+the inorder traversal to graft the tree so that it satisfied the
+inorder.
+
+In thinking over that solution, I observed that when we start, we know
+that the first element of the preorder must be the root; moreover, all
+of the elements appearing before the root in the inorder must belong
+to the left subtree, and the rest to the right.
+
+A recursive structure was beginning to appear. Now we know how many
+elements ~k~ are in the left subtree; the next ~k~ elements of the
+preorder travsersal (after the first) must therefore represent a
+preorder traversal of the left subtree.
+
+#+begin_src python
+  # Definition for a binary tree node.
+  class TreeNode:
+      def __init__(self, val=0, left=None, right=None):
+          self.val = val
+          self.left = left
+          self.right = right
+#+end_src
+
+#+begin_src python
+def traverse(preorder,inorder):
+    if preorder == []:
+        return None
+    val = preorder[0]
+    pivot = inorder.index(val)
+    inorderLeft = inorder[:pivot]
+    inorderRight = inorder[pivot+1:]
+    preorderLeft = [i for i in preorder if i in inorderLeft]
+    preorderRight = [i for i in preorder if i in inorderRight]    
+    return TreeNode(val,traverse(preorderLeft,inorderLeft),traverse(preorderRight,inorderRight))
+
+class Solution:
+    def buildTree(self, preorder: List[int], inorder: List[int]) -> Optional[TreeNode]:
+        return traverse(preorder,inorder)
+      
+#+end_src
+
+That solution passed all but one test case, and exceeded the time
+limit. How can we avoid creating so many copies of the traversals?
+
+#+begin_src python
+  # Definition for a binary tree node.
+  class Solution:
+      # [left,right)
+      def traverse(self,pleft,pright,ileft,iright):
+          if pleft >= pright:
+              return None
+          val = self.preorder[pleft]
+          pivot = self.inorder.index(val)
+          numLeft = pivot-ileft
+          leftNode = self.traverse(pleft+1,pleft+1+numLeft,ileft,pivot)
+                        # traverse(preorderLeft,inorderLeft)
+          rightNode = self.traverse(pleft+1+numLeft,pright,pivot+1,iright)
+                         # traverse(preorderRight,inorderRight)
+          return TreeNode(val,leftNode,rightNode)
+      def buildTree(self, preorder: List[int], inorder: List[int]) -> Optional[TreeNode]:
+          self.preorder = preorder
+          self.inorder = inorder
+          return self.traverse(0,len(preorder),0,len(preorder))
+#+end_src
+
+* Make Each Node of Perfect Binary Tree "Point Right"
+Link:
+https://leetcode.com/problems/populating-next-right-pointers-in-each-node/
+#+begin_src python
+  class Node:
+      def __init__(self, val: int = 0, left: 'Node' = None, right: 'Node' = None, next: 'Node' = None):
+          self.val = val
+          self.left = left
+          self.right = right
+          self.next = next
+        
+  def rightests(node):
+      if node:
+          node.next = None
+          rightests(node.right)
+
+  def inners(a,b):
+      if a:
+          a.next = b
+          inners(a.right,b.left)
+
+  def sibs(a,b):
+      if a:
+          a.next = b
+          sibs(a.left,a.right)
+          sibs(b.left,b.right)
+          inners(a.right,b.left)
+
+  class Solution:
+      def connect(self, root: 'Optional[Node]') -> 'Optional[Node]':
+          if root:
+              sibs(root.left,root.right)
+          rightests(root)
+          return root
+#+end_src
+
+* Implement ~x^n~
+I remember implementing this in SICP using tail-recursion. I applied
+the same principle to come up with this iterative solution:
+#+begin_src python
+aclass Solution:
+    def myPow(self, x: float, n: int) -> float:
+        if n < 0:
+            return 1/self.myPow(x,-n)
+        res = 1
+        while n:
+            if n & 1:
+                res *= x
+            x *= x
+            n = n >> 1
+        return res
+#+end_src
+
+* Maximum Number of Colinear Points
+Link: https://leetcode.com/problems/max-points-on-a-line/
+
+The brute-force solution is somewhat clear: for each line between two
+points, check how many points it hits and return the max. The tricky
+part ends up being how you store a line:
+#+begin_src python
+class Solution:
+    def maxPoints(self, points: List[List[int]]) -> int:
+        if len(points) < 2:
+            return len(points)
+        d = {}
+        dx = {}
+        for i in range(len(points)):
+            for j in range(i+1,len(points)):
+                x1 = points[i][0]
+                y1 = points[i][1]
+                x2 = points[j][0]
+                y2 = points[j][1]
+                if x1 != x2:
+                    m = (y2-y1)/(x2-x1)
+                    b = y1 - m*x1
+                    m2 = round(m,10)
+                    b2 = round(b,10)
+                    if (m2,b2) in d:
+                        d[(m2,b2)] += 1
+                    else:
+                        d[(m2,b2)] = 1
+                else:
+                    if x1 in dx:
+                        dx[x1] += 1
+                    else:
+                        dx[x1] = 1
+        m1 = max(d.values()) if len(d.values()) > 0 else 0
+        m2 = max(dx.values()) if len(dx.values()) > 0 else 0
+        if m1 > m2:
+            pair = max(d,key=d.get)
+            m = pair[0]
+            b = pair[1]
+            tot = 0
+            for k in range(len(points)):
+                if math.isclose(points[k][1],m*points[k][0]+b):
+                    tot += 1
+            return tot
+        else:
+            x = max(dx,key=dx.get)
+            tot = 0
+            for k in range(len(points)):
+                if points[k][0] == x:
+                    tot += 1
+            return tot
+#+end_src
+
+* Median of Two Sorted Arrays
+Link: https://leetcode.com/problems/median-of-two-sorted-arrays/
+
+First of all, an O(n+m) solution is easy: merge the two arrays in
+O(n+m) time and return the median. But if we want a logarithmic
+solution, we have to repetitively halve the problem.
+    
+Both are sorted, so we can binary search them "together"
+somehow. Perhaps we can start with a bound on the median and tighten
+it.
+    
+By looking through a few examples, I identified an optimal
+substructure: the overall median will sit somewhere between the first
+median and the second, which means we can sort of knock of half of the
+array left of the lower median, and half of the array right of the
+greater median. The name of the game ended up being properly
+addressing edge cases:
+ #+begin_src python
+def getMedianSorted(l,r,n):
+    # if empty, return anything
+    if r <= l:
+        return -42069
+    i = (l+r) // 2
+    m = 0
+    if (r-l) % 2 == 0:
+        m =  (n[i-1] + n[i]) / 2
+    else:
+        m = n[i]
+    return m
+
+def getMedianWithExtras(n,l,r,e):
+    if (r-l) % 2 == 0:
+        i = (r+l)//2 - 1
+        a = sorted(n[i-len(e):i+len(e)+2]+e)
+        return getMedianSorted(0,len(a),a)
+    else:
+        i = (r+l)//2
+        a = sorted(n[i-len(e):i+len(e)+1]+e)
+        return getMedianSorted(0,len(a),a)
+    
+class Solution:
+    def getMedian(self,l1,r1,l2,r2):
+        # if one is empty, we return the median of the other
+        if l1 == r1:
+            return getMedianSorted(l2,r2,self.nums2)
+        if l2 == r2:
+            return getMedianSorted(l1,r1,self.nums1)
+        # next check the medians
+        m1 = getMedianSorted(l1,r1,self.nums1)
+        m2 = getMedianSorted(l2,r2,self.nums2)
+        if m1 == m2:
+            return m1
+        if r1-l1 < 6 and r2-l2 < 6:
+            arr = sorted(self.nums1[l1:r1]+self.nums2[l2:r2])
+            return getMedianSorted(0,len(arr),arr)
+        # we may get to a case where 1 array has 2 elements, which we can't reduce!
+        if r1-l1 < 3:
+            return getMedianWithExtras(self.nums2,l2,r2,self.nums1[l1:r1])
+        if r2-l2 < 3:
+            return getMedianWithExtras(self.nums1,l1,r1,self.nums2[l2:r2])
+        numOutL = int((r1-l1-1)//2)
+        numOutR = int((r2-l2-1)//2)
+        numOut = min(numOutL,numOutR)
+        if m1 < m2:
+            return self.getMedian(l1+numOut,r1,l2,r2-numOut)
+        else:
+            return self.getMedian(l1,r1-numOut,l2+numOut,r2)
+            
+    def findMedianSortedArrays(self, nums1: List[int], nums2: List[int]) -> float:
+        # it is given that m+n >= 1
+        self.nums1 = nums1
+        self.nums2 = nums2
+        return self.getMedian(0,len(nums1),0,len(nums2))
+#+end_src
+
+* How many trailing zeroes in ~n!~?
+Link: https://leetcode.com/problems/factorial-trailing-zeroes/
+A good application for the fundamental theorem of arithmetic!
+#+begin_src python
+  class Solution:
+      def getPrimesInFact(self,prime,fact):
+          acc = 0
+          i = prime
+          while i <= fact:
+              acc += fact // i
+              i *= prime
+          return acc
+    
+      def trailingZeroes(self, n: int) -> int:
+          twos = self.getPrimesInFact(2,n)
+          fives = self.getPrimesInFact(5,n)
+          return min(twos,fives)
+#+end_src
+It wasn't until after looking at the solution that I realized that
+the prime factorization of ~n!~ is always saturated with twos! The
+first call to ~getPrimesInFact~ is unnecessary.

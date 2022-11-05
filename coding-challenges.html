@@ -1,0 +1,736 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2022-11-05 Sat 18:48 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Coding Challenges</title>
+<meta name="generator" content="Org mode" />
+<meta name="author" content="Tanner Hoelzel" />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: auto;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline; margin-top: 14px;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .equation-container {
+    display: table;
+    text-align: center;
+    width: 100%;
+  }
+  .equation {
+    vertical-align: middle;
+  }
+  .equation-label {
+    display: table-cell;
+    text-align: right;
+    vertical-align: middle;
+  }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { width: 90%; }
+  /*]]>*/-->
+</style>
+<script type="text/javascript">
+// @license magnet:?xt=urn:btih:e95b018ef3580986a04669f1b5879592219e2a7a&dn=public-domain.txt Public Domain
+<!--/*--><![CDATA[/*><!--*/
+     function CodeHighlightOn(elem, id)
+     {
+       var target = document.getElementById(id);
+       if(null != target) {
+         elem.classList.add("code-highlighted");
+         target.classList.add("code-highlighted");
+       }
+     }
+     function CodeHighlightOff(elem, id)
+     {
+       var target = document.getElementById(id);
+       if(null != target) {
+         elem.classList.remove("code-highlighted");
+         target.classList.remove("code-highlighted");
+       }
+     }
+    /*]]>*///-->
+// @license-end
+</script>
+</head>
+<body>
+<div id="content">
+<h1 class="title">Coding Challenges</h1>
+<p>
+This is a place for me to record my work on various coding challenges
+for later reference.
+</p>
+
+<div id="outline-container-org1210b35" class="outline-2">
+<h2 id="org1210b35">Reverse a 32-bit Integer</h2>
+<div class="outline-text-2" id="text-org1210b35">
+<p>
+Link: <a href="https://leetcode.com/problems/reverse-integer/">https://leetcode.com/problems/reverse-integer/</a>
+</p>
+
+<p>
+I used this one to try out Racket, rather than to practice word size
+constraint as the problem instructs. Leetcode unfortunately requires
+that your solution be called <kbd>reverse</kbd>, which causes the builtin
+function of the same name to be shadowed. So we have to reimplement
+list reversal with a new name:
+</p>
+<div class="org-src-container">
+<pre class="src src-scheme"><span style="color: #DCDCCC;">(</span>define/contract <span style="color: #BFEBBF;">(</span>reverse-list l<span style="color: #BFEBBF;">)</span>
+  <span style="color: #BFEBBF;">(</span>-&gt; list? list?<span style="color: #BFEBBF;">)</span>
+  <span style="color: #BFEBBF;">(</span>reverse-list-helper l '<span style="color: #D0BF8F;">()</span><span style="color: #BFEBBF;">)</span><span style="color: #DCDCCC;">)</span>
+
+<span style="color: #DCDCCC;">(</span>define/contract <span style="color: #BFEBBF;">(</span>reverse-list-helper l aux<span style="color: #BFEBBF;">)</span>
+  <span style="color: #BFEBBF;">(</span>-&gt; list? list? list?<span style="color: #BFEBBF;">)</span>
+  <span style="color: #BFEBBF;">(</span><span style="color: #F0DFAF; font-weight: bold;">if</span> <span style="color: #D0BF8F;">(</span>null? l<span style="color: #D0BF8F;">)</span>
+      aux
+      <span style="color: #D0BF8F;">(</span>reverse-list-helper <span style="color: #93E0E3;">(</span>cdr l<span style="color: #93E0E3;">)</span> <span style="color: #93E0E3;">(</span>cons <span style="color: #9FC59F;">(</span>car l<span style="color: #9FC59F;">)</span> aux<span style="color: #93E0E3;">)</span><span style="color: #D0BF8F;">)</span><span style="color: #BFEBBF;">)</span><span style="color: #DCDCCC;">)</span>
+</pre>
+</div>
+<p>
+And then solve the problem:
+</p>
+<div class="org-src-container">
+<pre class="src src-scheme"><span style="color: #DCDCCC;">(</span>define/contract <span style="color: #BFEBBF;">(</span>reverse x<span style="color: #BFEBBF;">)</span>
+  <span style="color: #BFEBBF;">(</span>-&gt; exact-integer? number?<span style="color: #BFEBBF;">)</span>
+    <span style="color: #BFEBBF;">(</span><span style="color: #F0DFAF; font-weight: bold;">let*</span> <span style="color: #D0BF8F;">(</span><span style="color: #93E0E3;">[</span>s <span style="color: #9FC59F;">(</span>number-&gt;string x<span style="color: #9FC59F;">)</span><span style="color: #93E0E3;">]</span>
+           <span style="color: #93E0E3;">[</span>y <span style="color: #9FC59F;">(</span>string-&gt;number
+               <span style="color: #94BFF3;">(</span><span style="color: #F0DFAF; font-weight: bold;">if</span> <span style="color: #E0CF9F;">(</span>&lt; x 0<span style="color: #E0CF9F;">)</span>
+                   <span style="color: #E0CF9F;">(</span>string-join <span style="color: #8FB28F;">(</span>list <span style="color: #CC9393;">"-"</span> <span style="color: #6CA0A3;">(</span>reverse-string <span style="color: #DCDCCC;">(</span>substring s 1<span style="color: #DCDCCC;">)</span><span style="color: #6CA0A3;">)</span><span style="color: #8FB28F;">)</span> <span style="color: #CC9393;">""</span><span style="color: #E0CF9F;">)</span>
+                   <span style="color: #E0CF9F;">(</span>reverse-string s<span style="color: #E0CF9F;">)</span><span style="color: #94BFF3;">)</span><span style="color: #9FC59F;">)</span><span style="color: #93E0E3;">]</span><span style="color: #D0BF8F;">)</span>
+      <span style="color: #D0BF8F;">(</span><span style="color: #F0DFAF; font-weight: bold;">if</span> <span style="color: #93E0E3;">(</span><span style="color: #F0DFAF; font-weight: bold;">or</span> <span style="color: #9FC59F;">(</span>&lt; y -2147483648<span style="color: #9FC59F;">)</span> <span style="color: #9FC59F;">(</span>&gt;= y 2147483648<span style="color: #9FC59F;">)</span><span style="color: #93E0E3;">)</span> 0 y<span style="color: #D0BF8F;">)</span><span style="color: #BFEBBF;">)</span><span style="color: #DCDCCC;">)</span>
+
+<span style="color: #DCDCCC;">(</span>define/contract <span style="color: #BFEBBF;">(</span>reverse-string s<span style="color: #BFEBBF;">)</span>
+  <span style="color: #BFEBBF;">(</span>-&gt; string? string?<span style="color: #BFEBBF;">)</span>
+  <span style="color: #BFEBBF;">(</span>list-&gt;string <span style="color: #D0BF8F;">(</span>reverse-list <span style="color: #93E0E3;">(</span>string-&gt;list s<span style="color: #93E0E3;">)</span><span style="color: #D0BF8F;">)</span><span style="color: #BFEBBF;">)</span><span style="color: #DCDCCC;">)</span>
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orge364f14" class="outline-2">
+<h2 id="orge364f14">Sierpinski Triangles</h2>
+<div class="outline-text-2" id="text-orge364f14">
+<p>
+Link:
+<a href="https://www.hackerrank.com/challenges/functions-and-fractals-sierpinski-triangles/submissions/code/298875887">https://www.hackerrank.com/challenges/functions-and-fractals-sierpinski-triangles/submissions/code/298875887</a>
+</p>
+
+<p>
+The tricky part of this problem is choosing a way to represent and
+draw triangles that can be reused across iterations. One useful
+observation is that at each iteration, the canvas can cleanly be
+divided into rows of triangles. Using this observation, we need to
+devise a way of drawing a row of triangles and identify how these rows
+change at each "iteration" of generating the fractal.
+</p>
+<div class="org-src-container">
+<pre class="src src-clojure"><span style="color: #DCDCCC;">(</span><span style="color: #F0DFAF; font-weight: bold;">def</span> <span style="color: #DFAF8F;">n</span> <span style="color: #BFEBBF;">(</span><span style="color: #7CB8BB;">Integer</span>/parseInt <span style="color: #D0BF8F;">(</span>read-line<span style="color: #D0BF8F;">)</span><span style="color: #BFEBBF;">)</span><span style="color: #DCDCCC;">)</span>
+
+<span style="color: #DCDCCC;">(</span><span style="color: #F0DFAF; font-weight: bold;">def</span> <span style="color: #DFAF8F;">num-rows</span> 32<span style="color: #DCDCCC;">)</span>
+<span style="color: #DCDCCC;">(</span><span style="color: #F0DFAF; font-weight: bold;">def</span> <span style="color: #DFAF8F;">num-cols</span> 63<span style="color: #DCDCCC;">)</span>
+
+<span style="color: #DCDCCC;">(</span><span style="color: #F0DFAF; font-weight: bold;">def</span> <span style="color: #DFAF8F;">mark</span> <span style="color: #CC9393;">"1"</span><span style="color: #DCDCCC;">)</span>
+<span style="color: #DCDCCC;">(</span><span style="color: #F0DFAF; font-weight: bold;">def</span> <span style="color: #DFAF8F;">unmark</span> <span style="color: #CC9393;">"_"</span><span style="color: #DCDCCC;">)</span>
+
+<span style="color: #DCDCCC;">(</span><span style="color: #F0DFAF; font-weight: bold;">def</span> <span style="color: #DFAF8F;">marks</span> <span style="color: #BFEBBF;">(</span>repeat mark<span style="color: #BFEBBF;">)</span><span style="color: #DCDCCC;">)</span>
+<span style="color: #DCDCCC;">(</span><span style="color: #F0DFAF; font-weight: bold;">def</span> <span style="color: #DFAF8F;">unmarks</span> <span style="color: #BFEBBF;">(</span>repeat unmark<span style="color: #BFEBBF;">)</span><span style="color: #DCDCCC;">)</span>
+
+<span style="color: #DCDCCC;">(</span><span style="color: #F0DFAF; font-weight: bold;">defn</span> <span style="color: #93E0E3;">draw-line</span> <span style="color: #BFEBBF;">[</span>height vertices width line<span style="color: #BFEBBF;">]</span>
+    <span style="color: #BFEBBF;">(</span><span style="color: #F0DFAF; font-weight: bold;">if</span> <span style="color: #D0BF8F;">(</span>empty? vertices<span style="color: #D0BF8F;">)</span>
+        <span style="color: #D0BF8F;">(</span><span style="color: #F0DFAF; font-weight: bold;">let</span> <span style="color: #93E0E3;">[</span>num-left <span style="color: #9FC59F;">(</span>- num-cols width<span style="color: #9FC59F;">)</span>
+              complete <span style="color: #9FC59F;">(</span>concat <span style="color: #94BFF3;">(</span>take num-left unmarks<span style="color: #94BFF3;">)</span> line<span style="color: #9FC59F;">)</span><span style="color: #93E0E3;">]</span>
+            <span style="color: #93E0E3;">(</span>apply str <span style="color: #9FC59F;">(</span>reverse complete<span style="color: #9FC59F;">)</span><span style="color: #93E0E3;">)</span><span style="color: #D0BF8F;">)</span>
+        <span style="color: #D0BF8F;">(</span><span style="color: #F0DFAF; font-weight: bold;">let</span> <span style="color: #93E0E3;">[</span>v <span style="color: #9FC59F;">(</span>- <span style="color: #94BFF3;">(</span>first vertices<span style="color: #94BFF3;">)</span> height<span style="color: #9FC59F;">)</span>
+              num-unmark <span style="color: #9FC59F;">(</span>- v width<span style="color: #9FC59F;">)</span>
+              num-mark <span style="color: #9FC59F;">(</span>inc <span style="color: #94BFF3;">(</span>* 2 height<span style="color: #94BFF3;">)</span><span style="color: #9FC59F;">)</span>
+              more <span style="color: #9FC59F;">(</span>concat <span style="color: #94BFF3;">(</span>take num-mark marks<span style="color: #94BFF3;">)</span>
+                           <span style="color: #94BFF3;">(</span>take num-unmark unmarks<span style="color: #94BFF3;">)</span><span style="color: #9FC59F;">)</span><span style="color: #93E0E3;">]</span>
+            <span style="color: #93E0E3;">(</span><span style="color: #F0DFAF; font-weight: bold;">recur</span> height <span style="color: #9FC59F;">(</span>rest vertices<span style="color: #9FC59F;">)</span> <span style="color: #9FC59F;">(</span>+ width <span style="color: #94BFF3;">(</span>count more<span style="color: #94BFF3;">)</span><span style="color: #9FC59F;">)</span> <span style="color: #9FC59F;">(</span>concat more line<span style="color: #9FC59F;">)</span><span style="color: #93E0E3;">)</span><span style="color: #D0BF8F;">)</span><span style="color: #BFEBBF;">)</span><span style="color: #DCDCCC;">)</span>
+
+<span style="color: #DCDCCC;">(</span><span style="color: #F0DFAF; font-weight: bold;">defn</span> <span style="color: #93E0E3;">draw-row</span> <span style="color: #BFEBBF;">[</span>height vertices<span style="color: #BFEBBF;">]</span>
+    <span style="color: #BFEBBF;">(</span><span style="color: #7CB8BB;">clojure.string</span>/join <span style="color: #CC9393;">"</span><span style="color: #CC9393; font-weight: bold;">\n</span><span style="color: #CC9393;">"</span> <span style="color: #D0BF8F;">(</span><span style="color: #F0DFAF; font-weight: bold;">for</span> <span style="color: #93E0E3;">[</span>h <span style="color: #9FC59F;">(</span>range height<span style="color: #9FC59F;">)</span><span style="color: #93E0E3;">]</span>
+                                  <span style="color: #93E0E3;">(</span>draw-line h vertices 0 '<span style="color: #9FC59F;">()</span><span style="color: #93E0E3;">)</span><span style="color: #D0BF8F;">)</span><span style="color: #BFEBBF;">)</span><span style="color: #DCDCCC;">)</span>
+
+<span style="color: #DCDCCC;">(</span><span style="color: #F0DFAF; font-weight: bold;">defn</span> <span style="color: #93E0E3;">draw-rows</span> <span style="color: #BFEBBF;">[</span>height sets<span style="color: #BFEBBF;">]</span>
+    <span style="color: #BFEBBF;">(</span><span style="color: #7CB8BB;">clojure.string</span>/join <span style="color: #CC9393;">"</span><span style="color: #CC9393; font-weight: bold;">\n</span><span style="color: #CC9393;">"</span> <span style="color: #D0BF8F;">(</span><span style="color: #F0DFAF; font-weight: bold;">for</span> <span style="color: #93E0E3;">[</span>s sets<span style="color: #93E0E3;">]</span>
+                                  <span style="color: #93E0E3;">(</span>draw-row height s<span style="color: #93E0E3;">)</span><span style="color: #D0BF8F;">)</span><span style="color: #BFEBBF;">)</span><span style="color: #DCDCCC;">)</span>
+
+<span style="color: #DCDCCC;">(</span><span style="color: #F0DFAF; font-weight: bold;">def</span> <span style="color: #DFAF8F;">n0</span> <span style="color: #BFEBBF;">(</span>draw-rows 32 '<span style="color: #D0BF8F;">(</span><span style="color: #93E0E3;">(</span>31<span style="color: #93E0E3;">)</span><span style="color: #D0BF8F;">)</span><span style="color: #BFEBBF;">)</span><span style="color: #DCDCCC;">)</span>
+
+<span style="color: #DCDCCC;">(</span><span style="color: #F0DFAF; font-weight: bold;">def</span> <span style="color: #DFAF8F;">n1</span> <span style="color: #BFEBBF;">(</span>draw-rows 16 '<span style="color: #D0BF8F;">(</span><span style="color: #93E0E3;">(</span>31<span style="color: #93E0E3;">)</span>
+                        <span style="color: #93E0E3;">(</span>15 47<span style="color: #93E0E3;">)</span><span style="color: #D0BF8F;">)</span><span style="color: #BFEBBF;">)</span><span style="color: #DCDCCC;">)</span>
+
+<span style="color: #DCDCCC;">(</span><span style="color: #F0DFAF; font-weight: bold;">def</span> <span style="color: #DFAF8F;">n2</span> <span style="color: #BFEBBF;">(</span>draw-rows 8 '<span style="color: #D0BF8F;">(</span><span style="color: #93E0E3;">(</span>31<span style="color: #93E0E3;">)</span>
+                       <span style="color: #93E0E3;">(</span>23 39<span style="color: #93E0E3;">)</span>
+                       <span style="color: #93E0E3;">(</span>15 47<span style="color: #93E0E3;">)</span>
+                       <span style="color: #93E0E3;">(</span>7 23 39 55<span style="color: #93E0E3;">)</span><span style="color: #D0BF8F;">)</span><span style="color: #BFEBBF;">)</span><span style="color: #DCDCCC;">)</span>
+
+<span style="color: #DCDCCC;">(</span><span style="color: #F0DFAF; font-weight: bold;">defn</span> <span style="color: #93E0E3;">fractalize</span> <span style="color: #BFEBBF;">[</span>num-iter curr-iter height verts<span style="color: #BFEBBF;">]</span>
+    <span style="color: #BFEBBF;">(</span><span style="color: #F0DFAF; font-weight: bold;">if</span> <span style="color: #D0BF8F;">(</span>= curr-iter num-iter<span style="color: #D0BF8F;">)</span>
+        <span style="color: #D0BF8F;">(</span>draw-rows height verts<span style="color: #D0BF8F;">)</span>
+        <span style="color: #D0BF8F;">(</span><span style="color: #F0DFAF; font-weight: bold;">let</span> <span style="color: #93E0E3;">[</span>new-verts <span style="color: #9FC59F;">(</span>apply concat <span style="color: #94BFF3;">(</span><span style="color: #F0DFAF; font-weight: bold;">for</span> <span style="color: #E0CF9F;">[</span>l verts<span style="color: #E0CF9F;">]</span>
+                                          <span style="color: #E0CF9F;">(</span>list l <span style="color: #8FB28F;">(</span>apply concat <span style="color: #6CA0A3;">(</span><span style="color: #F0DFAF; font-weight: bold;">for</span> <span style="color: #DCDCCC;">[</span>v l<span style="color: #DCDCCC;">]</span>
+                                                                    <span style="color: #DCDCCC;">(</span>list <span style="color: #BFEBBF;">(</span>- v <span style="color: #D0BF8F;">(</span>/ height 2<span style="color: #D0BF8F;">)</span><span style="color: #BFEBBF;">)</span>
+                                                                    <span style="color: #BFEBBF;">(</span>+ v <span style="color: #D0BF8F;">(</span>/ height 2<span style="color: #D0BF8F;">)</span><span style="color: #BFEBBF;">)</span><span style="color: #DCDCCC;">)</span><span style="color: #6CA0A3;">)</span><span style="color: #8FB28F;">)</span><span style="color: #E0CF9F;">)</span><span style="color: #94BFF3;">)</span><span style="color: #9FC59F;">)</span><span style="color: #93E0E3;">]</span>
+            <span style="color: #93E0E3;">(</span>fractalize num-iter <span style="color: #9FC59F;">(</span>inc curr-iter<span style="color: #9FC59F;">)</span> <span style="color: #9FC59F;">(</span>/ height 2<span style="color: #9FC59F;">)</span> new-verts<span style="color: #93E0E3;">)</span><span style="color: #D0BF8F;">)</span><span style="color: #BFEBBF;">)</span><span style="color: #DCDCCC;">)</span>
+
+<span style="color: #DCDCCC;">(</span><span style="color: #F0DFAF; font-weight: bold;">defn</span> <span style="color: #93E0E3;">draw-fractal</span> <span style="color: #BFEBBF;">[</span>n<span style="color: #BFEBBF;">]</span>
+  <span style="color: #BFEBBF;">(</span>fractalize n 0 num-rows <span style="color: #D0BF8F;">(</span>list <span style="color: #93E0E3;">(</span>list <span style="color: #9FC59F;">(</span>dec num-rows<span style="color: #9FC59F;">)</span><span style="color: #93E0E3;">)</span><span style="color: #D0BF8F;">)</span><span style="color: #BFEBBF;">)</span><span style="color: #DCDCCC;">)</span>
+
+<span style="color: #DCDCCC;">(</span>println <span style="color: #BFEBBF;">(</span>draw-fractal n<span style="color: #BFEBBF;">)</span><span style="color: #DCDCCC;">)</span>
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org7a2d5cd" class="outline-2">
+<h2 id="org7a2d5cd">Unique Paths in Chicago</h2>
+<div class="outline-text-2" id="text-org7a2d5cd">
+<p>
+Link: <a href="https://leetcode.com/problems/unique-paths/">https://leetcode.com/problems/unique-paths/</a>
+</p>
+
+<p>
+I posed this question in a practice interview because I wanted to know
+how many different ways I could walk to the Y before I had to start
+repeating routes. Later I found it on Leetcode:
+<a href="https://leetcode.com/problems/unique-paths/">https://leetcode.com/problems/unique-paths/</a>
+</p>
+
+<p>
+The best solution I've found frames this problem as moving along one
+axis, and choosing at which of the cross streets to move along the
+other axis. This is an combinations with replacement problem, also
+known as multichoose. n multichoose k can also be thought of as a
+stars and bars problem with <kbd>n+k-1</kbd> objects: choose <kbd>k</kbd> of the objects
+to be stars (representing chosen elements), leaving <kbd>n-1</kbd> to be bars
+(separating each of <kbd>n</kbd> cells which contain some number of the <kbd>k</kbd>
+elements). This <a href="https://math.stackexchange.com/a/3903700">stackoverflow post</a> has more detail.
+</p>
+
+<p>
+I'm tempted to call this solution constant-time, but really the number
+of operations it performs grows as <kbd>m+n</kbd>:
+</p>
+<div class="org-src-container">
+<pre class="src src-python"><span style="color: #F0DFAF; font-weight: bold;">def</span> <span style="color: #93E0E3;">comb</span>(n,k):
+    <span style="color: #DFAF8F;">res</span> = 1
+    <span style="color: #DFAF8F;">i</span> = n
+    <span style="color: #F0DFAF; font-weight: bold;">while</span> i &gt; n - k:
+        <span style="color: #DFAF8F;">res</span> *= i
+        <span style="color: #DFAF8F;">i</span> -= 1
+    <span style="color: #DFAF8F;">i</span> = k
+    <span style="color: #F0DFAF; font-weight: bold;">while</span> i &gt; 1:
+        <span style="color: #DFAF8F;">res</span> = res // i
+        <span style="color: #DFAF8F;">i</span> -= 1
+    <span style="color: #F0DFAF; font-weight: bold;">return</span> res
+
+<span style="color: #F0DFAF; font-weight: bold;">class</span> <span style="color: #7CB8BB;">Solution</span>:
+    <span style="color: #F0DFAF; font-weight: bold;">def</span> <span style="color: #93E0E3;">uniquePaths</span>(<span style="color: #F0DFAF; font-weight: bold;">self</span>, m: <span style="color: #DCDCCC; font-weight: bold;">int</span>, n: <span style="color: #DCDCCC; font-weight: bold;">int</span>) -&gt; <span style="color: #DCDCCC; font-weight: bold;">int</span>:
+        <span style="color: #F0DFAF; font-weight: bold;">return</span> comb(m+n-2,m-1)
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org281ed1d" class="outline-2">
+<h2 id="org281ed1d">Construct Binary Tree from Inorder and Preorder Traversals</h2>
+<div class="outline-text-2" id="text-org281ed1d">
+<p>
+Link:
+<a href="https://leetcode.com/problems/construct-binary-tree-from-preorder-and-inorder-traversal/">https://leetcode.com/problems/construct-binary-tree-from-preorder-and-inorder-traversal/</a>
+</p>
+
+<p>
+At first, I tried a solution where I constructed a candidate tree
+(leftward descending linked list according to preorder) and then using
+the inorder traversal to graft the tree so that it satisfied the
+inorder.
+</p>
+
+<p>
+In thinking over that solution, I observed that when we start, we know
+that the first element of the preorder must be the root; moreover, all
+of the elements appearing before the root in the inorder must belong
+to the left subtree, and the rest to the right.
+</p>
+
+<p>
+A recursive structure was beginning to appear. Now we know how many
+elements <kbd>k</kbd> are in the left subtree; the next <kbd>k</kbd> elements of the
+preorder travsersal (after the first) must therefore represent a
+preorder traversal of the left subtree.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-python"><span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">Definition for a binary tree node.</span>
+<span style="color: #F0DFAF; font-weight: bold;">class</span> <span style="color: #7CB8BB;">TreeNode</span>:
+    <span style="color: #F0DFAF; font-weight: bold;">def</span> <span style="color: #93E0E3;">__init__</span>(<span style="color: #F0DFAF; font-weight: bold;">self</span>, val=0, left=<span style="color: #BFEBBF;">None</span>, right=<span style="color: #BFEBBF;">None</span>):
+        <span style="color: #F0DFAF; font-weight: bold;">self</span>.val = val
+        <span style="color: #F0DFAF; font-weight: bold;">self</span>.left = left
+        <span style="color: #F0DFAF; font-weight: bold;">self</span>.right = right
+</pre>
+</div>
+
+<div class="org-src-container">
+<pre class="src src-python"><span style="color: #F0DFAF; font-weight: bold;">def</span> <span style="color: #93E0E3;">traverse</span>(preorder,inorder):
+    <span style="color: #F0DFAF; font-weight: bold;">if</span> preorder == []:
+        <span style="color: #F0DFAF; font-weight: bold;">return</span> <span style="color: #BFEBBF;">None</span>
+    <span style="color: #DFAF8F;">val</span> = preorder[0]
+    <span style="color: #DFAF8F;">pivot</span> = inorder.index(val)
+    <span style="color: #DFAF8F;">inorderLeft</span> = inorder[:pivot]
+    <span style="color: #DFAF8F;">inorderRight</span> = inorder[pivot+1:]
+    <span style="color: #DFAF8F;">preorderLeft</span> = [i <span style="color: #F0DFAF; font-weight: bold;">for</span> i <span style="color: #F0DFAF; font-weight: bold;">in</span> preorder <span style="color: #F0DFAF; font-weight: bold;">if</span> i <span style="color: #F0DFAF; font-weight: bold;">in</span> inorderLeft]
+    <span style="color: #DFAF8F;">preorderRight</span> = [i <span style="color: #F0DFAF; font-weight: bold;">for</span> i <span style="color: #F0DFAF; font-weight: bold;">in</span> preorder <span style="color: #F0DFAF; font-weight: bold;">if</span> i <span style="color: #F0DFAF; font-weight: bold;">in</span> inorderRight]    
+    <span style="color: #F0DFAF; font-weight: bold;">return</span> TreeNode(val,traverse(preorderLeft,inorderLeft),traverse(preorderRight,inorderRight))
+
+<span style="color: #F0DFAF; font-weight: bold;">class</span> <span style="color: #7CB8BB;">Solution</span>:
+    <span style="color: #F0DFAF; font-weight: bold;">def</span> <span style="color: #93E0E3;">buildTree</span>(<span style="color: #F0DFAF; font-weight: bold;">self</span>, preorder: List[<span style="color: #DCDCCC; font-weight: bold;">int</span>], inorder: List[<span style="color: #DCDCCC; font-weight: bold;">int</span>]) -&gt; Optional[TreeNode]:
+        <span style="color: #F0DFAF; font-weight: bold;">return</span> traverse(preorder,inorder)
+
+</pre>
+</div>
+
+<p>
+That solution passed all but one test case, and exceeded the time
+limit. How can we avoid creating so many copies of the traversals?
+</p>
+
+<div class="org-src-container">
+<pre class="src src-python"><span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">Definition for a binary tree node.</span>
+<span style="color: #F0DFAF; font-weight: bold;">class</span> <span style="color: #7CB8BB;">Solution</span>:
+    <span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">[left,right)</span>
+    <span style="color: #F0DFAF; font-weight: bold;">def</span> <span style="color: #93E0E3;">traverse</span>(<span style="color: #F0DFAF; font-weight: bold;">self</span>,pleft,pright,ileft,iright):
+        <span style="color: #F0DFAF; font-weight: bold;">if</span> pleft &gt;= pright:
+            <span style="color: #F0DFAF; font-weight: bold;">return</span> <span style="color: #BFEBBF;">None</span>
+        <span style="color: #DFAF8F;">val</span> = <span style="color: #F0DFAF; font-weight: bold;">self</span>.preorder[pleft]
+        <span style="color: #DFAF8F;">pivot</span> = <span style="color: #F0DFAF; font-weight: bold;">self</span>.inorder.index(val)
+        <span style="color: #DFAF8F;">numLeft</span> = pivot-ileft
+        <span style="color: #DFAF8F;">leftNode</span> = <span style="color: #F0DFAF; font-weight: bold;">self</span>.traverse(pleft+1,pleft+1+numLeft,ileft,pivot)
+                      <span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">traverse(preorderLeft,inorderLeft)</span>
+        <span style="color: #DFAF8F;">rightNode</span> = <span style="color: #F0DFAF; font-weight: bold;">self</span>.traverse(pleft+1+numLeft,pright,pivot+1,iright)
+                       <span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">traverse(preorderRight,inorderRight)</span>
+        <span style="color: #F0DFAF; font-weight: bold;">return</span> TreeNode(val,leftNode,rightNode)
+    <span style="color: #F0DFAF; font-weight: bold;">def</span> <span style="color: #93E0E3;">buildTree</span>(<span style="color: #F0DFAF; font-weight: bold;">self</span>, preorder: List[<span style="color: #DCDCCC; font-weight: bold;">int</span>], inorder: List[<span style="color: #DCDCCC; font-weight: bold;">int</span>]) -&gt; Optional[TreeNode]:
+        <span style="color: #F0DFAF; font-weight: bold;">self</span>.preorder = preorder
+        <span style="color: #F0DFAF; font-weight: bold;">self</span>.inorder = inorder
+        <span style="color: #F0DFAF; font-weight: bold;">return</span> <span style="color: #F0DFAF; font-weight: bold;">self</span>.traverse(0,<span style="color: #DCDCCC; font-weight: bold;">len</span>(preorder),0,<span style="color: #DCDCCC; font-weight: bold;">len</span>(preorder))
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgad69a97" class="outline-2">
+<h2 id="orgad69a97">Make Each Node of Perfect Binary Tree "Point Right"</h2>
+<div class="outline-text-2" id="text-orgad69a97">
+<p>
+Link:
+<a href="https://leetcode.com/problems/populating-next-right-pointers-in-each-node/">https://leetcode.com/problems/populating-next-right-pointers-in-each-node/</a>
+</p>
+<div class="org-src-container">
+<pre class="src src-python"><span style="color: #F0DFAF; font-weight: bold;">class</span> <span style="color: #7CB8BB;">Node</span>:
+    <span style="color: #F0DFAF; font-weight: bold;">def</span> <span style="color: #93E0E3;">__init__</span>(<span style="color: #F0DFAF; font-weight: bold;">self</span>, val: <span style="color: #DCDCCC; font-weight: bold;">int</span> = 0, left: <span style="color: #CC9393;">'Node'</span> = <span style="color: #BFEBBF;">None</span>, right: <span style="color: #CC9393;">'Node'</span> = <span style="color: #BFEBBF;">None</span>, <span style="color: #DCDCCC; font-weight: bold;">next</span>: <span style="color: #CC9393;">'Node'</span> = <span style="color: #BFEBBF;">None</span>):
+        <span style="color: #F0DFAF; font-weight: bold;">self</span>.val = val
+        <span style="color: #F0DFAF; font-weight: bold;">self</span>.left = left
+        <span style="color: #F0DFAF; font-weight: bold;">self</span>.right = right
+        <span style="color: #F0DFAF; font-weight: bold;">self</span>.<span style="color: #DCDCCC; font-weight: bold;">next</span> = <span style="color: #DCDCCC; font-weight: bold;">next</span>
+
+<span style="color: #F0DFAF; font-weight: bold;">def</span> <span style="color: #93E0E3;">rightests</span>(node):
+    <span style="color: #F0DFAF; font-weight: bold;">if</span> node:
+        node.<span style="color: #DCDCCC; font-weight: bold;">next</span> = <span style="color: #BFEBBF;">None</span>
+        rightests(node.right)
+
+<span style="color: #F0DFAF; font-weight: bold;">def</span> <span style="color: #93E0E3;">inners</span>(a,b):
+    <span style="color: #F0DFAF; font-weight: bold;">if</span> a:
+        a.<span style="color: #DCDCCC; font-weight: bold;">next</span> = b
+        inners(a.right,b.left)
+
+<span style="color: #F0DFAF; font-weight: bold;">def</span> <span style="color: #93E0E3;">sibs</span>(a,b):
+    <span style="color: #F0DFAF; font-weight: bold;">if</span> a:
+        a.<span style="color: #DCDCCC; font-weight: bold;">next</span> = b
+        sibs(a.left,a.right)
+        sibs(b.left,b.right)
+        inners(a.right,b.left)
+
+<span style="color: #F0DFAF; font-weight: bold;">class</span> <span style="color: #7CB8BB;">Solution</span>:
+    <span style="color: #F0DFAF; font-weight: bold;">def</span> <span style="color: #93E0E3;">connect</span>(<span style="color: #F0DFAF; font-weight: bold;">self</span>, root: <span style="color: #CC9393;">'Optional[Node]'</span>) -&gt; <span style="color: #CC9393;">'Optional[Node]'</span>:
+        <span style="color: #F0DFAF; font-weight: bold;">if</span> root:
+            sibs(root.left,root.right)
+        rightests(root)
+        <span style="color: #F0DFAF; font-weight: bold;">return</span> root
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org9de8a0f" class="outline-2">
+<h2 id="org9de8a0f">Implement <kbd>x^n</kbd></h2>
+<div class="outline-text-2" id="text-org9de8a0f">
+<p>
+I remember implementing this in SICP using tail-recursion. I applied
+the same principle to come up with this iterative solution:
+</p>
+<div class="org-src-container">
+<pre class="src src-python">aclass Solution:
+    <span style="color: #F0DFAF; font-weight: bold;">def</span> <span style="color: #93E0E3;">myPow</span>(<span style="color: #F0DFAF; font-weight: bold;">self</span>, x: <span style="color: #DCDCCC; font-weight: bold;">float</span>, n: <span style="color: #DCDCCC; font-weight: bold;">int</span>) -&gt; <span style="color: #DCDCCC; font-weight: bold;">float</span>:
+        <span style="color: #F0DFAF; font-weight: bold;">if</span> n &lt; 0:
+            <span style="color: #F0DFAF; font-weight: bold;">return</span> 1/<span style="color: #F0DFAF; font-weight: bold;">self</span>.myPow(x,-n)
+        <span style="color: #DFAF8F;">res</span> = 1
+        <span style="color: #F0DFAF; font-weight: bold;">while</span> n:
+            <span style="color: #F0DFAF; font-weight: bold;">if</span> n &amp; 1:
+                <span style="color: #DFAF8F;">res</span> *= x
+            <span style="color: #DFAF8F;">x</span> *= x
+            <span style="color: #DFAF8F;">n</span> = n &gt;&gt; 1
+        <span style="color: #F0DFAF; font-weight: bold;">return</span> res
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org6c47651" class="outline-2">
+<h2 id="org6c47651">Maximum Number of Colinear Points</h2>
+<div class="outline-text-2" id="text-org6c47651">
+<p>
+Link: <a href="https://leetcode.com/problems/max-points-on-a-line/">https://leetcode.com/problems/max-points-on-a-line/</a>
+</p>
+
+<p>
+The brute-force solution is somewhat clear: for each line between two
+points, check how many points it hits and return the max. The tricky
+part ends up being how you store a line:
+</p>
+<div class="org-src-container">
+<pre class="src src-python"><span style="color: #F0DFAF; font-weight: bold;">class</span> <span style="color: #7CB8BB;">Solution</span>:
+    <span style="color: #F0DFAF; font-weight: bold;">def</span> <span style="color: #93E0E3;">maxPoints</span>(<span style="color: #F0DFAF; font-weight: bold;">self</span>, points: List[List[<span style="color: #DCDCCC; font-weight: bold;">int</span>]]) -&gt; <span style="color: #DCDCCC; font-weight: bold;">int</span>:
+        <span style="color: #F0DFAF; font-weight: bold;">if</span> <span style="color: #DCDCCC; font-weight: bold;">len</span>(points) &lt; 2:
+            <span style="color: #F0DFAF; font-weight: bold;">return</span> <span style="color: #DCDCCC; font-weight: bold;">len</span>(points)
+        <span style="color: #DFAF8F;">d</span> = {}
+        <span style="color: #DFAF8F;">dx</span> = {}
+        <span style="color: #F0DFAF; font-weight: bold;">for</span> i <span style="color: #F0DFAF; font-weight: bold;">in</span> <span style="color: #DCDCCC; font-weight: bold;">range</span>(<span style="color: #DCDCCC; font-weight: bold;">len</span>(points)):
+            <span style="color: #F0DFAF; font-weight: bold;">for</span> j <span style="color: #F0DFAF; font-weight: bold;">in</span> <span style="color: #DCDCCC; font-weight: bold;">range</span>(i+1,<span style="color: #DCDCCC; font-weight: bold;">len</span>(points)):
+                <span style="color: #DFAF8F;">x1</span> = points[i][0]
+                <span style="color: #DFAF8F;">y1</span> = points[i][1]
+                <span style="color: #DFAF8F;">x2</span> = points[j][0]
+                <span style="color: #DFAF8F;">y2</span> = points[j][1]
+                <span style="color: #F0DFAF; font-weight: bold;">if</span> x1 != x2:
+                    <span style="color: #DFAF8F;">m</span> = (y2-y1)/(x2-x1)
+                    <span style="color: #DFAF8F;">b</span> = y1 - m*x1
+                    <span style="color: #DFAF8F;">m2</span> = <span style="color: #DCDCCC; font-weight: bold;">round</span>(m,10)
+                    <span style="color: #DFAF8F;">b2</span> = <span style="color: #DCDCCC; font-weight: bold;">round</span>(b,10)
+                    <span style="color: #F0DFAF; font-weight: bold;">if</span> (m2,b2) <span style="color: #F0DFAF; font-weight: bold;">in</span> d:
+                        <span style="color: #DFAF8F;">d</span>[(m2,b2)] += 1
+                    <span style="color: #F0DFAF; font-weight: bold;">else</span>:
+                        <span style="color: #DFAF8F;">d</span>[(m2,b2)] = 1
+                <span style="color: #F0DFAF; font-weight: bold;">else</span>:
+                    <span style="color: #F0DFAF; font-weight: bold;">if</span> x1 <span style="color: #F0DFAF; font-weight: bold;">in</span> dx:
+                        <span style="color: #DFAF8F;">dx</span>[x1] += 1
+                    <span style="color: #F0DFAF; font-weight: bold;">else</span>:
+                        <span style="color: #DFAF8F;">dx</span>[x1] = 1
+        <span style="color: #DFAF8F;">m1</span> = <span style="color: #DCDCCC; font-weight: bold;">max</span>(d.values()) <span style="color: #F0DFAF; font-weight: bold;">if</span> <span style="color: #DCDCCC; font-weight: bold;">len</span>(d.values()) &gt; 0 <span style="color: #F0DFAF; font-weight: bold;">else</span> 0
+        <span style="color: #DFAF8F;">m2</span> = <span style="color: #DCDCCC; font-weight: bold;">max</span>(dx.values()) <span style="color: #F0DFAF; font-weight: bold;">if</span> <span style="color: #DCDCCC; font-weight: bold;">len</span>(dx.values()) &gt; 0 <span style="color: #F0DFAF; font-weight: bold;">else</span> 0
+        <span style="color: #F0DFAF; font-weight: bold;">if</span> m1 &gt; m2:
+            <span style="color: #DFAF8F;">pair</span> = <span style="color: #DCDCCC; font-weight: bold;">max</span>(d,key=d.get)
+            <span style="color: #DFAF8F;">m</span> = pair[0]
+            <span style="color: #DFAF8F;">b</span> = pair[1]
+            <span style="color: #DFAF8F;">tot</span> = 0
+            <span style="color: #F0DFAF; font-weight: bold;">for</span> k <span style="color: #F0DFAF; font-weight: bold;">in</span> <span style="color: #DCDCCC; font-weight: bold;">range</span>(<span style="color: #DCDCCC; font-weight: bold;">len</span>(points)):
+                <span style="color: #F0DFAF; font-weight: bold;">if</span> math.isclose(points[k][1],m*points[k][0]+b):
+                    <span style="color: #DFAF8F;">tot</span> += 1
+            <span style="color: #F0DFAF; font-weight: bold;">return</span> tot
+        <span style="color: #F0DFAF; font-weight: bold;">else</span>:
+            <span style="color: #DFAF8F;">x</span> = <span style="color: #DCDCCC; font-weight: bold;">max</span>(dx,key=dx.get)
+            <span style="color: #DFAF8F;">tot</span> = 0
+            <span style="color: #F0DFAF; font-weight: bold;">for</span> k <span style="color: #F0DFAF; font-weight: bold;">in</span> <span style="color: #DCDCCC; font-weight: bold;">range</span>(<span style="color: #DCDCCC; font-weight: bold;">len</span>(points)):
+                <span style="color: #F0DFAF; font-weight: bold;">if</span> points[k][0] == x:
+                    <span style="color: #DFAF8F;">tot</span> += 1
+            <span style="color: #F0DFAF; font-weight: bold;">return</span> tot
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgfe4ecad" class="outline-2">
+<h2 id="orgfe4ecad">Median of Two Sorted Arrays</h2>
+<div class="outline-text-2" id="text-orgfe4ecad">
+<p>
+Link: <a href="https://leetcode.com/problems/median-of-two-sorted-arrays/">https://leetcode.com/problems/median-of-two-sorted-arrays/</a>
+</p>
+
+<p>
+First of all, an O(n+m) solution is easy: merge the two arrays in
+O(n+m) time and return the median. But if we want a logarithmic
+solution, we have to repetitively halve the problem.
+</p>
+
+<p>
+Both are sorted, so we can binary search them "together"
+somehow. Perhaps we can start with a bound on the median and tighten
+it.
+</p>
+
+<p>
+By looking through a few examples, I identified an optimal
+substructure: the overall median will sit somewhere between the first
+median and the second, which means we can sort of knock of half of the
+array left of the lower median, and half of the array right of the
+greater median. The name of the game ended up being properly
+addressing edge cases:
+</p>
+<div class="org-src-container">
+<pre class="src src-python"><span style="color: #F0DFAF; font-weight: bold;">def</span> <span style="color: #93E0E3;">getMedianSorted</span>(l,r,n):
+    <span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">if empty, return anything</span>
+    <span style="color: #F0DFAF; font-weight: bold;">if</span> r &lt;= l:
+        <span style="color: #F0DFAF; font-weight: bold;">return</span> -42069
+    <span style="color: #DFAF8F;">i</span> = (l+r) // 2
+    <span style="color: #DFAF8F;">m</span> = 0
+    <span style="color: #F0DFAF; font-weight: bold;">if</span> (r-l) % 2 == 0:
+        <span style="color: #DFAF8F;">m</span> =  (n[i-1] + n[i]) / 2
+    <span style="color: #F0DFAF; font-weight: bold;">else</span>:
+        <span style="color: #DFAF8F;">m</span> = n[i]
+    <span style="color: #F0DFAF; font-weight: bold;">return</span> m
+
+<span style="color: #F0DFAF; font-weight: bold;">def</span> <span style="color: #93E0E3;">getMedianWithExtras</span>(n,l,r,e):
+    <span style="color: #F0DFAF; font-weight: bold;">if</span> (r-l) % 2 == 0:
+        <span style="color: #DFAF8F;">i</span> = (r+l)//2 - 1
+        <span style="color: #DFAF8F;">a</span> = <span style="color: #DCDCCC; font-weight: bold;">sorted</span>(n[i-<span style="color: #DCDCCC; font-weight: bold;">len</span>(e):i+<span style="color: #DCDCCC; font-weight: bold;">len</span>(e)+2]+e)
+        <span style="color: #F0DFAF; font-weight: bold;">return</span> getMedianSorted(0,<span style="color: #DCDCCC; font-weight: bold;">len</span>(a),a)
+    <span style="color: #F0DFAF; font-weight: bold;">else</span>:
+        <span style="color: #DFAF8F;">i</span> = (r+l)//2
+        <span style="color: #DFAF8F;">a</span> = <span style="color: #DCDCCC; font-weight: bold;">sorted</span>(n[i-<span style="color: #DCDCCC; font-weight: bold;">len</span>(e):i+<span style="color: #DCDCCC; font-weight: bold;">len</span>(e)+1]+e)
+        <span style="color: #F0DFAF; font-weight: bold;">return</span> getMedianSorted(0,<span style="color: #DCDCCC; font-weight: bold;">len</span>(a),a)
+
+<span style="color: #F0DFAF; font-weight: bold;">class</span> <span style="color: #7CB8BB;">Solution</span>:
+    <span style="color: #F0DFAF; font-weight: bold;">def</span> <span style="color: #93E0E3;">getMedian</span>(<span style="color: #F0DFAF; font-weight: bold;">self</span>,l1,r1,l2,r2):
+        <span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">if one is empty, we return the median of the other</span>
+        <span style="color: #F0DFAF; font-weight: bold;">if</span> l1 == r1:
+            <span style="color: #F0DFAF; font-weight: bold;">return</span> getMedianSorted(l2,r2,<span style="color: #F0DFAF; font-weight: bold;">self</span>.nums2)
+        <span style="color: #F0DFAF; font-weight: bold;">if</span> l2 == r2:
+            <span style="color: #F0DFAF; font-weight: bold;">return</span> getMedianSorted(l1,r1,<span style="color: #F0DFAF; font-weight: bold;">self</span>.nums1)
+        <span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">next check the medians</span>
+        <span style="color: #DFAF8F;">m1</span> = getMedianSorted(l1,r1,<span style="color: #F0DFAF; font-weight: bold;">self</span>.nums1)
+        <span style="color: #DFAF8F;">m2</span> = getMedianSorted(l2,r2,<span style="color: #F0DFAF; font-weight: bold;">self</span>.nums2)
+        <span style="color: #F0DFAF; font-weight: bold;">if</span> m1 == m2:
+            <span style="color: #F0DFAF; font-weight: bold;">return</span> m1
+        <span style="color: #F0DFAF; font-weight: bold;">if</span> r1-l1 &lt; 6 <span style="color: #F0DFAF; font-weight: bold;">and</span> r2-l2 &lt; 6:
+            <span style="color: #DFAF8F;">arr</span> = <span style="color: #DCDCCC; font-weight: bold;">sorted</span>(<span style="color: #F0DFAF; font-weight: bold;">self</span>.nums1[l1:r1]+<span style="color: #F0DFAF; font-weight: bold;">self</span>.nums2[l2:r2])
+            <span style="color: #F0DFAF; font-weight: bold;">return</span> getMedianSorted(0,<span style="color: #DCDCCC; font-weight: bold;">len</span>(arr),arr)
+        <span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">we may get to a case where 1 array has 2 elements, which we can't reduce!</span>
+        <span style="color: #F0DFAF; font-weight: bold;">if</span> r1-l1 &lt; 3:
+            <span style="color: #F0DFAF; font-weight: bold;">return</span> getMedianWithExtras(<span style="color: #F0DFAF; font-weight: bold;">self</span>.nums2,l2,r2,<span style="color: #F0DFAF; font-weight: bold;">self</span>.nums1[l1:r1])
+        <span style="color: #F0DFAF; font-weight: bold;">if</span> r2-l2 &lt; 3:
+            <span style="color: #F0DFAF; font-weight: bold;">return</span> getMedianWithExtras(<span style="color: #F0DFAF; font-weight: bold;">self</span>.nums1,l1,r1,<span style="color: #F0DFAF; font-weight: bold;">self</span>.nums2[l2:r2])
+        <span style="color: #DFAF8F;">numOutL</span> = <span style="color: #DCDCCC; font-weight: bold;">int</span>((r1-l1-1)//2)
+        <span style="color: #DFAF8F;">numOutR</span> = <span style="color: #DCDCCC; font-weight: bold;">int</span>((r2-l2-1)//2)
+        <span style="color: #DFAF8F;">numOut</span> = <span style="color: #DCDCCC; font-weight: bold;">min</span>(numOutL,numOutR)
+        <span style="color: #F0DFAF; font-weight: bold;">if</span> m1 &lt; m2:
+            <span style="color: #F0DFAF; font-weight: bold;">return</span> <span style="color: #F0DFAF; font-weight: bold;">self</span>.getMedian(l1+numOut,r1,l2,r2-numOut)
+        <span style="color: #F0DFAF; font-weight: bold;">else</span>:
+            <span style="color: #F0DFAF; font-weight: bold;">return</span> <span style="color: #F0DFAF; font-weight: bold;">self</span>.getMedian(l1,r1-numOut,l2+numOut,r2)
+
+    <span style="color: #F0DFAF; font-weight: bold;">def</span> <span style="color: #93E0E3;">findMedianSortedArrays</span>(<span style="color: #F0DFAF; font-weight: bold;">self</span>, nums1: List[<span style="color: #DCDCCC; font-weight: bold;">int</span>], nums2: List[<span style="color: #DCDCCC; font-weight: bold;">int</span>]) -&gt; <span style="color: #DCDCCC; font-weight: bold;">float</span>:
+        <span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">it is given that m+n &gt;= 1</span>
+        <span style="color: #F0DFAF; font-weight: bold;">self</span>.nums1 = nums1
+        <span style="color: #F0DFAF; font-weight: bold;">self</span>.nums2 = nums2
+        <span style="color: #F0DFAF; font-weight: bold;">return</span> <span style="color: #F0DFAF; font-weight: bold;">self</span>.getMedian(0,<span style="color: #DCDCCC; font-weight: bold;">len</span>(nums1),0,<span style="color: #DCDCCC; font-weight: bold;">len</span>(nums2))
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org2015e7d" class="outline-2">
+<h2 id="org2015e7d">How many trailing zeroes in <kbd>n!</kbd>?</h2>
+<div class="outline-text-2" id="text-org2015e7d">
+<p>
+Link: <a href="https://leetcode.com/problems/factorial-trailing-zeroes/">https://leetcode.com/problems/factorial-trailing-zeroes/</a>
+A good application for the fundamental theorem of arithmetic!
+</p>
+<div class="org-src-container">
+<pre class="src src-python"><span style="color: #F0DFAF; font-weight: bold;">class</span> <span style="color: #7CB8BB;">Solution</span>:
+    <span style="color: #F0DFAF; font-weight: bold;">def</span> <span style="color: #93E0E3;">getPrimesInFact</span>(<span style="color: #F0DFAF; font-weight: bold;">self</span>,prime,fact):
+        <span style="color: #DFAF8F;">acc</span> = 0
+        <span style="color: #DFAF8F;">i</span> = prime
+        <span style="color: #F0DFAF; font-weight: bold;">while</span> i &lt;= fact:
+            <span style="color: #DFAF8F;">acc</span> += fact // i
+            <span style="color: #DFAF8F;">i</span> *= prime
+        <span style="color: #F0DFAF; font-weight: bold;">return</span> acc
+
+    <span style="color: #F0DFAF; font-weight: bold;">def</span> <span style="color: #93E0E3;">trailingZeroes</span>(<span style="color: #F0DFAF; font-weight: bold;">self</span>, n: <span style="color: #DCDCCC; font-weight: bold;">int</span>) -&gt; <span style="color: #DCDCCC; font-weight: bold;">int</span>:
+        <span style="color: #DFAF8F;">twos</span> = <span style="color: #F0DFAF; font-weight: bold;">self</span>.getPrimesInFact(2,n)
+        <span style="color: #DFAF8F;">fives</span> = <span style="color: #F0DFAF; font-weight: bold;">self</span>.getPrimesInFact(5,n)
+        <span style="color: #F0DFAF; font-weight: bold;">return</span> <span style="color: #DCDCCC; font-weight: bold;">min</span>(twos,fives)
+</pre>
+</div>
+<p>
+It wasn't until after looking at the solution that I realized that
+the prime factorization of <kbd>n!</kbd> is always saturated with twos! The
+first call to <kbd>getPrimesInFact</kbd> is unnecessary.
+</p>
+</div>
+</div>
+</div>
+</body>
+</html>
