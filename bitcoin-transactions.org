@@ -1,0 +1,378 @@
+#+TITLE: How Bitcoin Transactions Work
+
+This guide aims to serve as a concise entry point for a technical dive
+into bitcoin. It is not trying to be a complete overview on its own;
+see below for sources. As with any software, the ultimate source of
+truth for technical details is the source code.
+
+Transactions are a great place to start when trying to understand
+bitcoin. Each block in the bitcoin ledger is fundamentally a list of
+transactions[fn:1], and understanding transactions is prerequisite to
+understanding bitcoin "addresses".
+
+* Transactions
+From a high level, a single bitcoin transaction consists of a list of
+inputs and a list of outputs[fn:2].
+
+Each output contains, crucially, two things:
+- An amount. We call the unit for this amount the "satoshi"; we call
+  100 million satoshis a bitcoin.
+- A "locking script", also widely referred to as ~scriptPubKey~ (a
+  name which comes from the bitcoin source[fn:3]). This script
+  imposes rules on how this output can be spent by a future
+  transaction.
+
+Each input contains, similarly, two things:
+- An hash of an existing transaction, and an index referring to one of
+  its unused outputs. Once used, the unspent transaction output
+  (widely referred to as "UTXO") cannot be used again. (The reason for
+  this is that it makes the structure of the ledger very simple: an
+  "account" on this ledger doesn't carry a balance, but instead is
+  static until closed)
+- A "unlocking script" (also widely called ~scriptSig~). Part of
+  verifying a transaction is concatenating the unlocking script of an
+  input with the locking script of the referenced output and
+  evaluating the result using bitcoin script[fn:4].
+
+An implication of this structure is that there can be different types
+of "addresses", corresponding to different types of locking scripts,
+and that those "addresses" are interoperable: when a UTXO locked using
+one type of script is spent, the spender can choose any type of script
+to lock it again[fn:5].
+
+The locking and unlocking scripts are written in a Turing-incomplete
+DSL referred to as "bitcoin script". Technically any arbitrary script
+can be provided as a locking script[fn:6], but the reference bitcoin
+client only accepts 5 "standard" transaction script
+patterns[fn:7]. The expected way to lock transaction output is to
+require a signature from the recipient, and so there are [[https://en.bitcoin.it/wiki/Script#Opcodes][opcodes]] builtin
+to bitcoin script that support signing and verifying signatures using
+a specific public-key cryptosystem (ECDSA with ~secp256k1~--see
+below). But, AFAIK, you could implement any public key signature
+system as a (very long) bitcoin script.
+
+* Signatures
+Bitcoin needs a mechanism for signing a transactions so that only the
+intended recipient has the ability to spend a specific output of a
+specific transaction. For this it uses the elliptic curve digital
+signature algorithm (ECDSA). The ECDSA is a variant of the
+NIST-standardized DSA algorithm and can be used with an elliptic curve
+of any parameters. For its elliptic curve, bitcoin uses [[https://www.secg.org/sec2-v2.pdf][~secp256k1~]]
+which is a specific elliptic curve published by the Standards for
+Efficient Cryptography Group (SECG).
+
+** How does ECDSA work?
+The digital signature algorithm uses a public key to serve as a public
+identity, and a corresponding private key to sign a message.
+
+The first step in generating a key pair is generating a private
+key. For the ECDSA that bitcoin uses, the valid values of this key are
+from ~0x1~ to ~0xFFFF FFFF FFFF FFFF FFFF FFFF FFFF FFFF BAAE DCE6
+AF48 A03B BFD2 5E8C D036 4140~[fn:8]. This number is less than
+$2^{256}$, but so very slightly that we might as well call them
+equivalent. In fact, these two numbers differ by more than the number
+of grains of sand on ten quadrillion Earths[fn:9], but $2^{256}$ is so
+large that this difference is hard to notice.
+
+Once the private key is chosen, the public key is determined as
+$K = k * G$ where:
+- $K$ is the public key
+- $k$ is the private key
+- $G$ is the generator point, specified by ~secp256k1~
+- $*$ is elliptic curve multiplication
+
+For further details on ECDSA, including signature computation, try:
+https://cryptobook.nakov.com/digital-signatures/ecdsa-sign-verify-messages
+
+** Why ECDSA?
+Cryptographic signing generally (but [[https://crypto.stackexchange.com/questions/14654/digital-signature-using-symmetric-key-cryptography][not always]]) requires an
+asymmetric cryptosystem. Other asymmetric cryptosystems exist: RSA
+(which is slower) and Diffie-Hellman (which is [[https://en.wikipedia.org/wiki/Diffie–Hellman_key_exchange#Public_key][not usually used for
+signatures]]) and even vanilla DSA (which would require storing larger
+keys for the same level of security, resulting in a bigger
+ledger).
+
+** Why ~secp256k1~?
+For reasons discussed [[https://dappworks.com/why-did-satoshi-decide-to-use-secp256k1-instead-of-secp256r1/][here]].
+
+* Locking Patterns
+A bitcoin "address" is a piece of information that you can give to
+someone else to put in their transcation output locking script; this
+information is different based on which locking pattern you
+choose. The term "address" can be misleading because a bitcoin
+"address" is intended to be a single-use invoice (to use the
+terminology of the bitcoin wiki[fn:10]) rather than a persistent,
+pseudonymous address.
+
+Because there are different types of locking scripts, your payer needs
+to know what kind of information you're giving them to construct the
+correct kind of locking script. For this reason, there are standard
+prefixes[fn:11] corresponding to different locking patterns. These
+prefixes are only used by the piece of software you use to make
+transactions (the "wallet") and don't actually appear in the
+blockchain[fn:12].
+
+An implication of the locking mechanism is that destroying bitcoins is
+straightforward:
+- https://en.bitcoin.it/wiki/Controlled_supply
+- https://bitcoin.stackexchange.com/questions/1851/how-to-generate-a-valid-bitcoin-address-for-destroying-bitcoins/1852
+
+For each of the following five standard locking patterns, the
+following source is great for more detail:
+
+https://learnmeabitcoin.com/technical/scriptPubKey
+
+** Pay to Public Key ("P2PK")
+Overview: the unlocking script verifies that the spender's signature
+matches the public key provided by the payer.
+
+There are problems with this pattern:
+1. Public keys are long (65 bytes)[fn:13] and therefore hard to share
+2. The payee must reveal their public key before spending, which poses
+   theoretical security risks[fn:14] (such as that posed by a
+   hypothetical version of Shor's algorithm modified to solve the
+   discrete log problem on elliptic curves); but, in a quantum
+   context, bitcoin would have bigger problems[fn:15]
+
+This pattern is not in modern use.
+
+** Pay to Public Key Hash ("P2PKH")
+Overview: the locking script verifies that the spender's (ECDSA) public
+key maps to a hash specified by the payer, and that the spender can
+provide a signature to match their public key.
+
+Specifically, the locking script computes a ~RIPEMD160(SHA256())~ hash
+of the public key. ~RIPEMD160(SHA256())~ maps a 256-bit public key to
+a 160-bit hash. There are at most $2^{160}$ P2PKH addresses (it's
+"suspected", but not certain[fn:16], that RIPEMD160 actually reaches
+all 2^{160} values) and there are almost $2^{256}$ private keys;
+therefore, there are on average about $2^{96}$ private keys that collide
+to each of the about $2^{160}$ P2PKH addresses.
+
+P2PKH addresses are shared by encoding the hash using Base58Check
+which makes the address:
+- shorter, because a public key hash is used instead of a full public
+  key
+- more readable, because Base58Check excludes ambiguous characters
+- less error-proton, because Base58Check incorporates a checksuum
+
+It is the job of the wallet[fn:17] to strip the prefix and checksum
+from an entered P2PKH address so that the raw public key hash can be
+used in the locking script and correctly checked for equality.
+
+There are a couple of good sources that breakdown a real P2PKH
+transaction:
+- https://bitcoin.stackexchange.com/questions/57644/what-are-the-parts-of-a-bitcoin-transaction-input-script
+- https://medium.com/coinmonks/bitcoin-p2pkh-transaction-breakdown-bb663034d6df
+
+Many say that if compressed public keys had been known to the
+architect of bitcoin, P2PKH would not have been necessary[fn:18]
+(because ~RIPEMD160(SHA256())~ mainly serves to shorten the key, not
+to add security). Still, the Base58Check encoding is valuable.
+
+** Multisig ("P2MS", BIP 11)
+Overview: the unlocking script verifies that enough signatures
+matching the public keys provided by the payer are given by the
+spender. Perhaps a better name for this type of transaction would be
+P2PKs.
+
+** Pay to Script Hash ("P2SH", BIP 16)
+Overview: the locking script verifies that the spender's unlocking script
+maps to the hash specified by the payer; then the unlocking script is
+deserialized (reinterpreted not as a value to be hashed but as a
+sequence of opcodes to be executed) and executed (using arguments
+provided by the spender) to confirm validity. Since this transaction
+type involves more than just concatenating the unlocking and locking
+scripts and then executing (it needs to execute the unlocking script
+too), it required an amendment to bitcoin: [[https://github.com/bitcoin/bips/blob/master/bip-0016.mediawiki#Backwards_Compatibility][BIP 16]].
+
+Note that providing and using those inputs is necessary to achieve
+security. Imagine a script the pushes a magic number on the stack,
+duplicates it, and checks for equality. This script doesn't use inputs
+and always succeeds. If you use the hash of this script to receive
+funds, then as soon as you broadcast a transaction that spends your
+coins, anyone watching could use your script to broadcast a different
+transaction spending the output in a different way.
+
+It is cheaper to use P2SH to implement multisig than it is to use the
+P2MS pattern.
+
+** Data Output
+Overview: the locking script just stores data.
+
+Example transaction:
+[[https://blockchair.com/bitcoin/transaction/52dd20f60d6e14e5a783e7668cf410efdea40cd9a92479b0f2423d0bc63575fa][~52dd20f60d6e14e5a783e7668cf410efdea40cd9a92479b0f2423d0bc63575fa~]]
+
+* "Segregated Witness"
+"Segregated witness" or "segwit" refers to the segregation of witness
+data (the ~scriptSig~ of each transaction input) from the transaction
+itself. In 2015, [[https://github.com/bitcoin/bips/blob/master/bip-0141.mediawiki][BIP141]] proposed this change and [[https://github.com/bitcoin/bips/blob/master/bip-0173.mediawiki][BIP173]] proposed a new
+address type for native segregates witness output. People refer to
+P2PKH and P2SH segwit transactions as P2WPKH and P2WSH repectively,
+but the logic of the locking is the same[fn:19]
+- https://learnmeabitcoin.com/faq/segregated-witness
+- https://bitcoin.stackexchange.com/questions/75047/bitcoin-technical-difference-between-p2pkh-and-p2sh-address-generation
+
+* Using bitcoin: "addresses" and "wallets"
+A wallet is a piece of hardware or software that interfaces with the
+ledger (blockchain) and stores the keys that allow you (and only you)
+to spend transaction output. "Wallet" is a misleading metaphor if:
+- It evokes the existence of distinct tokens
+- It can be understood as a single address on the blockchain that
+  accumulates a balance over time
+
+In fact, "addresses" aren't intended to be reused[fn:20], and
+"addresses" (transaction outputs) don't have balances: they're either
+spent or unspent. That being said, a wallet can be thought of as an
+account, composed of many different addresses, that together have a
+usable balance.
+
+In order to make a bitcoin address, you don't actually need to access
+the blockchain or the internet: you just need to understand how
+locking scripts work. There are various tools that automate the
+process of address generation without functioning as a complete
+"wallet":
+- [[https://www.bitaddress.org][www.bitaddress.org]] 
+- [[https://github.com/samr7/vanitygen][vanitygen]], a command-line tool for generating vanity bitcoin
+  addresses
+
+And there are also many walkthroughs on manually generating a bitcoin
+address yourself:
+- https://bitcoin.stackexchange.com/questions/59644/how-do-these-openssl-commands-create-a-bitcoin-private-key-from-a-ecdsa-keypair
+- https://bitcoin.stackexchange.com/questions/10827/generate-address-for-receiving-on-gnu-linux-without-bitcoin-client
+- https://www.freecodecamp.org/news/how-to-generate-your-very-own-bitcoin-private-key-7ad0f4936e6c/
+- https://bitcoinmagazine.com/culture/diy-bitcoin-private-key-project
+- https://bitcoin.stackexchange.com/questions/7491/how-to-generate-keypair-completely-offline
+- https://medium.com/coinmonks/how-to-generate-a-bitcoin-address-step-by-step-9d7fcbf1ad0b
+- https://gist.github.com/colindean/5239812
+
+Then there are of course many wallets, and many classifications of
+wallets: hot, cold, paper, custodial, non-custodial, hardware,
+software, ...
+
+https://en.bitcoin.it/wiki/Wallet
+
+There are estimated to be 460 million bitcoin addresses as of
+2018[fn:21].
+
+How you choose to generate bitcoin address is up to you, but security
+is important. If you choose a non-random private key, such as ~0x1~,
+then the corresponding address will be publicly known. For private key
+~0x1~, the corresponding address is
+[[https://www.blockchain.com/btc/address/1EHNa6Q4Jz2uvNExL497mE43ikXhwF6kZm][~1EHNa6Q4Jz2uvNExL497mE43ikXhwF6kZm~]]: you can see that any funds to this
+account are quickly spent[fn:22].
+
+A secure, somewhat accessible way (outlined [[https://en.bitcoin.it/wiki/How_to_set_up_a_secure_offline_savings_wallet][here]]) to generate an
+address/secret pair is do so on a bootable, verified linux USB drive
+that you never connect to the internet. Specifically, I recommend
+making a bootable copy of tails (something good to have around
+anyways), which comes with the Electrum wallet by default. [[https://dev-notes.eu/2017/08/setup-and-manage-bitcoin-core-cold-storage-wallet/][This post]]
+offers a good walkthrough of the process (tails itself has good
+documentation on installing and verifying tails), but it uses verified
+bitcoin-core binaries instead of tails' builtin Electrum app. The way
+I recommend is to:
+  1. [[https://tails.boum.org/install/index.en.html][Install tails]] on a USB
+  2. Disable internet connection and boot tails
+  3. Use Electrum to generate a new wallet
+  4. Store your public/private key pair (however you want)
+
+Once you make an address, how should you store the key? Well, this
+question can be asked of any digital secret--I don't think there
+should be a special answer for bitcoin. [[https://github.com/bitcoin/bips/blob/master/bip-0039.mediawiki][BIP39]] standardized a mnemonic
+code so that a private key can be stored as a sequence of words (in
+English or other languages) instead of as a number (encoded in
+decimal, binary, hex, base58, etc). This sequence of words is called a
+seed and can be used to deterministically generate a tree of keypairs
+(many addresses) according to [[https://github.com/bitcoin/bips/blob/master/bip-0032.mediawiki][BIP32]]. A BIP39 seed has at least 128
+bits of entropy (Electrum's has 132 bits of entropy [fn:23]) so that
+it has enough entropy to generate a private key of 128 bits of
+entropy. This seed can be easily written down and stored on paper.
+
+* Nodes, the network, blockchain, etc.
+I'm leaving these concepts out of scope for now. There are lots of
+interesting topics beyond transactions such as:
+- "Forking" the blockchain
+- Proof-of-work
+- Attacks
+- "Mining"
+
+For architectural considerations of bitcoin, I would recommend the
+whitepaper: https://bitcoin.org/bitcoin.pdf
+
+Also, try this walkthrough of bitcoin mining using pen and paper:
+https://www.righto.com/2014/09/mining-bitcoin-with-pencil-and-paper.html
+
+** Preventing Double-Spend
+Bitcoin nodes maintain an [[https://stackoverflow.com/questions/30425272/how-do-bitcoin-miners-check-for-double-spend-or-over-spend][index of UTXOs]] (unspent transaction outputs)
+alongside the blockchain. I haven't looked at the implementation, but
+I imagine this to be a hash table mapping a transaction id ~+~ output
+index to a locking script [fn:24]. Generating this index from an
+existing blockchain would be straightforward. The chain would be
+processes block-by-block, transaction-by-transaction: each valid
+transaction output would be unconditionally added to the index (in
+amortized O(1) time); each input would be checked against the index
+(also O(1) time) and then removed (constant-time) if present
+(otherwise the transaction would be rejected, or the block
+unconfirmed).
+
+* Resources
+- Wiki: https://en.bitcoin.it/wiki/Main_Page
+- https://learnmeabitcoin.com/technical/
+- Original source code: https://satoshi.nakamotoinstitute.org/code/
+- Original bitcoin announcement: https://satoshi.nakamotoinstitute.org/emails/cryptography/16/
+
+* Footnotes
+
+[fn:1] https://en.bitcoin.it/wiki/Block
+
+[fn:2] https://en.bitcoin.it/wiki/Transaction
+
+[fn:3] Refer to the original source code: https://s3.amazonaws.com/nakamotoinstitute/code/bitcoin-0.1.0.tgz
+
+[fn:4] https://learnmeabitcoin.com/technical/script
+
+[fn:5] https://bitcoin.stackexchange.com/questions/93013/are-all-three-bitcoin-address-types-interoperable-legacy-segwit-native-segwit
+
+[fn:6] Here is a script that can be redeemed by anyone who can
+demonstrate a hash collision:
+https://bitcointalk.org/index.php?topic=293382.0
+
+[fn:7] https://www.oreilly.com/library/view/mastering-bitcoin/9781491902639/ch05.html
+
+[fn:8] https://medium.com/coinmonks/how-to-generate-a-bitcoin-address-step-by-step-9d7fcbf1ad0b
+
+[fn:9] The most significant zero bit in the binary representation of the
+maximal private key is bit 125. $2^{125}$ is around $10^{37}$; there are
+about $10^{21}$ grains of sand on Earth ([[https://en.wikipedia.org/wiki/Orders_of_magnitude_(numbers)#1021][source]]), and so there are 10^{38}
+grains of sand on ten quadrillion ($10^{16}$) Earths.
+
+[fn:10] https://en.bitcoin.it/wiki/Invoice_address
+
+[fn:11] https://en.bitcoin.it/wiki/List_of_address_prefixes
+
+[fn:12] /citation needed/
+
+[fn:13] https://bitcoin.stackexchange.com/questions/2013/why-does-the-length-of-a-bitcoin-key-vary
+
+[fn:14] https://en.bitcoinwiki.org/wiki/Pay-to-Pubkey_Hash
+
+[fn:15] https://bitcoin.stackexchange.com/questions/72184/why-is-p2pkh-used-instead-of-the-simpler-p2pk
+
+[fn:16] https://stackoverflow.com/questions/2658601/do-cryptographic-hash-functions-reach-each-possible-values-i-e-are-they-surje
+
+[fn:17] https://learnmeabitcoin.com/technical/p2pkh
+
+[fn:18] https://bitcoin.stackexchange.com/questions/3600/why-are-bitcoin-addresses-hashes-of-public-keys
+
+[fn:19] https://programmingblockchain.gitbook.io/programmingblockchain/other_types_of_ownership/p2wpkh_pay_to_witness_public_key_hash
+
+[fn:20] https://en.bitcoin.it/wiki/Address_reuse
+
+[fn:21] https://blog.chainalysis.com/reports/bitcoin-addresses/
+
+[fn:22] https://towardsdatascience.com/a-shallow-dive-into-bitcoins-blockchain-part-2-transactions-d4ee83067bae
+
+[fn:23] https://electrum.readthedocs.io/en/latest/faq.html
+https://crypto.stackexchange.com/questions/26791/how-many-bits-of-entropy-does-an-elliptic-curve-key-of-length-n-provide
+
+[fn:24] https://learnmeabitcoin.com/technical/p2sh
