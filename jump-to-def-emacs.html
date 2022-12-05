@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2022-12-04 Sun 21:25 -->
+<!-- 2022-12-04 Sun 22:44 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>"Jump to Definition" in Emacs</title>
@@ -223,14 +223,15 @@
 Navigating from a variable's usage to its definition (or declaration)
 and back is an important part of any IDE. I haven't found a standard
 name for this behavior: Visual Studio calls it "Go to Definition";
-Xcode calls it "Jump to Definition". Emacs has two ways, that I know
-of, to achieve this feature: <kbd>etags.el</kbd> (now deprecated) and its
-successor <kbd>xref.el</kbd>.
+Xcode calls it "Jump to Definition" (depending on the implementation
+it can also be called tagging/indexing source code). Emacs has two
+ways, that I know of, to achieve this feature: <kbd>etags.el</kbd> (now
+deprecated) and its successor <kbd>xref.el</kbd>.
 </p>
 
-<div id="outline-container-org7a215d7" class="outline-2">
-<h2 id="org7a215d7"><kbd>etags.el</kbd></h2>
-<div class="outline-text-2" id="text-org7a215d7">
+<div id="outline-container-orge3e5fe4" class="outline-2">
+<h2 id="orge3e5fe4"><kbd>etags.el</kbd></h2>
+<div class="outline-text-2" id="text-orge3e5fe4">
 <p>
 The standard way to achieve code navigation used to be to generate an
 index of all source code for your project. The index would
@@ -304,9 +305,9 @@ invalidated as you edit your code.
 </div>
 </div>
 
-<div id="outline-container-org9563c74" class="outline-2">
-<h2 id="org9563c74"><kbd>xref.el</kbd></h2>
-<div class="outline-text-2" id="text-org9563c74">
+<div id="outline-container-orge81c72f" class="outline-2">
+<h2 id="orge81c72f"><kbd>xref.el</kbd></h2>
+<div class="outline-text-2" id="text-orge81c72f">
 <p>
 <kbd>xref.el</kbd> uses a backend provided by a major mode to find identifiers
 (and more). A backend can be implemented using a tags table, language
@@ -314,9 +315,9 @@ server, or anything else:
 </p>
 </div>
 
-<div id="outline-container-org5a35be9" class="outline-3">
-<h3 id="org5a35be9">Plain old <kbd>tags</kbd> table</h3>
-<div class="outline-text-3" id="text-org5a35be9">
+<div id="outline-container-org8f032bc" class="outline-3">
+<h3 id="org8f032bc">Plain old <kbd>tags</kbd> table</h3>
+<div class="outline-text-3" id="text-org8f032bc">
 <p>
 I tried using <kbd>xref-find-definitions</kbd> with the two above tags tables,
 but only the <kbd>etags</kbd> table worked. Not sure why.
@@ -324,9 +325,9 @@ but only the <kbd>etags</kbd> table worked. Not sure why.
 </div>
 </div>
 
-<div id="outline-container-orge48e0ba" class="outline-3">
-<h3 id="orge48e0ba">Language Servers</h3>
-<div class="outline-text-3" id="text-orge48e0ba">
+<div id="outline-container-orgb2ff8c4" class="outline-3">
+<h3 id="orgb2ff8c4">Language Servers</h3>
+<div class="outline-text-3" id="text-orgb2ff8c4">
 <p>
 There are at least two emacs clients for the Language Server Protocol:
  <kbd>eglot.el</kbd> and <kbd>lsp.el</kbd>. To use these packages, install a language
@@ -340,9 +341,9 @@ There are also other language servers such as <a href="https://github.com/Anders
 </div>
 </div>
 
-<div id="outline-container-orgc59ab14" class="outline-3">
-<h3 id="orgc59ab14">CIDER</h3>
-<div class="outline-text-3" id="text-orgc59ab14">
+<div id="outline-container-org94cf334" class="outline-3">
+<h3 id="org94cf334">CIDER</h3>
+<div class="outline-text-3" id="text-org94cf334">
 <p>
 For Clojure, you can use CIDER which implements an <kbd>xref</kbd> backend:
 </p>
@@ -360,9 +361,9 @@ successfully compiled).
 </div>
 </div>
 
-<div id="outline-container-orgbe8290f" class="outline-3">
-<h3 id="orgbe8290f">Other Emacs Packages</h3>
-<div class="outline-text-3" id="text-orgbe8290f">
+<div id="outline-container-orgb25ecff" class="outline-3">
+<h3 id="orgb25ecff">Other Emacs Packages</h3>
+<div class="outline-text-3" id="text-orgb25ecff">
 <ul class="org-ul">
 <li><a href="https://github.com/jacktasia/dumb-jump"><kbd>dumb-jump.el</kbd></a></li>
 </ul>

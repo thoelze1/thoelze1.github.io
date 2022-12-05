@@ -3,12 +3,14 @@
 Beating the top vimgolf submissions in Emacs just rocks. It was one of
 the first things that got me really excited about Emacs. One day, I'd
 like to set up a "workflow" (distractionflow?) with something like
-~vimgolf.el~ so that creating and showing off a solution to a vimgolf
+[[https://github.com/timvisher/vimgolf.el][~vimgolf.el~]] so that creating and showing off a solution to a vimgolf
 problem is quick and easy.
 
 For now, all I have is some solutions to old problems. I hope to one
 day convert these into a format that displays nicely, or pulls from
-vimgolf.com, or can be shared & verified.
+vimgolf.com, or can be shared & verified. All of these should
+theoretically work when run with ~emacs -Q~. Most of them beat the
+best vim solutions, some of them by a lot (and I'm no Emacs veteran).
 
 | Challenge ID               | Solution                                                                             | Number of Keystrokes |
 |----------------------------+--------------------------------------------------------------------------------------+----------------------|
@@ -22,4 +24,4 @@ vimgolf.com, or can be shared & verified.
 | [[https://www.vimgolf.com/challenges/5d7f565deac0df000cfc2154][~5d7f565deac0df000cfc2154~]] | ~F3 M-3 C-d C-n C-x ) M-7 - RET C-n F4 M-DEL A r e C-n M-3 - RET C-n F4 d RET M-9 -~ |                   25 |
 | [[https://www.vimgolf.com/challenges/5192f96ad8df110002000002][~5192f96ad8df110002000002~]] | ~F3 ( M-f ) C-f M-3 C-x )~                                                           |                    8 |
 | [[https://www.vimgolf.com/challenges/52c3cb0d9b8634000200000e][~52c3cb0d9b8634000200000e~]] | ~M-4 M-f M-DEL M-DEL N E W M-f M-f DEL 4~                                            |                   11 |
-| [[https://www.vimgolf.com/challenges/540629666a1e4000020d9e5a][~540629666a1e4000020d9e5a~]] | ~F3 - C-f M-1 M-4 C-x~                                                               |                    7 |
+| [[https://www.vimgolf.com/challenges/540629666a1e4000020d9e5a][~540629666a1e4000020d9e5a~]] | ~F3 - C-f M-1 M-4 C-x )~                                                             |                    7 |
