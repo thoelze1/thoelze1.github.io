@@ -3,9 +3,10 @@
 Navigating from a variable's usage to its definition (or declaration)
 and back is an important part of any IDE. I haven't found a standard
 name for this behavior: Visual Studio calls it "Go to Definition";
-Xcode calls it "Jump to Definition". Emacs has two ways, that I know
-of, to achieve this feature: ~etags.el~ (now deprecated) and its
-successor ~xref.el~.
+Xcode calls it "Jump to Definition" (depending on the implementation
+it can also be called tagging/indexing source code). Emacs has two
+ways, that I know of, to achieve this feature: ~etags.el~ (now
+deprecated) and its successor ~xref.el~.
 
 * ~etags.el~
 The standard way to achieve code navigation used to be to generate an
