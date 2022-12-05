@@ -188,6 +188,21 @@ $$c \to cb$$
   (fast-mult-iter x y 0))
 #+END_SRC
 *** Exercise 1.19
+If we use as a representation for the iterative fibonacci process a
+transformation $T_{p,q}$ defined as:
+$$a \leftarrow bq + aq + ap$$
+$$b \leftarrow bp + aq$$
+Then $t_{p',q'} = $T_{p,q} \circ T_{p,q}$ is:
+$$a \leftarrow (bp + aq)q + (bq + aq + ap)q + (bq + aq + ap)p$$
+$$b \leftarrow (bp + aq)p + (bq + aq + ap)q$$
+We'll rewrite this to determine p' and q':
+$$a \leftarrow b(2pq+q^2) + a(2q^2 + 2qp + p^2)$$
+$$b \leftarrow b(p^2+q^2) + a(2qp+q^2)$$
+Therefore $p' = p^2+q^2$ and $q' = 2pq+q^2$.
+
+The exercise doesn't elucidate the origin of this cleverly defined
+transformation. Apparently it's called the "Fibonacci Q-Matrix" and
+originated in the 1950s (see [[https://stackoverflow.com/questions/1896974/sicp-exercise-1-19][stackoverflow]] for more).
 #+BEGIN_SRC scheme
 (define (fib n)
   (define (fib-iter a b p q count)
