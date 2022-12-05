@@ -10,6 +10,7 @@
 - 2022-02-12: [[file:gnu-shepherd-simple-service.org][Writing a basic service for GNU Guix]]
 - 2022-02-10: [[file:quotes.org][Favorite Quotes]]
 - 2022-02-09: [[file:running-linux-on-a-macbook.org][Running Linux on a MacBook]]
+- 2022-02-01: [[file:emacs-golf.org][EmacsGolf: VimGolf Challenges in Emacs]]
 - 2022-02-01: [[file:uploading-garmin-routes.org][Uploading Large Files to the Garmin inReach Explorer+]]
 - 2022-02-01: [[file:hacking-my-laptop.org][Breaking into my MacBookPro10,2]]
 - 2021-12-29: [[file:cracking-windows-7.org][Cracking a Windows 7 Password]]
