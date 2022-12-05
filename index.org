@@ -6,6 +6,7 @@
 - 2022-12-01: [[file:scraping-an-spa.org][Scraping an SPA]]
 - 2022-11-29: [[file:bitcoin-transactions.org][How Bitcoin Transactions Work]]
 - 2022-11-05: [[file:coding-challenges.org][Coding Challenges]]
+- 2022-03-30: [[file:indexing_clojure.org][Indexing (Tagging) Clojure/ClojureScript Source]]
 - 2022-02-12: [[file:gnu-shepherd-simple-service.org][Writing a basic service for GNU Guix]]
 - 2022-02-10: [[file:quotes.org][Favorite Quotes]]
 - 2022-02-09: [[file:running-linux-on-a-macbook.org][Running Linux on a MacBook]]
