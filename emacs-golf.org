@@ -1,16 +1,24 @@
 #+TITLE: EmacsGolf: VimGolf Challenges in Emacs
 
-Beating the top vimgolf submissions in Emacs just rocks. It was one of
-the first things that got me really excited about Emacs. One day, I'd
-like to set up a "workflow" (distractionflow?) with something like
+As I've learned Emacs I've had fun doing vimgolf challenges. One day,
+I'd like to set up a "workflow" (distractionflow?) with something like
 [[https://github.com/timvisher/vimgolf.el][~vimgolf.el~]] so that creating and showing off a solution to a vimgolf
 problem is quick and easy.
 
-For now, all I have is some solutions to old problems. I hope to one
-day convert these into a format that displays nicely, or pulls from
-vimgolf.com, or can be shared & verified. All of these should
-theoretically work when run with ~emacs -Q~. Most of them beat the
-best vim solutions, some of them by a lot (and I'm no Emacs veteran).
+Below are some of my old solutions to challenges. I hope to one day
+convert these into a format that displays nicely, or pulls from
+vimgolf.com, or can be shared and verified.
+
+Whether or not to count modifier keys as keystrokes is a contested
+question among golfers (which says a lot about our kind). [[https://codegolf.stackexchange.com/questions/71030/tips-for-golfing-in-vim][Many]]
+(including me) think that modifiers shouldn't count towards
+keystrokes, but vimgolf.com does count modifier keystrokes. I've
+counted my solutions without modifiers, so it's not really fair to
+compare them to the vimgolf leaderboards. I'm not sure how accurate
+the vimgolf leaderboards are anyways; solutions aren't posted (only
+the keystroke count) and in the past there's been [[https://www.reddit.com/r/programming/comments/espb5/vimgolf_real_vim_ninjas_count_every_keystroke/][cheating]].
+
+All of the below /should/ work when run with ~emacs -Q~.
 
 | Challenge ID               | Solution                                                                             | Number of Keystrokes |
 |----------------------------+--------------------------------------------------------------------------------------+----------------------|
