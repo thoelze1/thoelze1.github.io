@@ -246,24 +246,24 @@ the resulting files:
 </p>
 
 <div class="org-src-container">
-<pre class="src src-bash"><span style="color: #b22222;">#</span><span style="color: #b22222;">!/bin/</span><span style="color: #a020f0;">bash</span>
+<pre class="src src-bash"><span style="color: #5F7F5F;">#</span><span style="color: #7F9F7F;">!/bin/</span><span style="color: #F0DFAF; font-weight: bold;">bash</span>
 
-<span style="color: #b22222;"># </span><span style="color: #b22222;">$1 is input</span>
-<span style="color: #b22222;"># </span><span style="color: #b22222;">$2 is output</span>
-<span style="color: #b22222;"># </span><span style="color: #b22222;">$3 is (optionally) max number of points per file</span>
+<span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">$1 is input</span>
+<span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">$2 is output</span>
+<span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">$3 is (optionally) max number of points per file</span>
 
-<span style="color: #a0522d;">prefix</span>=<span style="color: #8b2252;">"${1%.*}-"</span>
-gpsbabel -i gpx -f <span style="color: #8b2252;">"$1"</span> -t -o csv -F - <span style="color: #8b2252;">\</span>
-  | gsplit -d -l ${<span style="color: #a0522d;">3</span>:-200} --additional-suffix=.csv - <span style="color: #8b2252;">"$prefix"</span>
+<span style="color: #DFAF8F;">prefix</span>=<span style="color: #CC9393;">"${1%.*}-"</span>
+gpsbabel -i gpx -f <span style="color: #CC9393;">"$1"</span> -t -o csv -F - <span style="color: #CC9393;">\</span>
+  | gsplit -d -l ${<span style="color: #DFAF8F;">3</span>:-200} --additional-suffix=.csv - <span style="color: #CC9393;">"$prefix"</span>
 
-<span style="color: #483d8b;">echo</span> -e <span style="color: #8b2252;">"&lt;?xml version=\"1.0\" ?&gt;\n&lt;gpx&gt;\n&lt;/gpx&gt;"</span> &gt; <span style="color: #8b2252;">"$2"</span>
-<span style="color: #a020f0;">for</span> f<span style="color: #a020f0;"> in</span> <span style="color: #8b2252;">"$prefix"</span>*.csv; <span style="color: #a020f0;">do</span>
-    gpsbabel -i csv -f <span style="color: #8b2252;">"$f"</span>                              <span style="color: #8b2252;">\</span>
-             -i gpx -f <span style="color: #8b2252;">"$2"</span>                              <span style="color: #8b2252;">\</span>
-             -x transform,<span style="color: #a0522d;">trk</span>=wpt -x nuketypes,waypoints <span style="color: #8b2252;">\</span>
-             -o gpx -F <span style="color: #8b2252;">"$2"</span>
-    rm <span style="color: #8b2252;">"$f"</span>
-<span style="color: #a020f0;">done</span>
+<span style="color: #DCDCCC; font-weight: bold;">echo</span> -e <span style="color: #CC9393;">"&lt;?xml version=\"1.0\" ?&gt;\n&lt;gpx&gt;\n&lt;/gpx&gt;"</span> &gt; <span style="color: #CC9393;">"$2"</span>
+<span style="color: #F0DFAF; font-weight: bold;">for</span> f<span style="color: #F0DFAF; font-weight: bold;"> in</span> <span style="color: #CC9393;">"$prefix"</span>*.csv; <span style="color: #F0DFAF; font-weight: bold;">do</span>
+    gpsbabel -i csv -f <span style="color: #CC9393;">"$f"</span>                              <span style="color: #CC9393;">\</span>
+             -i gpx -f <span style="color: #CC9393;">"$2"</span>                              <span style="color: #CC9393;">\</span>
+             -x transform,<span style="color: #DFAF8F;">trk</span>=wpt -x nuketypes,waypoints <span style="color: #CC9393;">\</span>
+             -o gpx -F <span style="color: #CC9393;">"$2"</span>
+    rm <span style="color: #CC9393;">"$f"</span>
+<span style="color: #F0DFAF; font-weight: bold;">done</span>
 </pre>
 </div>
 

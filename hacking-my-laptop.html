@@ -281,9 +281,9 @@ to work:
 
 <div class="org-src-container">
 <pre class="src src-bash">$ dscl . read tanner.plist dsAttrTypeNative:ShadowHashData | xxd -r -p | plutil -convert xml1 -
-&lt;?xml <span style="color: #a0522d;">version</span>=<span style="color: #8b2252;">"1.0"</span> <span style="color: #a0522d;">encoding</span>=<span style="color: #8b2252;">"UTF-8"</span>?&gt;
-&lt;!DOCTYPE plist PUBLIC <span style="color: #8b2252;">"-//Apple//DTD PLIST 1.0//EN"</span> <span style="color: #8b2252;">"http://www.apple.com/DTDs/PropertyList-1.0.dtd"</span>&gt;
-&lt;plist <span style="color: #a0522d;">version</span>=<span style="color: #8b2252;">"1.0"</span>&gt;
+&lt;?xml <span style="color: #DFAF8F;">version</span>=<span style="color: #CC9393;">"1.0"</span> <span style="color: #DFAF8F;">encoding</span>=<span style="color: #CC9393;">"UTF-8"</span>?&gt;
+&lt;!DOCTYPE plist PUBLIC <span style="color: #CC9393;">"-//Apple//DTD PLIST 1.0//EN"</span> <span style="color: #CC9393;">"http://www.apple.com/DTDs/PropertyList-1.0.dtd"</span>&gt;
+&lt;plist <span style="color: #DFAF8F;">version</span>=<span style="color: #CC9393;">"1.0"</span>&gt;
 &lt;dict&gt;
         &lt;key&gt;SALTED-SHA512-PBKDF2&lt;/key&gt;
         &lt;dict&gt;
@@ -291,13 +291,13 @@ to work:
                 &lt;data&gt;
                 96kq3nobm2G/jFtdoIsfgzP8m3SCYbGhnI1OdO0rv/ag+8UJOUDUZtTIaH4G
                 MsBLMM8HFtqpH5jAKpJiQhDwmYNWZ64ZAYpV1hUt7UlswDK8HtnTOeZ1x5hI
-                <span style="color: #a0522d;">CHFkd0ZbGUziMPRGRuNUv64aOC2ihxFODsAkbuZnrvjsfWTCBZ0</span>=
+                <span style="color: #DFAF8F;">CHFkd0ZbGUziMPRGRuNUv64aOC2ihxFODsAkbuZnrvjsfWTCBZ0</span>=
                 &lt;/data&gt;
                 &lt;key&gt;iterations&lt;/key&gt;
                 &lt;integer&gt;36900&lt;/integer&gt;
                 &lt;key&gt;salt&lt;/key&gt;
                 &lt;data&gt;
-                BQn1fkxpi15tLrI6sVCfZs8rVxxE+<span style="color: #a0522d;">0q8W94cwIxj3wA</span>=
+                BQn1fkxpi15tLrI6sVCfZs8rVxxE+<span style="color: #DFAF8F;">0q8W94cwIxj3wA</span>=
                 &lt;/data&gt;
         &lt;/dict&gt;
         &lt;key&gt;SRP-RFC5054-4096-SHA512-PBKDF2&lt;/key&gt;
@@ -321,7 +321,7 @@ to work:
                 8Evmx2KmIM9Oxm0DhvHB+djoQO7e6vnK582mh4uMSWsm/SAng+Evs7M0CQtN
                 PhG0qi5MsLiDufjsgluPcksVCtgxev1n2+hzF0TMhb82d8FrRM7ixOIzFPy6
                 NdCSqIV2Rnxc3HY5DCoTkQvVzA44jGxtBzBkqZz6e6fNggXwn1cehtq4LLa1
-                evmkn++fUmbk+<span style="color: #a0522d;">QzialJqMVg</span>=
+                evmkn++fUmbk+<span style="color: #DFAF8F;">QzialJqMVg</span>=
                 &lt;/data&gt;
         &lt;/dict&gt;
 &lt;/dict&gt;
@@ -337,17 +337,17 @@ conversion any way you want, so I just rewrote a popular script <sup><a id="fnr.
 </p>
 
 <div class="org-src-container">
-<pre class="src src-python"><span style="color: #b22222;">#</span><span style="color: #b22222;">!/usr/bin/python2.7</span>
-<span style="color: #a020f0;">import</span> base64
-<span style="color: #a020f0;">import</span> sys
-<span style="color: #a0522d;">entropy64</span> = <span style="color: #8b2252;">'96kq3nobm2G/jFtdoIsfgzP8m3SCYbGhnI1OdO0rv/ag+8UJOUDUZtTIaH4GMsBLMM8HFtqpH5jAKpJiQhDwmYNWZ64ZAYpV1hUt7UlswDK8HtnTOeZ1x5hICHFkd0ZbGUziMPRGRuNUv64aOC2ihxFODsAkbuZnrvjsfWTCBZ0='</span>
-<span style="color: #a0522d;">iterations</span> = <span style="color: #8b2252;">'36900'</span>
-<span style="color: #a0522d;">salt64</span> = <span style="color: #8b2252;">'BQn1fkxpi15tLrI6sVCfZs8rVxxE+0q8W94cwIxj3wA='</span>
-<span style="color: #a0522d;">entropyRaw</span> = base64.b64decode(entropy64)
-<span style="color: #a0522d;">entropyHex</span> = entropyRaw.encode(<span style="color: #8b2252;">"hex"</span>)
-<span style="color: #a0522d;">saltRaw</span> = base64.b64decode(salt64)
-<span style="color: #a0522d;">saltHex</span> = saltRaw.encode(<span style="color: #8b2252;">"hex"</span>)
-<span style="color: #a020f0;">print</span>(<span style="color: #8b2252;">"$ml$%s$%s$%s"</span> %(iterations, saltHex, entropyHex))
+<pre class="src src-python"><span style="color: #5F7F5F;">#</span><span style="color: #7F9F7F;">!/usr/bin/python2.7</span>
+<span style="color: #F0DFAF; font-weight: bold;">import</span> base64
+<span style="color: #F0DFAF; font-weight: bold;">import</span> sys
+<span style="color: #DFAF8F;">entropy64</span> = <span style="color: #CC9393;">'96kq3nobm2G/jFtdoIsfgzP8m3SCYbGhnI1OdO0rv/ag+8UJOUDUZtTIaH4GMsBLMM8HFtqpH5jAKpJiQhDwmYNWZ64ZAYpV1hUt7UlswDK8HtnTOeZ1x5hICHFkd0ZbGUziMPRGRuNUv64aOC2ihxFODsAkbuZnrvjsfWTCBZ0='</span>
+<span style="color: #DFAF8F;">iterations</span> = <span style="color: #CC9393;">'36900'</span>
+<span style="color: #DFAF8F;">salt64</span> = <span style="color: #CC9393;">'BQn1fkxpi15tLrI6sVCfZs8rVxxE+0q8W94cwIxj3wA='</span>
+<span style="color: #DFAF8F;">entropyRaw</span> = base64.b64decode(entropy64)
+<span style="color: #DFAF8F;">entropyHex</span> = entropyRaw.encode(<span style="color: #CC9393;">"hex"</span>)
+<span style="color: #DFAF8F;">saltRaw</span> = base64.b64decode(salt64)
+<span style="color: #DFAF8F;">saltHex</span> = saltRaw.encode(<span style="color: #CC9393;">"hex"</span>)
+<span style="color: #F0DFAF; font-weight: bold;">print</span>(<span style="color: #CC9393;">"$ml$%s$%s$%s"</span> %(iterations, saltHex, entropyHex))
 </pre>
 </div>
 
@@ -355,7 +355,7 @@ conversion any way you want, so I just rewrote a popular script <sup><a id="fnr.
 I ran the script, and:
 </p>
 
-<pre class="example" id="org1a27cc1">
+<pre class="example" id="orgf5cd16c">
 $ml$36900$0509f57e4c698b5e6d2eb23ab1509f66cf2b571c44fb4abc5bde1cc08c63df00$f7a92ade7a1b9b61bf8c5b5da08b1f8333fc9b748261b1a19c8d4e74ed2bbff6a0fbc5093940d466d4c8687e0632c04b30cf0716daa91f98c02a92624210f099835667ae19018a55d6152ded496cc032bc1ed9d339e675c7984808716477465b194ce230f44646e354bfae1a382da287114e0ec0246ee667aef8ec7d64c2059d
 </pre>
 
@@ -368,12 +368,12 @@ Now we're ready for hashcat. I decided to use a dictionary attack with
 <pre class="src src-markdown">$ hashcat -a 0 -m 7100 hash.txt rockyou.txt -w 4 --potfile-path hash.pot
 hashcat (v5.1.0) starting...
 
-* Device #1: WARNING! Kernel exec timeout is not disabled.
-             This may cause "CL_OUT_OF_RESOURCES" or related errors.
-             To disable the timeout, see: https://hashcat.net/q/timeoutpatch
-OpenCL Platform #1: NVIDIA Corporation
-======================================
-* Device #1: NVIDIA GeForce GTX 960, 499/1998 MB allocatable, 8MCU
+<span style="color: #b3b3b3;">*</span> Device #1: WARNING! Kernel exec timeout is not disabled.
+             This may cause "CL<span style="color: #b3b3b3;">_</span><span style="font-style: italic;">OUT</span><span style="color: #b3b3b3;">_</span>OF_RESOURCES" or related errors.
+             To disable the timeout, see: <span style="color: #F0DFAF; font-weight: bold; text-decoration: underline;">https://hashcat.net/q/timeoutpatch</span>
+<span style="color: #93E0E3; font-weight: bold;">OpenCL Platform #1: NVIDIA Corporation</span>
+<span style="color: #b3b3b3;">======================================</span>
+<span style="color: #b3b3b3;">*</span> Device #1: NVIDIA GeForce GTX 960, 499/1998 MB allocatable, 8MCU
 
 Hashfile 'hash.txt' on line 1 ($ml$36...114e0ec0246ee667aef8ec7d64c2059d): Token length exception
 No hashes loaded.
@@ -397,36 +397,36 @@ hash.txt:
 $ hashcat -a 0 -m 7100 hash-truncated.txt rockyou.txt --encoding-from=utf8 --encoding-to=ascii -w 4 --potfile-path ~/hash-truncated.pot
 hashcat (v5.1.0) starting...
 
-* Device #1: WARNING! Kernel exec timeout is not disabled.
-             This may cause "CL_OUT_OF_RESOURCES" or related errors.
-             To disable the timeout, see: https://hashcat.net/q/timeoutpatch
-OpenCL Platform #1: NVIDIA Corporation
-======================================
-* Device #1: NVIDIA GeForce GTX 960, 499/1998 MB allocatable, 8MCU
+<span style="color: #b3b3b3;">*</span> Device #1: WARNING! Kernel exec timeout is not disabled.
+             This may cause "CL<span style="color: #b3b3b3;">_</span><span style="font-style: italic;">OUT</span><span style="color: #b3b3b3;">_</span>OF_RESOURCES" or related errors.
+             To disable the timeout, see: <span style="color: #F0DFAF; font-weight: bold; text-decoration: underline;">https://hashcat.net/q/timeoutpatch</span>
+<span style="color: #93E0E3; font-weight: bold;">OpenCL Platform #1: NVIDIA Corporation</span>
+<span style="color: #b3b3b3;">======================================</span>
+<span style="color: #b3b3b3;">*</span> Device #1: NVIDIA GeForce GTX 960, 499/1998 MB allocatable, 8MCU
 
 Hashes: 1 digests; 1 unique digests, 1 unique salts
 Bitmaps: 16 bits, 65536 entries, 0x0000ffff mask, 262144 bytes, 5/13 rotates
 Rules: 1
 
 Applicable optimizers:
-* Zero-Byte
-* Single-Hash
-* Single-Salt
-* Slow-Hash-SIMD-LOOP
-* Uses-64-Bit
+<span style="color: #b3b3b3;">*</span> Zero-Byte
+<span style="color: #b3b3b3;">*</span> Single-Hash
+<span style="color: #b3b3b3;">*</span> Single-Salt
+<span style="color: #b3b3b3;">*</span> Slow-Hash-SIMD-LOOP
+<span style="color: #b3b3b3;">*</span> Uses-64-Bit
 
 Minimum password length supported by kernel: 0
 Maximum password length supported by kernel: 256
 
 Watchdog: Temperature abort trigger set to 90c
 
-* Device #1: build_opts '-cl-std=CL1.2 -I OpenCL -I /usr/share/hashcat/OpenCL -D LOCAL_MEM_TYPE=1 -D VENDOR_ID=32 -D CUDA_ARCH=502 -D AMD_ROCM=0 -D VECT_SIZE=1 -D DEVICE_TYPE=4 -D DGST_R0=0 -D DGST_R1=1 -D DGST_R2=2 -D DGST_R3=3 -D DGST_ELEM=32 -D KERN_TYPE=7100 -D _unroll'
+<span style="color: #b3b3b3;">*</span> Device #1: build<span style="color: #b3b3b3;">_</span><span style="font-style: italic;">opts '-cl-std=CL1.2 -I OpenCL -I /usr/share/hashcat/OpenCL -D LOCAL</span><span style="color: #b3b3b3;">_</span>MEM<span style="color: #b3b3b3;">_</span><span style="font-style: italic;">TYPE=1 -D VENDOR</span><span style="color: #b3b3b3;">_</span>ID=32 -D CUDA<span style="color: #b3b3b3;">_</span><span style="font-style: italic;">ARCH=502 -D AMD</span><span style="color: #b3b3b3;">_</span>ROCM=0 -D VECT<span style="color: #b3b3b3;">_</span><span style="font-style: italic;">SIZE=1 -D DEVICE</span><span style="color: #b3b3b3;">_</span>TYPE=4 -D DGST<span style="color: #b3b3b3;">_</span><span style="font-style: italic;">R0=0 -D DGST</span><span style="color: #b3b3b3;">_</span>R1=1 -D DGST<span style="color: #b3b3b3;">_</span><span style="font-style: italic;">R2=2 -D DGST</span><span style="color: #b3b3b3;">_</span>R3=3 -D DGST<span style="color: #b3b3b3;">_</span><span style="font-style: italic;">ELEM=32 -D KERN</span><span style="color: #b3b3b3;">_</span>TYPE=7100 -D _unroll'
 Dictionary cache built:
-* Filename..: ./rockyou.txt
-* Passwords.: 14329857
-* Bytes.....: 139921497
-* Keyspace..: 14329850
-* Runtime...: 7 secs
+<span style="color: #b3b3b3;">*</span> Filename..: ./rockyou.txt
+<span style="color: #b3b3b3;">*</span> Passwords.: 14329857
+<span style="color: #b3b3b3;">*</span> Bytes.....: 139921497
+<span style="color: #b3b3b3;">*</span> Keyspace..: 14329850
+<span style="color: #b3b3b3;">*</span> Runtime...: 7 secs
 
 $ml$36900$0509f57e4c698b5e6d2eb23ab1509f66cf2b571c44fb4abc5bde1cc08c63df00$f7a92ade7a1b9b61bf8c5b5da08b1f8333fc9b748261b1a19c8d4e74ed2bbff6a0fbc5093940d466d4c8687e0632c04b30cf0716daa91f98c02a92624210f099:[REDACTED]
 Session..........: hashcat
