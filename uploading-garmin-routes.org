@@ -1,22 +1,86 @@
 #+TITLE: Uploading Large Files to the Garmin inReach Explorer+
 
-Garmin imposes a size limit on routes uploaded to the
-=Explorer+=. Nowhere could I find a definitive presentation of what
-can and can't be uploaded to the device, so for the purposes of this
-post let's say that routes consisting of up to 200 points can be
-uploaded.
+I was joining my friends for a section of their Catamount Trail
+thru-ski down Vermont from Canada to Massachussetts. They brought a
+Garmin inReach Explorer+ and wanted a map of the trail on device for
+redundancy. The [[https://support.garmin.com/en-US/?faq=CB6pIliQmA5WINT4mR4LV7][Garmin website]] explains how to do this:
+1. Upload GPX (or KML or KMZ) file to your account on the Garmin
+   Explore website
+2. Install inReach Sync desktop app and login with your Garmin account
+3. Connect inReach to computer via USB and use inReach Sync to sync
+   the uploaded file from account to device
 
-There are many free tools that claim to split =.gpx= files into
-smaller parts:
-- [[https://sites.google.com/site/gpxtracksplitter/][gpxtracksplitter]] (Windows)
-- [[http://iamdanfox.github.io/gpxsplitter/][gpxsplitter]] (Browser)
-- Numerous repos on GitHub
+I downloaded the GPX files from the [[https://catamounttrail.org/ski-the-trail/faq/staying-found/][Catamount Trail website]] and found
+I could upload to Garmin as "tracks" or "routes". When I tried
+uploading as route, I found the upload to be much more coarse than the
+original GPX file (far fewer waypoints). But uploading as a "track"
+wasn't even usable for navigating. The Garmin website said about
+routes: "Any line will be reduced to 200 data points." I couldn't find
+anything else from Garmin about specific file constraints so I started
+experimenting to get the map on the device in full resolution.
 
-I couldn't get any of these to work, but I found an [[https://gis.stackexchange.com/questions/193168/how-to-split-a-gpx-track-file-into-several-files-of-n-trackpoints-each][SO post]] that
-explained how to achieve my goal with [[http://gpsbabel.org][gpsbabel]]. The described script
-worked well, but produced many files that needed to be uploaded
-one-by-one to Garmin's online portal. I edited the script to recompose
-the resulting files:
+** GPX Background
+GPX is just an XML schema. It can represent things like a "route", which
+is a series of points to be followed, and a "track", which is a series
+of points (optionally timestamped) representing a journey taken:
+#+begin_src xml
+  <?xml version="1.0" encoding="UTF-8"?>
+  <gpx version="1.0" creator="GPSBabel - https://www.gpsbabel.org" xmlns="http://www.topografix.com/GPX/1/0">
+    <time>2022-01-13T18:37:13.323Z</time>
+    <bounds minlat="42.739060000" minlon="-72.945140000" maxlat="42.801320000" maxlon="-72.910070000"/>
+    <trk>
+      <trkseg>
+        <trkpt lat="42.739060000" lon="-72.925210000"/>
+        <trkpt lat="42.740510000" lon="-72.923980000"/>
+        <trkpt lat="42.740640000" lon="-72.923910000"/>
+        <trkpt lat="42.740640000" lon="-72.923910000"/>
+        <trkpt lat="42.740920000" lon="-72.923760000"/>
+      </trkseg>
+    </trk>
+  </gpx>
+#+end_src
+The GPX file from the trail association had a single track, with a
+single track segment, with about 17,000 points over ~300 miles (one
+waypoint every ~100 feet). Even though the file contained a track, it
+could still be uploaded as a route to Garmin.
+
+** Splitting the GPX file
+I looked for a tool to split a GPX file into smaller parts. I found
+lots of software that I couldn't get to work:
+- [[https://sites.google.com/site/gpxtracksplitter/][gpxtracksplitter]] (windows)
+- [[http://iamdanfox.github.io/gpxsplitter/][gpxsplitter]] (web app)
+- Lots of repos on github
+
+But then a [[https://gis.stackexchange.com/questions/193168/how-to-split-a-gpx-track-file-into-several-files-of-n-trackpoints-each][post on the GIS stackexchange]] explained how to do it with
+[[http://gpsbabel.org][gpsbabel]]:
+
+#+begin_src bash
+  #!/bin/bash
+
+  # $1 shall be the gpx file to split
+  pfx="${1%.*}-"
+  gpsbabel -i gpx -f "$1" -t -o csv -F - \
+  | gsplit -d -l 200 --additional-suffix=.csv - "$pfx"
+
+  for f in "$pfx"*.csv; do
+      fout=${f%.*}.gpx
+      gpsbabel -i csv -f "$f" -x transform,trk=wpt -x nuketypes,waypoints \
+                          -o gpx -F "$fout"
+      rm "$f"
+  done
+#+end_src
+
+It converts the GPX to a CSV, chunks the CSV into smaller CSVs, then
+converts each CSV back to GPX.
+
+So now instead of one GPX with 17,000 points in a single track
+segment, I had 86 GPXs, each with a single track of 200 points. They
+could be losslessly uploaded to Garmin as routes, but I would have to
+upload them by hand.
+
+** Concatenating the smaller files
+I've been doing a lot of functional programming lately, so I used a
+"fold" to accumulate the output GPXs into a single file (yikes):
 
 #+begin_src bash
   #!/bin/bash
@@ -39,4 +103,6 @@ the resulting files:
   done
 #+end_src
 
-The output file can be uploaded in one shot.
+There is definitely a better way but this one worked. A single GPX
+with 86 tracks, each with a single segment of 200 points. It may be
+that 1 track of 86 segments would work too.
