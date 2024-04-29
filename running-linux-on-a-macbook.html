@@ -3,10 +3,10 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2022-02-09 Wed 23:56 -->
+<!-- 2023-01-06 Fri 14:00 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Running Linux on a MacBook</title>
+<title>Booting and Installing Linux on a MacBook</title>
 <meta name="generator" content="Org mode" />
 <meta name="author" content="Tanner Hoelzel" />
 <style type="text/css">
@@ -218,7 +218,7 @@
 </head>
 <body>
 <div id="content">
-<h1 class="title">Running Linux on a MacBook</h1>
+<h1 class="title">Booting and Installing Linux on a MacBook</h1>
 <p>
 There are many existing resources for installing and running Linux on
 Apple hardware. This guide attempts to serve as a table of contents
@@ -427,7 +427,7 @@ experience)</li>
 Create a new boot entry pointing to your new partition:
 </p>
 <div class="org-src-container">
-<pre class="src src-bash">efibootmgr -d /dev/sdX -p Y -c -L <span style="color: #8b2252;">"Debian (EFI-Stub)"</span> -l /vmlinuz.efi -u <span style="color: #8b2252;">"root=UUID=xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx ro quiet splash initrd=\initrd.img"</span>
+<pre class="src src-bash">efibootmgr -d /dev/sdX -p Y -c -L <span style="color: #CC9393;">"Debian (EFI-Stub)"</span> -l /vmlinuz.efi -u <span style="color: #CC9393;">"root=UUID=xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx ro quiet splash initrd=\initrd.img"</span>
 </pre>
 </div></li>
 </ol>

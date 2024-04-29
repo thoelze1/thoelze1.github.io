@@ -1,4 +1,5 @@
-#+TITLE: Running Linux on a MacBook
+#+TITLE: Booting and Installing Linux on a MacBook
+#+BIND: org-html-indent:#t
 
 There are many existing resources for installing and running Linux on
 Apple hardware. This guide attempts to serve as a table of contents
