@@ -1,0 +1,10 @@
+#+TITLE: Hacking on a Faulty Antminer
+
+I have an old Antminer S5 that I've been trying to get running. Some
+aspect of the pulse-width-modulation is broken: the fan speed must be
+hard coded, otherwise the miner will crash a few minutes after boot as
+it tries to increase fan speeds.
+
+[[https://github.com/ctubio/cgminer-bitmain-fan-controller/blob/master/cgminer-fan.sh][Script to restart miner with broken fans]]
+[[https://www.reddit.com/r/litecoinmining/comments/1y2qmg/automated_cgminer_monitor_and_restart_script/][Automated CGminer restart script]]
+[[https://unix.stackexchange.com/questions/12075/best-way-to-follow-a-log-and-execute-a-command-when-some-text-appears-in-the-log][Execute command based on log (perl)]]

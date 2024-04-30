@@ -3,10 +3,10 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2023-01-06 Fri 14:00 -->
+<!-- 2022-03-30 Wed 17:00 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Tanner Hoelzel</title>
+<title>Hacking on a Faulty Antminer</title>
 <meta name="generator" content="Org mode" />
 <meta name="author" content="Tanner Hoelzel" />
 <style type="text/css">
@@ -218,40 +218,19 @@
 </head>
 <body>
 <div id="content">
-<h1 class="title">Tanner Hoelzel</h1>
-<div id="outline-container-orgcecabeb" class="outline-2">
-<h2 id="orgcecabeb">About Me</h2>
-<div class="outline-text-2" id="text-orgcecabeb">
-<ul class="org-ul">
-<li><a href="resume.pdf">Resume</a></li>
-<li><a href="http://github.com/thoelze1">Git</a></li>
-</ul>
-</div>
-</div>
-<div id="outline-container-orgfe08ea5" class="outline-2">
-<h2 id="orgfe08ea5">Blog</h2>
-<div class="outline-text-2" id="text-orgfe08ea5">
-<ul class="org-ul">
-<li>2022-12-01: <a href="scraping-an-spa.html">Scraping an SPA</a></li>
-<li>2022-11-29: <a href="bitcoin-transactions.html">How Bitcoin Transactions Work</a></li>
-<li>2022-11-05: <a href="coding-challenges.html">Coding Challenges</a></li>
-<li>2022-03-30: <a href="jump-to-def-emacs.html">"Jump to definition" in Emacs</a></li>
-<li>2022-03-30: <a href="around-the-web.html">Cool Stuff around the Web</a></li>
-<li>2022-02-12: <a href="gnu-shepherd-simple-service.html">Writing a basic service for GNU Guix</a></li>
-<li>2022-02-10: <a href="quotes.html">Favorite Quotes</a></li>
-<li>2022-02-09: <a href="running-linux-on-a-macbook.html">Running Linux on a MacBook</a></li>
-<li>2022-02-01: <a href="emacs-golf.html">EmacsGolf: VimGolf Challenges in Emacs</a></li>
-<li>2022-02-01: <a href="uploading-garmin-routes.html">Uploading Large Files to the Garmin inReach Explorer+</a></li>
-<li>2022-02-01: <a href="hacking-my-laptop.html">Breaking into my MacBookPro10,2</a></li>
-<li>2022-02-01: <a href="bitcoin-mining.html">Hacking on a Faulty Antminer</a></li>
-<li>2021-12-29: <a href="cracking-windows-7.html">Cracking a Windows 7 Password</a></li>
-<li>2020-08-18: <a href="sicp-exercises.html">SICP Exercises</a></li>
-</ul>
-</div>
-</div>
-</div>
-<div id="postamble" class="status">
-<i>BTC Address: bc1qlpu2c7ltxrz5fd2a977ywedlp9u4lvukvluc3d</i>
+<h1 class="title">Hacking on a Faulty Antminer</h1>
+<p>
+I have an old Antminer S5 that I've been trying to get running. Some
+aspect of the pulse-width-modulation is broken: the fan speed must be
+hard coded, otherwise the miner will crash a few minutes after boot as
+it tries to increase fan speeds. 
+</p>
+
+<p>
+<a href="https://github.com/ctubio/cgminer-bitmain-fan-controller/blob/master/cgminer-fan.sh">Script to restart miner with broken fans</a>
+<a href="https://www.reddit.com/r/litecoinmining/comments/1y2qmg/automated_cgminer_monitor_and_restart_script/">Automated CGminer restart script</a>
+<a href="https://unix.stackexchange.com/questions/12075/best-way-to-follow-a-log-and-execute-a-command-when-some-text-appears-in-the-log">Execute command based on log (perl)</a>
+</p>
 </div>
 </body>
 </html>
