@@ -1,0 +1,201 @@
+#+TITLE: Configuring a Guix Install
+
+* Guix suggestions
+** System generations
+- A tree of derivations would be cool, rather than a single
+  list. Also, better naming in the bootloader would be awesome. Maybe
+  you can name an operating system?
+- ~operating-system~ fields that allows specifying the number of build
+  users
+- Installing guix as an unprivileged user sounds really cool, but
+  requires "--disable-chroot" which sounds like it defeats a lot of
+  the benefits of guix
+- Why does guix need several different invocations:
+  + ~guix pull~ manipulates one specific package, ~guix~
+  + ~guix package~ manipulates other packages
+  + ~guix system~ manipulates the system
+  Can these things all be reduced to a single invocation, ~guix~? I
+  guess they already are...
+
+* How it all connects
+At build:
+- The emacs-exwm package writes a ~.desktop~ file to
+  ~/run/current-system/profile/share/xsessions~ (for xinitrc to find
+  later)
+- The location of the default xinitrc is chosen with the following
+  priority: ~~/.xsession~, a fallback xsession (passed by the display
+  manager), a user-specific ~.desktop~ file, or a system-wide
+  ~.desktop~ file
+- The display manager service is built as an extension to the shepherd
+  service, possible with a custom xinitrc
+
+At boot:
+- Shepherd starts the login manager
+- The login manager initializes/starts the X server based on how it
+  extends ~shepherd-root-service-type~
+
+* Emacs as a service
+https://www.emacswiki.org/emacs/EmacsAsDaemon
+https://nixos.org/manual/nixos/stable/index.html#module-services-emacs-enabling
+
+* Starting and Configuring X
+In Guix, there are a few ways to start and configure X. The Guix
+[[https://guix.gnu.org/manual/en/html_node/X-Window.html][manual]] claims:
+
+#+begin_quote
+Note that there is no xorg-service procedure. Instead, the X server is
+started by the login manager, by default the GNOME Display Manager
+(GDM).
+#+end_quote
+
+But [[https://git.savannah.gnu.org/cgit/guix.git/tree/gnu/services/xorg.scm][~gnu/services/xorg.scm~]] exports ~xorg-server-service-type~, so it
+may be possible to install X as a service without a login manager.
+
+If you do start X via a login manager service, you'll probably have
+two ways to configure the startup of X. First is an
+~xorg-configuration~ field which can pass command line arguments to
+the X Server, append to the X server configuration file (~xorg.conf~),
+and more. Second is an ~xsessions~ field (for ~gdm-configuration~ it's
+~xsession~; for ~sddm-configuration~ it's ~xsession-command~) that is
+a script to run before starting an X session.
+
+It should be possible to edit the ~xorg-configuration~ record using
+the ~(config (inherit another-config) (field value))~ syntax
+documented in [[https://git.savannah.gnu.org/cgit/guix.git/tree/guix/records.scm][~guix/records.scm~]], but I couldn't get it to work. So
+once again, we'll do what the documentation says and use
+~set-xorg-configuration~.  When we try
+#+begin_src scheme
+#+end_src
+
+Compilation will fail with "xorg-server provided more than once." It
+turns out you must use the second argument to
+~set-xorg-configuration~, which is documented, but not used in the
+examples:
+#+begin_src scheme
+#+end_src
+
+You could also just install X as a user package. Perhaps there would
+be a way of logging in automatically (non-interactively on a TTY?) and
+then executing X as part of the login shell.
+
+* Multiple Monitors
+There are several ways to use multiple monitors with X: editing the X
+org configuration directly, using ~xrandr~, or ~
+
+The log file can be in different places. See ~/var/log/Xorg.0.log~ sor
+~slim~, or ~/var/log/gdm/greeter.log~ for ~gdm~.
+
+** Xorg.conf(5)
+Editing ~xorg.conf~ is annoying to debug (errors crash X on startup,
+stranding you in a TTY) but configures your monitors earliest in the X
+startup process. The configuration manual can be found [[https://www.x.org/releases/X11R7.7/doc/man/man5/xorg.conf.5.xhtml#heading10][here]], [[https://www.x.org/archive/X11R6.8.0/doc/xorg.conf.5.html][here]], or
+with ~man 5 xorg.conf~. The location of the existing ~xorg.conf~ can
+be found in ~/var/log/Xorg.1.log~.
+
+A default ~xorg-configuration~ will put a few items in ~xorg.conf~ [fn:1],
+but probably none of the fields you'll want to customize: ~Device~,
+~Monitor~, and ~Screen~.
+
+Note: a device ~Identifier~ is just a name [fn:2] that you choose for the
+device; however, if you have multiple graphics cards then you can
+disambiguate them with the ~BusID~ field. See [[https://unix.stackexchange.com/questions/585910/setting-busid-in-xorg-conf][stackexchange]].
+
+What eventually worked for me was:
+#+begin_src scheme
+
+#+end_src
+
+Also see the [[https://wiki.gentoo.org/wiki/Xorg/Multiple_monitors][Gentoo wiki]], [[https://wiki.archlinux.org/title/multihead][Arch wiki]], or the [[https://wiki.ubuntu.com/X/Config][Ubuntu wiki]].
+
+** Initialization scripts: .xsession, .xinitrc, ...
+Various scripts may get called in the process of starting the
+xserver. Some of the login-manager services provide a way of invoking
+scripts as the xserver starts. For example, ~gdm-configuration~ offers
+~xsession~, which is pretty much undocumented. Its default is
+~xinitrc~, which we can find in the [[https://git.savannah.gnu.org/cgit/guix.git/tree/gnu/services/xorg.scm][source]]. It would be necessary to
+find the location of the fallback file to build from; a ~.xsession~
+with nothing but a call to ~xrandr~ immediately to the display manager
+after login.
+
+** Window Manager
+You can simply invoke ~xrandr~ at any time, or as part of your window
+manager's startup. For instructions on doing this in EXWM, see this
+[[https://www.youtube.com/watch?v=eF5NfVN411Q][System Crafters video]].
+
+** Questions
+- Why does ~(require 'exwm)~ in ~init.el~ break xrandr setup???
+- What is a VESA driver? Seen in the context of an xorg modeline
+
+* Nonfree components
+
+* Changing the default display manager in ~%desktop-services~
+** https://guix.gnu.org/manual/en/guix.html#index-slim_002dservice_002dtype
+
+* RICEing
+** Font
+*** https://www.gnu.org/software/emacs/manual/html_node/emacs/Fonts.html
+*** https://guix.gnu.org/manual/en/html_node/Fonts.html
+*** https://unix.stackexchange.com/questions/628932/install-fonts-in-guix-system
+*** Finding fonts that you saw in a pdf that you liked
+Found in [[https://guix.gnu.org/guix-fosdem-composing-services-20170205.pdf][Composing Guix Services]]. Used ~evince~ to inspect
+properties. Found lots of fonts with a similar prefix/suffix:
+- CMTT10
+- CMR10
+- CMSLTT10
+- CMTT12
+- CMSY6
+- CMTT8
+*** https://guix.gnu.org/manual/en/html_node/Fonts.html
+*** Favorites
+**** Inconsolata
+**** Anonymous pro
+**** Source code
+*** Xorg system wide
+https://unix.stackexchange.com/questions/252527/run-x11-only-apps-with-custom-font-size-and-font-style
+** Emacs theme
+*** https://emacsthemes.com/themes/material-theme.html
+*** Replace zenburn bold faces with semibold
+
+* Adding packages
+** IRC client
+** PDF Manipulator
+** Browser
+
+* Adding services
+
+* Installing more packages system-wide?
+* Installing emacs-specific packages and hooking them up to emacs
+- https://www.reddit.com/r/emacs/comments/jhb2i6/guix_the_right_way_to_manage_your_packages/
+- Getting your emacs conf to run on multiple systems (is it even worth
+  it?)
+- Debugging emacs with `command-line-args`:https://emacs.stackexchange.com/questions/42021/testing-if-emacs-was-invoked-with-a-file-to-visit
+
+* Getting all of our configs in one place
+** config.scm
+** Making a manifest for primary user default profile
+** Looping in our other config files - arandr, .emacs.d, .kbd
+** Separating hardware-dependent and -independent files
+*** Hardware-dependent
+**** Drivers
+**** .kbd file?
+**** Bootloader setup
+*** Hardware-independent
+**** Everything else
+
+* Debugging kernel crashes
+
+* Keybindings
+
+* References
+** X Server
+- xrandr to xorg.conf example:
+  https://superuser.com/questions/313146/dual-monitor-setup-xrandr-versus-xorg-conf
+- xrandr usage:
+  https://superuser.com/questions/1321619/xrandr-treat-multiple-screens-as-one
+- how to get modeline:
+  + https://askubuntu.com/questions/749358/how-to-get-correct-modeline-for-an-external-display
+  + https://askubuntu.com/questions/943426/how-do-you-find-the-current-modeline-xrandr-is-using-for-an-output
+
+[fn:1]   https://www.reddit.com/r/GUIX/comments/rxp3g3/override_settings_in_xorgconf/
+[fn:2] [[https://superuser.com/questions/1014502/how-to-find-the-identifier-value-for-an-xorg-conf-device-graphics-card-secti]]
+
