@@ -3,10 +3,10 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2023-01-06 Fri 14:00 -->
+<!-- 2022-03-30 Wed 17:31 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Tanner Hoelzel</title>
+<title>&lrm;</title>
 <meta name="generator" content="Org mode" />
 <meta name="author" content="Tanner Hoelzel" />
 <style type="text/css">
@@ -218,43 +218,66 @@
 </head>
 <body>
 <div id="content">
-<h1 class="title">Tanner Hoelzel</h1>
-<div id="outline-container-orgcecabeb" class="outline-2">
-<h2 id="orgcecabeb">About Me</h2>
-<div class="outline-text-2" id="text-orgcecabeb">
-<ul class="org-ul">
-<li><a href="resume.pdf">Resume</a></li>
-<li><a href="http://github.com/thoelze1">Git</a></li>
-</ul>
-</div>
-</div>
-<div id="outline-container-orgfe08ea5" class="outline-2">
-<h2 id="orgfe08ea5">Blog</h2>
-<div class="outline-text-2" id="text-orgfe08ea5">
-<ul class="org-ul">
-<li>2022-12-01: <a href="scraping-an-spa.html">Scraping an SPA</a></li>
-<li>2022-11-29: <a href="bitcoin-transactions.html">How Bitcoin Transactions Work</a></li>
-<li>2022-11-05: <a href="coding-challenges.html">Coding Challenges</a></li>
-<li>2022-03-30: <a href="linux-tips.html">linux-tips</a></li>
-<li>2022-03-30: <a href="jump-to-def-emacs.html">"Jump to definition" in Emacs</a></li>
-<li>2022-03-30: <a href="around-the-web.html">Cool Stuff around the Web</a></li>
-<li>2022-02-16: <a href="installing-guix.html">Configuring a Guix Install</a></li>
-<li>2022-02-12: <a href="gnu-shepherd-simple-service.html">Writing a basic service for GNU Guix</a></li>
-<li>2022-02-10: <a href="blog-tutorial.html">How I Blog</a></li>
-<li>2022-02-10: <a href="quotes.html">Favorite Quotes</a></li>
-<li>2022-02-09: <a href="running-linux-on-a-macbook.html">Running Linux on a MacBook</a></li>
-<li>2022-02-01: <a href="emacs-golf.html">EmacsGolf: VimGolf Challenges in Emacs</a></li>
-<li>2022-02-01: <a href="uploading-garmin-routes.html">Uploading Large Files to the Garmin inReach Explorer+</a></li>
-<li>2022-02-01: <a href="hacking-my-laptop.html">Breaking into my MacBookPro10,2</a></li>
-<li>2022-02-01: <a href="bitcoin-mining.html">Hacking on a Faulty Antminer</a></li>
-<li>2021-12-29: <a href="cracking-windows-7.html">Cracking a Windows 7 Password</a></li>
-<li>2020-08-18: <a href="sicp-exercises.html">SICP Exercises</a></li>
-</ul>
+<div id="outline-container-org5d94e49" class="outline-2">
+<h2 id="org5d94e49">Uninstall binary installation of guix on Ubuntu</h2>
+<div class="outline-text-2" id="text-org5d94e49">
+<p>
+See this <a href="https://wiki.archlinux.org/title/Guix">Arch wiki entry</a> and this <a href="https://old.reddit.com/r/GUIX/comments/m4f860/how_to_remove_or_reinstall/">reddit post</a>
+</p>
+<div class="org-src-container">
+<pre class="src src-bash">sudo systemctl stop guix-daemon.service
+sudo systemctl stop gnu-store.mount
+sudo rm /etc/systemd/system/guix-daemon.service <span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">not present for me</span>
+sudo rm /etc/systemd/system/guix-daemon.service.d <span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">not present for me</span>
+sudo rm /etc/profile.d/guix.sh
+<span style="color: #F0DFAF; font-weight: bold;">for</span> i<span style="color: #F0DFAF; font-weight: bold;"> in</span> <span style="color: #CC9393;">`seq -w 1 n`</span>
+<span style="color: #F0DFAF; font-weight: bold;">do</span> 
+  sudo guixbuilder$<span style="color: #DFAF8F;">i</span>
+<span style="color: #F0DFAF; font-weight: bold;">done</span>
+sudo groupdel guixbuild
+sudo rm -rf /gnu
+sudo rm -rf /var/guix
+sudo rm -rf /var/log/guix
+sudo rm -rf ~/.profile/guix
+sudo rm -rf /etc/guix
+sudo rm -rf /etc/guix/acl
+<span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">remove symlinks in /usr/local/share/info and /usr/bin/local</span>
+</pre>
 </div>
 </div>
 </div>
-<div id="postamble" class="status">
-<i>BTC Address: bc1qlpu2c7ltxrz5fd2a977ywedlp9u4lvukvluc3d</i>
+<div id="outline-container-orgf85ce30" class="outline-2">
+<h2 id="orgf85ce30">Check battery cycles</h2>
+<div class="outline-text-2" id="text-orgf85ce30">
+<p>
+See <a href="https://www.reddit.com/r/thinkpad/comments/5xh702/no_way_to_check_battery_cycles_on_linux_t450s/">https://www.reddit.com/r/thinkpad/comments/5xh702/no_way_to_check_battery_cycles_on_linux_t450s/</a>
+</p>
+<div class="org-src-container">
+<pre class="src src-bash">sudo add-apt-repository ppa:linrunner/tlp
+sudo apt-get update
+sudo apt-get install tlp tlp-rdw tp-smapi-dkms acpi-call-dkms
+sudo tlp start
+sudo tlp-stat -b
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-orga677a91" class="outline-2">
+<h2 id="orga677a91">Where to install source</h2>
+<div class="outline-text-2" id="text-orga677a91">
+<p>
+See <a href="https://unix.stackexchange.com/questions/362642/standard-location-for-holding-software-source-files">https://unix.stackexchange.com/questions/362642/standard-location-for-holding-software-source-files</a>
+</p>
+</div>
+</div>
+<div id="outline-container-org9d5ca3e" class="outline-2">
+<h2 id="org9d5ca3e">Installing Guix from source on Ubuntu</h2>
+<div class="outline-text-2" id="text-org9d5ca3e">
+<p>
+See <a href="https://askubuntu.com/questions/1199775/no-guile-development-package-found-im-compiling-open-connect-source-code-from-gi">https://askubuntu.com/questions/1199775/no-guile-development-package-found-im-compiling-open-connect-source-code-from-gi</a>
+</p>
+</div>
+</div>
 </div>
 </body>
 </html>
