@@ -3,14 +3,13 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2023-01-06 Fri 14:00 -->
+<!-- 2024-11-23 Sat 00:30 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>How Bitcoin Transactions Work</title>
-<meta name="generator" content="Org mode" />
-<meta name="author" content="Tanner Hoelzel" />
-<style type="text/css">
- <!--/*--><![CDATA[/*><!--*/
+<meta name="generator" content="Org Mode" />
+<style>
+  #content { max-width: 60em; margin: auto; }
   .title  { text-align: center;
              margin-bottom: .2em; }
   .subtitle { text-align: center;
@@ -31,8 +30,9 @@
   #postamble p, #preamble p { font-size: 90%; margin: .2em; }
   p.verse { margin-left: 3%; }
   pre {
-    border: 1px solid #ccc;
-    box-shadow: 3px 3px 3px #eee;
+    border: 1px solid #e6e6e6;
+    border-radius: 3px;
+    background-color: #f2f2f2;
     padding: 8pt;
     font-family: monospace;
     overflow: auto;
@@ -41,21 +41,21 @@
   pre.src {
     position: relative;
     overflow: auto;
-    padding-top: 1.2em;
   }
   pre.src:before {
     display: none;
     position: absolute;
-    background-color: white;
-    top: -10px;
-    right: 10px;
+    top: -8px;
+    right: 12px;
     padding: 3px;
-    border: 1px solid black;
+    color: #555;
+    background-color: #f2f2f299;
   }
   pre.src:hover:before { display: inline; margin-top: 14px;}
   /* Languages per Org manual */
   pre.src-asymptote:before { content: 'Asymptote'; }
   pre.src-awk:before { content: 'Awk'; }
+  pre.src-authinfo::before { content: 'Authinfo'; }
   pre.src-C:before { content: 'C'; }
   /* pre.src-C++ doesn't work in CSS */
   pre.src-clojure:before { content: 'Clojure'; }
@@ -190,56 +190,43 @@
     { font-size: 10px; font-weight: bold; white-space: nowrap; }
   .org-info-js_search-highlight
     { background-color: #ffff00; color: #000000; font-weight: bold; }
-  .org-svg { width: 90%; }
-  /*]]>*/-->
+  .org-svg { }
 </style>
-<script type="text/javascript">
-// @license magnet:?xt=urn:btih:e95b018ef3580986a04669f1b5879592219e2a7a&dn=public-domain.txt Public Domain
-<!--/*--><![CDATA[/*><!--*/
-     function CodeHighlightOn(elem, id)
-     {
-       var target = document.getElementById(id);
-       if(null != target) {
-         elem.classList.add("code-highlighted");
-         target.classList.add("code-highlighted");
-       }
-     }
-     function CodeHighlightOff(elem, id)
-     {
-       var target = document.getElementById(id);
-       if(null != target) {
-         elem.classList.remove("code-highlighted");
-         target.classList.remove("code-highlighted");
-       }
-     }
-    /*]]>*///-->
-// @license-end
+<script>
+  window.MathJax = {
+    tex: {
+      ams: {
+        multlineWidth: '85%'
+      },
+      tags: 'ams',
+      tagSide: 'right',
+      tagIndent: '.8em'
+    },
+    chtml: {
+      scale: 1.0,
+      displayAlign: 'center',
+      displayIndent: '0em'
+    },
+    svg: {
+      scale: 1.0,
+      displayAlign: 'center',
+      displayIndent: '0em'
+    },
+    output: {
+      font: 'mathjax-modern',
+      displayOverflow: 'overflow'
+    }
+  };
 </script>
-<script type="text/x-mathjax-config">
-    MathJax.Hub.Config({
-        displayAlign: "center",
-        displayIndent: "0em",
 
-        "HTML-CSS": { scale: 100,
-                        linebreaks: { automatic: "false" },
-                        webFont: "TeX"
-                       },
-        SVG: {scale: 100,
-              linebreaks: { automatic: "false" },
-              font: "TeX"},
-        NativeMML: {scale: 100},
-        TeX: { equationNumbers: {autoNumber: "AMS"},
-               MultLineWidth: "85%",
-               TagSide: "right",
-               TagIndent: ".8em"
-             }
-});
+<script
+  id="MathJax-script"
+  async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
 </script>
-<script type="text/javascript"
-        src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS_HTML"></script>
 </head>
 <body>
-<div id="content">
+<div id="content" class="content">
 <h1 class="title">How Bitcoin Transactions Work</h1>
 <p>
 This guide aims to serve as a concise entry point for a technical dive
@@ -251,16 +238,16 @@ truth for technical details is the source code.
 <p>
 Transactions are a great place to start when trying to understand
 bitcoin. Each block in the bitcoin ledger is fundamentally a list of
-transactions<sup><a id="fnr.1" class="footref" href="#fn.1">1</a></sup>, and understanding transactions is prerequisite to
+transactions<sup><a id="fnr.1" class="footref" href="#fn.1" role="doc-backlink">1</a></sup>, and understanding transactions is prerequisite to
 understanding bitcoin "addresses".
 </p>
 
-<div id="outline-container-org1bcd070" class="outline-2">
-<h2 id="org1bcd070">Transactions</h2>
-<div class="outline-text-2" id="text-org1bcd070">
+<div id="outline-container-org698c8e0" class="outline-2">
+<h2 id="org698c8e0">Transactions</h2>
+<div class="outline-text-2" id="text-org698c8e0">
 <p>
 From a high level, a single bitcoin transaction consists of a list of
-inputs and a list of outputs<sup><a id="fnr.2" class="footref" href="#fn.2">2</a></sup>.
+inputs and a list of outputs<sup><a id="fnr.2" class="footref" href="#fn.2" role="doc-backlink">2</a></sup>.
 </p>
 
 <p>
@@ -270,7 +257,7 @@ Each output contains, crucially, two things:
 <li>An amount. We call the unit for this amount the "satoshi"; we call
 100 million satoshis a bitcoin.</li>
 <li>A "locking script", also widely referred to as <kbd>scriptPubKey</kbd> (a
-name which comes from the bitcoin source<sup><a id="fnr.3" class="footref" href="#fn.3">3</a></sup>). This script
+name which comes from the bitcoin source<sup><a id="fnr.3" class="footref" href="#fn.3" role="doc-backlink">3</a></sup>). This script
 imposes rules on how this output can be spent by a future
 transaction.</li>
 </ul>
@@ -288,7 +275,7 @@ static until closed)</li>
 <li>A "unlocking script" (also widely called <kbd>scriptSig</kbd>). Part of
 verifying a transaction is concatenating the unlocking script of an
 input with the locking script of the referenced output and
-evaluating the result using bitcoin script<sup><a id="fnr.4" class="footref" href="#fn.4">4</a></sup>.</li>
+evaluating the result using bitcoin script<sup><a id="fnr.4" class="footref" href="#fn.4" role="doc-backlink">4</a></sup>.</li>
 </ul>
 
 <p>
@@ -296,15 +283,15 @@ An implication of this structure is that there can be different types
 of "addresses", corresponding to different types of locking scripts,
 and that those "addresses" are interoperable: when a UTXO locked using
 one type of script is spent, the spender can choose any type of script
-to lock it again<sup><a id="fnr.5" class="footref" href="#fn.5">5</a></sup>.
+to lock it again<sup><a id="fnr.5" class="footref" href="#fn.5" role="doc-backlink">5</a></sup>.
 </p>
 
 <p>
 The locking and unlocking scripts are written in a Turing-incomplete
 DSL referred to as "bitcoin script". Technically any arbitrary script
-can be provided as a locking script<sup><a id="fnr.6" class="footref" href="#fn.6">6</a></sup>, but the reference bitcoin
+can be provided as a locking script<sup><a id="fnr.6" class="footref" href="#fn.6" role="doc-backlink">6</a></sup>, but the reference bitcoin
 client only accepts 5 "standard" transaction script
-patterns<sup><a id="fnr.7" class="footref" href="#fn.7">7</a></sup>. The expected way to lock transaction output is to
+patterns<sup><a id="fnr.7" class="footref" href="#fn.7" role="doc-backlink">7</a></sup>. The expected way to lock transaction output is to
 require a signature from the recipient, and so there are <a href="https://en.bitcoin.it/wiki/Script#Opcodes">opcodes</a> builtin
 to bitcoin script that support signing and verifying signatures using
 a specific public-key cryptosystem (ECDSA with <kbd>secp256k1</kbd>&#x2013;see
@@ -314,9 +301,9 @@ system as a (very long) bitcoin script.
 </div>
 </div>
 
-<div id="outline-container-org630d7a0" class="outline-2">
-<h2 id="org630d7a0">Signatures</h2>
-<div class="outline-text-2" id="text-org630d7a0">
+<div id="outline-container-org2dccb5a" class="outline-2">
+<h2 id="org2dccb5a">Signatures</h2>
+<div class="outline-text-2" id="text-org2dccb5a">
 <p>
 Bitcoin needs a mechanism for signing a transactions so that only the
 intended recipient has the ability to spend a specific output of a
@@ -329,9 +316,9 @@ Efficient Cryptography Group (SECG).
 </p>
 </div>
 
-<div id="outline-container-org422b836" class="outline-3">
-<h3 id="org422b836">How does ECDSA work?</h3>
-<div class="outline-text-3" id="text-org422b836">
+<div id="outline-container-org5174350" class="outline-3">
+<h3 id="org5174350">How does ECDSA work?</h3>
+<div class="outline-text-3" id="text-org5174350">
 <p>
 The digital signature algorithm uses a public key to serve as a public
 identity, and a corresponding private key to sign a message.
@@ -341,10 +328,10 @@ identity, and a corresponding private key to sign a message.
 The first step in generating a key pair is generating a private
 key. For the ECDSA that bitcoin uses, the valid values of this key are
 from <kbd>0x1</kbd> to <kbd>0xFFFF FFFF FFFF FFFF FFFF FFFF FFFF FFFF BAAE DCE6
-AF48 A03B BFD2 5E8C D036 4140</kbd><sup><a id="fnr.8" class="footref" href="#fn.8">8</a></sup>. This number is less than
+AF48 A03B BFD2 5E8C D036 4140</kbd><sup><a id="fnr.8" class="footref" href="#fn.8" role="doc-backlink">8</a></sup>. This number is less than
 \(2^{256}\), but so very slightly that we might as well call them
 equivalent. In fact, these two numbers differ by more than the number
-of grains of sand on ten quadrillion Earths<sup><a id="fnr.9" class="footref" href="#fn.9">9</a></sup>, but \(2^{256}\) is so
+of grains of sand on ten quadrillion Earths<sup><a id="fnr.9" class="footref" href="#fn.9" role="doc-backlink">9</a></sup>, but \(2^{256}\) is so
 large that this difference is hard to notice.
 </p>
 
@@ -366,9 +353,9 @@ For further details on ECDSA, including signature computation, try:
 </div>
 </div>
 
-<div id="outline-container-orga195b76" class="outline-3">
-<h3 id="orga195b76">Why ECDSA?</h3>
-<div class="outline-text-3" id="text-orga195b76">
+<div id="outline-container-org0462d96" class="outline-3">
+<h3 id="org0462d96">Why ECDSA?</h3>
+<div class="outline-text-3" id="text-org0462d96">
 <p>
 Cryptographic signing generally (but <a href="https://crypto.stackexchange.com/questions/14654/digital-signature-using-symmetric-key-cryptography">not always</a>) requires an
 asymmetric cryptosystem. Other asymmetric cryptosystems exist: RSA
@@ -380,9 +367,9 @@ ledger).
 </div>
 </div>
 
-<div id="outline-container-orgb0ff33f" class="outline-3">
-<h3 id="orgb0ff33f">Why <kbd>secp256k1</kbd>?</h3>
-<div class="outline-text-3" id="text-orgb0ff33f">
+<div id="outline-container-org0992d46" class="outline-3">
+<h3 id="org0992d46">Why <kbd>secp256k1</kbd>?</h3>
+<div class="outline-text-3" id="text-org0992d46">
 <p>
 For reasons discussed <a href="https://dappworks.com/why-did-satoshi-decide-to-use-secp256k1-instead-of-secp256r1/">here</a>.
 </p>
@@ -390,16 +377,16 @@ For reasons discussed <a href="https://dappworks.com/why-did-satoshi-decide-to-u
 </div>
 </div>
 
-<div id="outline-container-org32bc2f8" class="outline-2">
-<h2 id="org32bc2f8">Locking Patterns</h2>
-<div class="outline-text-2" id="text-org32bc2f8">
+<div id="outline-container-orgef57243" class="outline-2">
+<h2 id="orgef57243">Locking Patterns</h2>
+<div class="outline-text-2" id="text-orgef57243">
 <p>
 A bitcoin "address" is a piece of information that you can give to
 someone else to put in their transcation output locking script; this
 information is different based on which locking pattern you
 choose. The term "address" can be misleading because a bitcoin
 "address" is intended to be a single-use invoice (to use the
-terminology of the bitcoin wiki<sup><a id="fnr.10" class="footref" href="#fn.10">10</a></sup>) rather than a persistent,
+terminology of the bitcoin wiki<sup><a id="fnr.10" class="footref" href="#fn.10" role="doc-backlink">10</a></sup>) rather than a persistent,
 pseudonymous address.
 </p>
 
@@ -407,10 +394,10 @@ pseudonymous address.
 Because there are different types of locking scripts, your payer needs
 to know what kind of information you're giving them to construct the
 correct kind of locking script. For this reason, there are standard
-prefixes<sup><a id="fnr.11" class="footref" href="#fn.11">11</a></sup> corresponding to different locking patterns. These
+prefixes<sup><a id="fnr.11" class="footref" href="#fn.11" role="doc-backlink">11</a></sup> corresponding to different locking patterns. These
 prefixes are only used by the piece of software you use to make
 transactions (the "wallet") and don't actually appear in the
-blockchain<sup><a id="fnr.12" class="footref" href="#fn.12">12</a></sup>.
+blockchain<sup><a id="fnr.12" class="footref" href="#fn.12" role="doc-backlink">12</a></sup>.
 </p>
 
 <p>
@@ -432,9 +419,9 @@ following source is great for more detail:
 </p>
 </div>
 
-<div id="outline-container-orgd7983a1" class="outline-3">
-<h3 id="orgd7983a1">Pay to Public Key ("P2PK")</h3>
-<div class="outline-text-3" id="text-orgd7983a1">
+<div id="outline-container-orgfa48d6f" class="outline-3">
+<h3 id="orgfa48d6f">Pay to Public Key ("P2PK")</h3>
+<div class="outline-text-3" id="text-orgfa48d6f">
 <p>
 Overview: the unlocking script verifies that the spender's signature
 matches the public key provided by the payer.
@@ -444,12 +431,12 @@ matches the public key provided by the payer.
 There are problems with this pattern:
 </p>
 <ol class="org-ol">
-<li>Public keys are long (65 bytes)<sup><a id="fnr.13" class="footref" href="#fn.13">13</a></sup> and therefore hard to share</li>
+<li>Public keys are long (65 bytes)<sup><a id="fnr.13" class="footref" href="#fn.13" role="doc-backlink">13</a></sup> and therefore hard to share</li>
 <li>The payee must reveal their public key before spending, which poses
-theoretical security risks<sup><a id="fnr.14" class="footref" href="#fn.14">14</a></sup> (such as that posed by a
+theoretical security risks<sup><a id="fnr.14" class="footref" href="#fn.14" role="doc-backlink">14</a></sup> (such as that posed by a
 hypothetical version of Shor's algorithm modified to solve the
 discrete log problem on elliptic curves); but, in a quantum
-context, bitcoin would have bigger problems<sup><a id="fnr.15" class="footref" href="#fn.15">15</a></sup></li>
+context, bitcoin would have bigger problems<sup><a id="fnr.15" class="footref" href="#fn.15" role="doc-backlink">15</a></sup></li>
 </ol>
 
 <p>
@@ -458,9 +445,9 @@ This pattern is not in modern use.
 </div>
 </div>
 
-<div id="outline-container-org4a712dc" class="outline-3">
-<h3 id="org4a712dc">Pay to Public Key Hash ("P2PKH")</h3>
-<div class="outline-text-3" id="text-org4a712dc">
+<div id="outline-container-org68412a0" class="outline-3">
+<h3 id="org68412a0">Pay to Public Key Hash ("P2PKH")</h3>
+<div class="outline-text-3" id="text-org68412a0">
 <p>
 Overview: the locking script verifies that the spender's (ECDSA) public
 key maps to a hash specified by the payer, and that the spender can
@@ -471,7 +458,7 @@ provide a signature to match their public key.
 Specifically, the locking script computes a <kbd>RIPEMD160(SHA256())</kbd> hash
 of the public key. <kbd>RIPEMD160(SHA256())</kbd> maps a 256-bit public key to
 a 160-bit hash. There are at most \(2^{160}\) P2PKH addresses (it's
-"suspected", but not certain<sup><a id="fnr.16" class="footref" href="#fn.16">16</a></sup>, that RIPEMD160 actually reaches
+"suspected", but not certain<sup><a id="fnr.16" class="footref" href="#fn.16" role="doc-backlink">16</a></sup>, that RIPEMD160 actually reaches
 all 2<sup>160</sup> values) and there are almost \(2^{256}\) private keys;
 therefore, there are on average about \(2^{96}\) private keys that collide
 to each of the about \(2^{160}\) P2PKH addresses.
@@ -489,7 +476,7 @@ key</li>
 </ul>
 
 <p>
-It is the job of the wallet<sup><a id="fnr.17" class="footref" href="#fn.17">17</a></sup> to strip the prefix and checksum
+It is the job of the wallet<sup><a id="fnr.17" class="footref" href="#fn.17" role="doc-backlink">17</a></sup> to strip the prefix and checksum
 from an entered P2PKH address so that the raw public key hash can be
 used in the locking script and correctly checked for equality.
 </p>
@@ -505,16 +492,16 @@ transaction:
 
 <p>
 Many say that if compressed public keys had been known to the
-architect of bitcoin, P2PKH would not have been necessary<sup><a id="fnr.18" class="footref" href="#fn.18">18</a></sup>
+architect of bitcoin, P2PKH would not have been necessary<sup><a id="fnr.18" class="footref" href="#fn.18" role="doc-backlink">18</a></sup>
 (because <kbd>RIPEMD160(SHA256())</kbd> mainly serves to shorten the key, not
 to add security). Still, the Base58Check encoding is valuable.
 </p>
 </div>
 </div>
 
-<div id="outline-container-org3ea47ad" class="outline-3">
-<h3 id="org3ea47ad">Multisig ("P2MS", BIP 11)</h3>
-<div class="outline-text-3" id="text-org3ea47ad">
+<div id="outline-container-orgc44b8fe" class="outline-3">
+<h3 id="orgc44b8fe">Multisig ("P2MS", BIP 11)</h3>
+<div class="outline-text-3" id="text-orgc44b8fe">
 <p>
 Overview: the unlocking script verifies that enough signatures
 matching the public keys provided by the payer are given by the
@@ -524,9 +511,9 @@ P2PKs.
 </div>
 </div>
 
-<div id="outline-container-org538107c" class="outline-3">
-<h3 id="org538107c">Pay to Script Hash ("P2SH", BIP 16)</h3>
-<div class="outline-text-3" id="text-org538107c">
+<div id="outline-container-org4d2c8c9" class="outline-3">
+<h3 id="org4d2c8c9">Pay to Script Hash ("P2SH", BIP 16)</h3>
+<div class="outline-text-3" id="text-org4d2c8c9">
 <p>
 Overview: the locking script verifies that the spender's unlocking script
 maps to the hash specified by the payer; then the unlocking script is
@@ -555,9 +542,9 @@ P2MS pattern.
 </div>
 </div>
 
-<div id="outline-container-org2141798" class="outline-3">
-<h3 id="org2141798">Data Output</h3>
-<div class="outline-text-3" id="text-org2141798">
+<div id="outline-container-orge0b5efa" class="outline-3">
+<h3 id="orge0b5efa">Data Output</h3>
+<div class="outline-text-3" id="text-orge0b5efa">
 <p>
 Overview: the locking script just stores data.
 </p>
@@ -570,16 +557,16 @@ Example transaction:
 </div>
 </div>
 
-<div id="outline-container-orgc7aa405" class="outline-2">
-<h2 id="orgc7aa405">"Segregated Witness"</h2>
-<div class="outline-text-2" id="text-orgc7aa405">
+<div id="outline-container-org5327449" class="outline-2">
+<h2 id="org5327449">"Segregated Witness"</h2>
+<div class="outline-text-2" id="text-org5327449">
 <p>
 "Segregated witness" or "segwit" refers to the segregation of witness
 data (the <kbd>scriptSig</kbd> of each transaction input) from the transaction
 itself. In 2015, <a href="https://github.com/bitcoin/bips/blob/master/bip-0141.mediawiki">BIP141</a> proposed this change and <a href="https://github.com/bitcoin/bips/blob/master/bip-0173.mediawiki">BIP173</a> proposed a new
 address type for native segregates witness output. People refer to
 P2PKH and P2SH segwit transactions as P2WPKH and P2WSH repectively,
-but the logic of the locking is the same<sup><a id="fnr.19" class="footref" href="#fn.19">19</a></sup>
+but the logic of the locking is the same<sup><a id="fnr.19" class="footref" href="#fn.19" role="doc-backlink">19</a></sup>
 </p>
 <ul class="org-ul">
 <li><a href="https://learnmeabitcoin.com/faq/segregated-witness">https://learnmeabitcoin.com/faq/segregated-witness</a></li>
@@ -588,9 +575,9 @@ but the logic of the locking is the same<sup><a id="fnr.19" class="footref" href
 </div>
 </div>
 
-<div id="outline-container-org06367c0" class="outline-2">
-<h2 id="org06367c0">Using bitcoin: "addresses" and "wallets"</h2>
-<div class="outline-text-2" id="text-org06367c0">
+<div id="outline-container-org022dbf3" class="outline-2">
+<h2 id="org022dbf3">Using bitcoin: "addresses" and "wallets"</h2>
+<div class="outline-text-2" id="text-org022dbf3">
 <p>
 A wallet is a piece of hardware or software that interfaces with the
 ledger (blockchain) and stores the keys that allow you (and only you)
@@ -603,7 +590,7 @@ accumulates a balance over time</li>
 </ul>
 
 <p>
-In fact, "addresses" aren't intended to be reused<sup><a id="fnr.20" class="footref" href="#fn.20">20</a></sup>, and
+In fact, "addresses" aren't intended to be reused<sup><a id="fnr.20" class="footref" href="#fn.20" role="doc-backlink">20</a></sup>, and
 "addresses" (transaction outputs) don't have balances: they're either
 spent or unspent. That being said, a wallet can be thought of as an
 account, composed of many different addresses, that together have a
@@ -649,7 +636,7 @@ software, &#x2026;
 
 <p>
 There are estimated to be 460 million bitcoin addresses as of
-2018<sup><a id="fnr.21" class="footref" href="#fn.21">21</a></sup>.
+2018<sup><a id="fnr.21" class="footref" href="#fn.21" role="doc-backlink">21</a></sup>.
 </p>
 
 <p>
@@ -658,7 +645,7 @@ is important. If you choose a non-random private key, such as <kbd>0x1</kbd>,
 then the corresponding address will be publicly known. For private key
 <kbd>0x1</kbd>, the corresponding address is
 <a href="https://www.blockchain.com/btc/address/1EHNa6Q4Jz2uvNExL497mE43ikXhwF6kZm"><kbd>1EHNa6Q4Jz2uvNExL497mE43ikXhwF6kZm</kbd></a>: you can see that any funds to this
-account are quickly spent<sup><a id="fnr.22" class="footref" href="#fn.22">22</a></sup>.
+account are quickly spent<sup><a id="fnr.22" class="footref" href="#fn.22" role="doc-backlink">22</a></sup>.
 </p>
 
 <p>
@@ -688,16 +675,16 @@ English or other languages) instead of as a number (encoded in
 decimal, binary, hex, base58, etc). This sequence of words is called a
 seed and can be used to deterministically generate a tree of keypairs
 (many addresses) according to <a href="https://github.com/bitcoin/bips/blob/master/bip-0032.mediawiki">BIP32</a>. A BIP39 seed has at least 128
-bits of entropy (Electrum's has 132 bits of entropy <sup><a id="fnr.23" class="footref" href="#fn.23">23</a></sup>) so that
+bits of entropy (Electrum's has 132 bits of entropy <sup><a id="fnr.23" class="footref" href="#fn.23" role="doc-backlink">23</a></sup>) so that
 it has enough entropy to generate a private key of 128 bits of
 entropy. This seed can be easily written down and stored on paper.
 </p>
 </div>
 </div>
 
-<div id="outline-container-orgd53a3c5" class="outline-2">
-<h2 id="orgd53a3c5">Nodes, the network, blockchain, etc.</h2>
-<div class="outline-text-2" id="text-orgd53a3c5">
+<div id="outline-container-org1a3054e" class="outline-2">
+<h2 id="org1a3054e">Nodes, the network, blockchain, etc.</h2>
+<div class="outline-text-2" id="text-org1a3054e">
 <p>
 I'm leaving these concepts out of scope for now. There are lots of
 interesting topics beyond transactions such as:
@@ -720,14 +707,14 @@ Also, try this walkthrough of bitcoin mining using pen and paper:
 </p>
 </div>
 
-<div id="outline-container-org3feb6db" class="outline-3">
-<h3 id="org3feb6db">Preventing Double-Spend</h3>
-<div class="outline-text-3" id="text-org3feb6db">
+<div id="outline-container-orgdb1f4af" class="outline-3">
+<h3 id="orgdb1f4af">Preventing Double-Spend</h3>
+<div class="outline-text-3" id="text-orgdb1f4af">
 <p>
 Bitcoin nodes maintain an <a href="https://stackoverflow.com/questions/30425272/how-do-bitcoin-miners-check-for-double-spend-or-over-spend">index of UTXOs</a> (unspent transaction outputs)
 alongside the blockchain. I haven't looked at the implementation, but
 I imagine this to be a hash table mapping a transaction id <kbd>+</kbd> output
-index to a locking script <sup><a id="fnr.24" class="footref" href="#fn.24">24</a></sup>. Generating this index from an
+index to a locking script <sup><a id="fnr.24" class="footref" href="#fn.24" role="doc-backlink">24</a></sup>. Generating this index from an
 existing blockchain would be straightforward. The chain would be
 processes block-by-block, transaction-by-transaction: each valid
 transaction output would be unconditionally added to the index (in
@@ -740,9 +727,9 @@ unconfirmed).
 </div>
 </div>
 
-<div id="outline-container-org7f11ef5" class="outline-2">
-<h2 id="org7f11ef5">Resources</h2>
-<div class="outline-text-2" id="text-org7f11ef5">
+<div id="outline-container-orgdc12c6d" class="outline-2">
+<h2 id="orgdc12c6d">Resources</h2>
+<div class="outline-text-2" id="text-orgdc12c6d">
 <ul class="org-ul">
 <li>Wiki: <a href="https://en.bitcoin.it/wiki/Main_Page">https://en.bitcoin.it/wiki/Main_Page</a></li>
 <li><a href="https://learnmeabitcoin.com/technical/">https://learnmeabitcoin.com/technical/</a></li>
@@ -755,105 +742,105 @@ unconfirmed).
 <h2 class="footnotes">Footnotes: </h2>
 <div id="text-footnotes">
 
-<div class="footdef"><sup><a id="fn.1" class="footnum" href="#fnr.1">1</a></sup> <div class="footpara"><p class="footpara">
+<div class="footdef"><sup><a id="fn.1" class="footnum" href="#fnr.1" role="doc-backlink">1</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
 <a href="https://en.bitcoin.it/wiki/Block">https://en.bitcoin.it/wiki/Block</a>
 </p></div></div>
 
-<div class="footdef"><sup><a id="fn.2" class="footnum" href="#fnr.2">2</a></sup> <div class="footpara"><p class="footpara">
+<div class="footdef"><sup><a id="fn.2" class="footnum" href="#fnr.2" role="doc-backlink">2</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
 <a href="https://en.bitcoin.it/wiki/Transaction">https://en.bitcoin.it/wiki/Transaction</a>
 </p></div></div>
 
-<div class="footdef"><sup><a id="fn.3" class="footnum" href="#fnr.3">3</a></sup> <div class="footpara"><p class="footpara">
+<div class="footdef"><sup><a id="fn.3" class="footnum" href="#fnr.3" role="doc-backlink">3</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
 Refer to the original source code: <a href="https://s3.amazonaws.com/nakamotoinstitute/code/bitcoin-0.1.0.tgz">https://s3.amazonaws.com/nakamotoinstitute/code/bitcoin-0.1.0.tgz</a>
 </p></div></div>
 
-<div class="footdef"><sup><a id="fn.4" class="footnum" href="#fnr.4">4</a></sup> <div class="footpara"><p class="footpara">
+<div class="footdef"><sup><a id="fn.4" class="footnum" href="#fnr.4" role="doc-backlink">4</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
 <a href="https://learnmeabitcoin.com/technical/script">https://learnmeabitcoin.com/technical/script</a>
 </p></div></div>
 
-<div class="footdef"><sup><a id="fn.5" class="footnum" href="#fnr.5">5</a></sup> <div class="footpara"><p class="footpara">
+<div class="footdef"><sup><a id="fn.5" class="footnum" href="#fnr.5" role="doc-backlink">5</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
 <a href="https://bitcoin.stackexchange.com/questions/93013/are-all-three-bitcoin-address-types-interoperable-legacy-segwit-native-segwit">https://bitcoin.stackexchange.com/questions/93013/are-all-three-bitcoin-address-types-interoperable-legacy-segwit-native-segwit</a>
 </p></div></div>
 
-<div class="footdef"><sup><a id="fn.6" class="footnum" href="#fnr.6">6</a></sup> <div class="footpara"><p class="footpara">
+<div class="footdef"><sup><a id="fn.6" class="footnum" href="#fnr.6" role="doc-backlink">6</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
 Here is a script that can be redeemed by anyone who can
 demonstrate a hash collision:
 <a href="https://bitcointalk.org/index.php?topic=293382.0">https://bitcointalk.org/index.php?topic=293382.0</a>
 </p></div></div>
 
-<div class="footdef"><sup><a id="fn.7" class="footnum" href="#fnr.7">7</a></sup> <div class="footpara"><p class="footpara">
+<div class="footdef"><sup><a id="fn.7" class="footnum" href="#fnr.7" role="doc-backlink">7</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
 <a href="https://www.oreilly.com/library/view/mastering-bitcoin/9781491902639/ch05.html">https://www.oreilly.com/library/view/mastering-bitcoin/9781491902639/ch05.html</a>
 </p></div></div>
 
-<div class="footdef"><sup><a id="fn.8" class="footnum" href="#fnr.8">8</a></sup> <div class="footpara"><p class="footpara">
+<div class="footdef"><sup><a id="fn.8" class="footnum" href="#fnr.8" role="doc-backlink">8</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
 <a href="https://medium.com/coinmonks/how-to-generate-a-bitcoin-address-step-by-step-9d7fcbf1ad0b">https://medium.com/coinmonks/how-to-generate-a-bitcoin-address-step-by-step-9d7fcbf1ad0b</a>
 </p></div></div>
 
-<div class="footdef"><sup><a id="fn.9" class="footnum" href="#fnr.9">9</a></sup> <div class="footpara"><p class="footpara">
+<div class="footdef"><sup><a id="fn.9" class="footnum" href="#fnr.9" role="doc-backlink">9</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
 The most significant zero bit in the binary representation of the
 maximal private key is bit 125. \(2^{125}\) is around \(10^{37}\); there are
 about \(10^{21}\) grains of sand on Earth (<a href="https://en.wikipedia.org/wiki/Orders_of_magnitude_(numbers)#1021">source</a>), and so there are 10<sup>38</sup>
 grains of sand on ten quadrillion (\(10^{16}\)) Earths.
 </p></div></div>
 
-<div class="footdef"><sup><a id="fn.10" class="footnum" href="#fnr.10">10</a></sup> <div class="footpara"><p class="footpara">
+<div class="footdef"><sup><a id="fn.10" class="footnum" href="#fnr.10" role="doc-backlink">10</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
 <a href="https://en.bitcoin.it/wiki/Invoice_address">https://en.bitcoin.it/wiki/Invoice_address</a>
 </p></div></div>
 
-<div class="footdef"><sup><a id="fn.11" class="footnum" href="#fnr.11">11</a></sup> <div class="footpara"><p class="footpara">
+<div class="footdef"><sup><a id="fn.11" class="footnum" href="#fnr.11" role="doc-backlink">11</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
 <a href="https://en.bitcoin.it/wiki/List_of_address_prefixes">https://en.bitcoin.it/wiki/List_of_address_prefixes</a>
 </p></div></div>
 
-<div class="footdef"><sup><a id="fn.12" class="footnum" href="#fnr.12">12</a></sup> <div class="footpara"><p class="footpara">
+<div class="footdef"><sup><a id="fn.12" class="footnum" href="#fnr.12" role="doc-backlink">12</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
 citation needed
 </p></div></div>
 
-<div class="footdef"><sup><a id="fn.13" class="footnum" href="#fnr.13">13</a></sup> <div class="footpara"><p class="footpara">
+<div class="footdef"><sup><a id="fn.13" class="footnum" href="#fnr.13" role="doc-backlink">13</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
 <a href="https://bitcoin.stackexchange.com/questions/2013/why-does-the-length-of-a-bitcoin-key-vary">https://bitcoin.stackexchange.com/questions/2013/why-does-the-length-of-a-bitcoin-key-vary</a>
 </p></div></div>
 
-<div class="footdef"><sup><a id="fn.14" class="footnum" href="#fnr.14">14</a></sup> <div class="footpara"><p class="footpara">
+<div class="footdef"><sup><a id="fn.14" class="footnum" href="#fnr.14" role="doc-backlink">14</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
 <a href="https://en.bitcoinwiki.org/wiki/Pay-to-Pubkey_Hash">https://en.bitcoinwiki.org/wiki/Pay-to-Pubkey_Hash</a>
 </p></div></div>
 
-<div class="footdef"><sup><a id="fn.15" class="footnum" href="#fnr.15">15</a></sup> <div class="footpara"><p class="footpara">
+<div class="footdef"><sup><a id="fn.15" class="footnum" href="#fnr.15" role="doc-backlink">15</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
 <a href="https://bitcoin.stackexchange.com/questions/72184/why-is-p2pkh-used-instead-of-the-simpler-p2pk">https://bitcoin.stackexchange.com/questions/72184/why-is-p2pkh-used-instead-of-the-simpler-p2pk</a>
 </p></div></div>
 
-<div class="footdef"><sup><a id="fn.16" class="footnum" href="#fnr.16">16</a></sup> <div class="footpara"><p class="footpara">
+<div class="footdef"><sup><a id="fn.16" class="footnum" href="#fnr.16" role="doc-backlink">16</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
 <a href="https://stackoverflow.com/questions/2658601/do-cryptographic-hash-functions-reach-each-possible-values-i-e-are-they-surje">https://stackoverflow.com/questions/2658601/do-cryptographic-hash-functions-reach-each-possible-values-i-e-are-they-surje</a>
 </p></div></div>
 
-<div class="footdef"><sup><a id="fn.17" class="footnum" href="#fnr.17">17</a></sup> <div class="footpara"><p class="footpara">
+<div class="footdef"><sup><a id="fn.17" class="footnum" href="#fnr.17" role="doc-backlink">17</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
 <a href="https://learnmeabitcoin.com/technical/p2pkh">https://learnmeabitcoin.com/technical/p2pkh</a>
 </p></div></div>
 
-<div class="footdef"><sup><a id="fn.18" class="footnum" href="#fnr.18">18</a></sup> <div class="footpara"><p class="footpara">
+<div class="footdef"><sup><a id="fn.18" class="footnum" href="#fnr.18" role="doc-backlink">18</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
 <a href="https://bitcoin.stackexchange.com/questions/3600/why-are-bitcoin-addresses-hashes-of-public-keys">https://bitcoin.stackexchange.com/questions/3600/why-are-bitcoin-addresses-hashes-of-public-keys</a>
 </p></div></div>
 
-<div class="footdef"><sup><a id="fn.19" class="footnum" href="#fnr.19">19</a></sup> <div class="footpara"><p class="footpara">
+<div class="footdef"><sup><a id="fn.19" class="footnum" href="#fnr.19" role="doc-backlink">19</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
 <a href="https://programmingblockchain.gitbook.io/programmingblockchain/other_types_of_ownership/p2wpkh_pay_to_witness_public_key_hash">https://programmingblockchain.gitbook.io/programmingblockchain/other_types_of_ownership/p2wpkh_pay_to_witness_public_key_hash</a>
 </p></div></div>
 
-<div class="footdef"><sup><a id="fn.20" class="footnum" href="#fnr.20">20</a></sup> <div class="footpara"><p class="footpara">
+<div class="footdef"><sup><a id="fn.20" class="footnum" href="#fnr.20" role="doc-backlink">20</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
 <a href="https://en.bitcoin.it/wiki/Address_reuse">https://en.bitcoin.it/wiki/Address_reuse</a>
 </p></div></div>
 
-<div class="footdef"><sup><a id="fn.21" class="footnum" href="#fnr.21">21</a></sup> <div class="footpara"><p class="footpara">
+<div class="footdef"><sup><a id="fn.21" class="footnum" href="#fnr.21" role="doc-backlink">21</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
 <a href="https://blog.chainalysis.com/reports/bitcoin-addresses/">https://blog.chainalysis.com/reports/bitcoin-addresses/</a>
 </p></div></div>
 
-<div class="footdef"><sup><a id="fn.22" class="footnum" href="#fnr.22">22</a></sup> <div class="footpara"><p class="footpara">
+<div class="footdef"><sup><a id="fn.22" class="footnum" href="#fnr.22" role="doc-backlink">22</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
 <a href="https://towardsdatascience.com/a-shallow-dive-into-bitcoins-blockchain-part-2-transactions-d4ee83067bae">https://towardsdatascience.com/a-shallow-dive-into-bitcoins-blockchain-part-2-transactions-d4ee83067bae</a>
 </p></div></div>
 
-<div class="footdef"><sup><a id="fn.23" class="footnum" href="#fnr.23">23</a></sup> <div class="footpara"><p class="footpara">
+<div class="footdef"><sup><a id="fn.23" class="footnum" href="#fnr.23" role="doc-backlink">23</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
 <a href="https://electrum.readthedocs.io/en/latest/faq.html">https://electrum.readthedocs.io/en/latest/faq.html</a>
 <a href="https://crypto.stackexchange.com/questions/26791/how-many-bits-of-entropy-does-an-elliptic-curve-key-of-length-n-provide">https://crypto.stackexchange.com/questions/26791/how-many-bits-of-entropy-does-an-elliptic-curve-key-of-length-n-provide</a>
 </p></div></div>
 
-<div class="footdef"><sup><a id="fn.24" class="footnum" href="#fnr.24">24</a></sup> <div class="footpara"><p class="footpara">
+<div class="footdef"><sup><a id="fn.24" class="footnum" href="#fnr.24" role="doc-backlink">24</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
 <a href="https://learnmeabitcoin.com/technical/p2sh">https://learnmeabitcoin.com/technical/p2sh</a>
 </p></div></div>
 
@@ -861,7 +848,7 @@ citation needed
 </div>
 </div></div>
 <div id="postamble" class="status">
-<i>BTC Address: bc1qlpu2c7ltxrz5fd2a977ywedlp9u4lvukvluc3d</i>
+<p>hi</p>
 </div>
 </body>
 </html>

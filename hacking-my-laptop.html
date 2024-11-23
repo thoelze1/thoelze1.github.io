@@ -3,14 +3,13 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2023-01-06 Fri 14:00 -->
+<!-- 2024-11-23 Sat 00:30 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Breaking into my MacBookPro10,2</title>
-<meta name="generator" content="Org mode" />
-<meta name="author" content="Tanner Hoelzel" />
-<style type="text/css">
- <!--/*--><![CDATA[/*><!--*/
+<meta name="generator" content="Org Mode" />
+<style>
+  #content { max-width: 60em; margin: auto; }
   .title  { text-align: center;
              margin-bottom: .2em; }
   .subtitle { text-align: center;
@@ -31,8 +30,9 @@
   #postamble p, #preamble p { font-size: 90%; margin: .2em; }
   p.verse { margin-left: 3%; }
   pre {
-    border: 1px solid #ccc;
-    box-shadow: 3px 3px 3px #eee;
+    border: 1px solid #e6e6e6;
+    border-radius: 3px;
+    background-color: #f2f2f2;
     padding: 8pt;
     font-family: monospace;
     overflow: auto;
@@ -41,21 +41,21 @@
   pre.src {
     position: relative;
     overflow: auto;
-    padding-top: 1.2em;
   }
   pre.src:before {
     display: none;
     position: absolute;
-    background-color: white;
-    top: -10px;
-    right: 10px;
+    top: -8px;
+    right: 12px;
     padding: 3px;
-    border: 1px solid black;
+    color: #555;
+    background-color: #f2f2f299;
   }
   pre.src:hover:before { display: inline; margin-top: 14px;}
   /* Languages per Org manual */
   pre.src-asymptote:before { content: 'Asymptote'; }
   pre.src-awk:before { content: 'Awk'; }
+  pre.src-authinfo::before { content: 'Authinfo'; }
   pre.src-C:before { content: 'C'; }
   /* pre.src-C++ doesn't work in CSS */
   pre.src-clojure:before { content: 'Clojure'; }
@@ -190,57 +190,34 @@
     { font-size: 10px; font-weight: bold; white-space: nowrap; }
   .org-info-js_search-highlight
     { background-color: #ffff00; color: #000000; font-weight: bold; }
-  .org-svg { width: 90%; }
-  /*]]>*/-->
+  .org-svg { }
 </style>
-<script type="text/javascript">
-// @license magnet:?xt=urn:btih:e95b018ef3580986a04669f1b5879592219e2a7a&dn=public-domain.txt Public Domain
-<!--/*--><![CDATA[/*><!--*/
-     function CodeHighlightOn(elem, id)
-     {
-       var target = document.getElementById(id);
-       if(null != target) {
-         elem.classList.add("code-highlighted");
-         target.classList.add("code-highlighted");
-       }
-     }
-     function CodeHighlightOff(elem, id)
-     {
-       var target = document.getElementById(id);
-       if(null != target) {
-         elem.classList.remove("code-highlighted");
-         target.classList.remove("code-highlighted");
-       }
-     }
-    /*]]>*///-->
-// @license-end
-</script>
 </head>
 <body>
-<div id="content">
+<div id="content" class="content">
 <h1 class="title">Breaking into my MacBookPro10,2</h1>
 <p>
 I recently found my old 2012 Macbook Pro, but I forgot the password. I
 decided to try to get in without it. Here's what happened&#x2026;
 </p>
 
-<div id="outline-container-org22bb4c5" class="outline-2">
-<h2 id="org22bb4c5">Accessing the filesystem</h2>
-<div class="outline-text-2" id="text-org22bb4c5">
+<div id="outline-container-org73644bf" class="outline-2">
+<h2 id="org73644bf">Accessing the filesystem</h2>
+<div class="outline-text-2" id="text-org73644bf">
 <p>
 You can boot in single user mode to get into the filesystem (just hold
-⌘-<kbd>S</kbd> at boot<sup><a id="fnr.1" class="footref" href="#fn.1">1</a></sup>). I thought it would be more fun to actually
+⌘-<kbd>S</kbd> at boot<sup><a id="fnr.1" class="footref" href="#fn.1" role="doc-backlink">1</a></sup>). I thought it would be more fun to actually
 log in, so I decided to keep trying&#x2026;
 </p>
 </div>
 </div>
 
-<div id="outline-container-org2a08c53" class="outline-2">
-<h2 id="org2a08c53">Resetting the password</h2>
-<div class="outline-text-2" id="text-org2a08c53">
+<div id="outline-container-org25d7277" class="outline-2">
+<h2 id="org25d7277">Resetting the password</h2>
+<div class="outline-text-2" id="text-org25d7277">
 <p>
 To reset a user's password, you can create a new administrator account
-from which any password can be overwritten<sup><a id="fnr.2" class="footref" href="#fn.2">2</a></sup>. An easy way is
+from which any password can be overwritten<sup><a id="fnr.2" class="footref" href="#fn.2" role="doc-backlink">2</a></sup>. An easy way is
 to boot in single-user mode and run:
 </p>
 
@@ -257,12 +234,12 @@ more fun to recover my actual password&#x2026;
 </div>
 </div>
 
-<div id="outline-container-orge7aeaa2" class="outline-2">
-<h2 id="orge7aeaa2">Cracking the password</h2>
-<div class="outline-text-2" id="text-orge7aeaa2">
+<div id="outline-container-org8268798" class="outline-2">
+<h2 id="org8268798">Cracking the password</h2>
+<div class="outline-text-2" id="text-org8268798">
 <p>
 First, we need to find the hash stored by the OS. I found a nice
-guide<sup><a id="fnr.3" class="footref" href="#fn.3">3</a></sup> on cracking mac passwords: apparently, a user's password
+guide<sup><a id="fnr.3" class="footref" href="#fn.3" role="doc-backlink">3</a></sup> on cracking mac passwords: apparently, a user's password
 hash resides at /Volumes/&lt;hard drive
 name&gt;/var/db/dslocal/nodes/Default/users/&lt;username&gt;.plist. I grabbed
 the relevant plist and attempted to extract the hash:
@@ -270,20 +247,20 @@ the relevant plist and attempted to extract the hash:
 
 <div class="org-src-container">
 <pre class="src src-bash">$ sudo defaults read tanner.plist ShadowHashData | tr -dc 0-9a-f | xxd -r -p | plutil -convert xml1 - -o - 2&gt; /dev/null
-Property List error: Unexpected character &#232; at line 1 / JSON error: JSON text did not start with array or object and option to allow fragments not set.
+Property List error: Unexpected character è at line 1 / JSON error: JSON text did not start with array or object and option to allow fragments not set.
 </pre>
 </div>
 
 <p>
-No luck. I'm not sure why. I tried another method<sup><a id="fnr.4" class="footref" href="#fn.4">4</a></sup> which happened
+No luck. I'm not sure why. I tried another method<sup><a id="fnr.4" class="footref" href="#fn.4" role="doc-backlink">4</a></sup> which happened
 to work:
 </p>
 
 <div class="org-src-container">
 <pre class="src src-bash">$ dscl . read tanner.plist dsAttrTypeNative:ShadowHashData | xxd -r -p | plutil -convert xml1 -
-&lt;?xml <span style="color: #DFAF8F;">version</span>=<span style="color: #CC9393;">"1.0"</span> <span style="color: #DFAF8F;">encoding</span>=<span style="color: #CC9393;">"UTF-8"</span>?&gt;
-&lt;!DOCTYPE plist PUBLIC <span style="color: #CC9393;">"-//Apple//DTD PLIST 1.0//EN"</span> <span style="color: #CC9393;">"http://www.apple.com/DTDs/PropertyList-1.0.dtd"</span>&gt;
-&lt;plist <span style="color: #DFAF8F;">version</span>=<span style="color: #CC9393;">"1.0"</span>&gt;
+&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd"&gt;
+&lt;plist version="1.0"&gt;
 &lt;dict&gt;
         &lt;key&gt;SALTED-SHA512-PBKDF2&lt;/key&gt;
         &lt;dict&gt;
@@ -291,13 +268,13 @@ to work:
                 &lt;data&gt;
                 96kq3nobm2G/jFtdoIsfgzP8m3SCYbGhnI1OdO0rv/ag+8UJOUDUZtTIaH4G
                 MsBLMM8HFtqpH5jAKpJiQhDwmYNWZ64ZAYpV1hUt7UlswDK8HtnTOeZ1x5hI
-                <span style="color: #DFAF8F;">CHFkd0ZbGUziMPRGRuNUv64aOC2ihxFODsAkbuZnrvjsfWTCBZ0</span>=
+                CHFkd0ZbGUziMPRGRuNUv64aOC2ihxFODsAkbuZnrvjsfWTCBZ0=
                 &lt;/data&gt;
                 &lt;key&gt;iterations&lt;/key&gt;
                 &lt;integer&gt;36900&lt;/integer&gt;
                 &lt;key&gt;salt&lt;/key&gt;
                 &lt;data&gt;
-                BQn1fkxpi15tLrI6sVCfZs8rVxxE+<span style="color: #DFAF8F;">0q8W94cwIxj3wA</span>=
+                BQn1fkxpi15tLrI6sVCfZs8rVxxE+0q8W94cwIxj3wA=
                 &lt;/data&gt;
         &lt;/dict&gt;
         &lt;key&gt;SRP-RFC5054-4096-SHA512-PBKDF2&lt;/key&gt;
@@ -321,7 +298,7 @@ to work:
                 8Evmx2KmIM9Oxm0DhvHB+djoQO7e6vnK582mh4uMSWsm/SAng+Evs7M0CQtN
                 PhG0qi5MsLiDufjsgluPcksVCtgxev1n2+hzF0TMhb82d8FrRM7ixOIzFPy6
                 NdCSqIV2Rnxc3HY5DCoTkQvVzA44jGxtBzBkqZz6e6fNggXwn1cehtq4LLa1
-                evmkn++fUmbk+<span style="color: #DFAF8F;">QzialJqMVg</span>=
+                evmkn++fUmbk+QzialJqMVg=
                 &lt;/data&gt;
         &lt;/dict&gt;
 &lt;/dict&gt;
@@ -333,21 +310,21 @@ to work:
 Great! Now that we have the hash, we'll use hashcat to crack
 it. Hashcat expects input in base 16, so we'll need to convert the
 above hash/salt values which are in base 64. You can perform this
-conversion any way you want, so I just rewrote a popular script <sup><a id="fnr.5" class="footref" href="#fn.5">5</a></sup>:
+conversion any way you want, so I just rewrote a popular script <sup><a id="fnr.5" class="footref" href="#fn.5" role="doc-backlink">5</a></sup>:
 </p>
 
 <div class="org-src-container">
-<pre class="src src-python"><span style="color: #5F7F5F;">#</span><span style="color: #7F9F7F;">!/usr/bin/python2.7</span>
-<span style="color: #F0DFAF; font-weight: bold;">import</span> base64
-<span style="color: #F0DFAF; font-weight: bold;">import</span> sys
-<span style="color: #DFAF8F;">entropy64</span> = <span style="color: #CC9393;">'96kq3nobm2G/jFtdoIsfgzP8m3SCYbGhnI1OdO0rv/ag+8UJOUDUZtTIaH4GMsBLMM8HFtqpH5jAKpJiQhDwmYNWZ64ZAYpV1hUt7UlswDK8HtnTOeZ1x5hICHFkd0ZbGUziMPRGRuNUv64aOC2ihxFODsAkbuZnrvjsfWTCBZ0='</span>
-<span style="color: #DFAF8F;">iterations</span> = <span style="color: #CC9393;">'36900'</span>
-<span style="color: #DFAF8F;">salt64</span> = <span style="color: #CC9393;">'BQn1fkxpi15tLrI6sVCfZs8rVxxE+0q8W94cwIxj3wA='</span>
-<span style="color: #DFAF8F;">entropyRaw</span> = base64.b64decode(entropy64)
-<span style="color: #DFAF8F;">entropyHex</span> = entropyRaw.encode(<span style="color: #CC9393;">"hex"</span>)
-<span style="color: #DFAF8F;">saltRaw</span> = base64.b64decode(salt64)
-<span style="color: #DFAF8F;">saltHex</span> = saltRaw.encode(<span style="color: #CC9393;">"hex"</span>)
-<span style="color: #F0DFAF; font-weight: bold;">print</span>(<span style="color: #CC9393;">"$ml$%s$%s$%s"</span> %(iterations, saltHex, entropyHex))
+<pre class="src src-python">#!/usr/bin/python2.7
+import base64
+import sys
+entropy64 = '96kq3nobm2G/jFtdoIsfgzP8m3SCYbGhnI1OdO0rv/ag+8UJOUDUZtTIaH4GMsBLMM8HFtqpH5jAKpJiQhDwmYNWZ64ZAYpV1hUt7UlswDK8HtnTOeZ1x5hICHFkd0ZbGUziMPRGRuNUv64aOC2ihxFODsAkbuZnrvjsfWTCBZ0='
+iterations = '36900'
+salt64 = 'BQn1fkxpi15tLrI6sVCfZs8rVxxE+0q8W94cwIxj3wA='
+entropyRaw = base64.b64decode(entropy64)
+entropyHex = entropyRaw.encode("hex")
+saltRaw = base64.b64decode(salt64)
+saltHex = saltRaw.encode("hex")
+print("$ml$%s$%s$%s" %(iterations, saltHex, entropyHex))
 </pre>
 </div>
 
@@ -355,7 +332,7 @@ conversion any way you want, so I just rewrote a popular script <sup><a id="fnr.
 I ran the script, and:
 </p>
 
-<pre class="example" id="orgf5cd16c">
+<pre class="example" id="org7bfa09d">
 $ml$36900$0509f57e4c698b5e6d2eb23ab1509f66cf2b571c44fb4abc5bde1cc08c63df00$f7a92ade7a1b9b61bf8c5b5da08b1f8333fc9b748261b1a19c8d4e74ed2bbff6a0fbc5093940d466d4c8687e0632c04b30cf0716daa91f98c02a92624210f099835667ae19018a55d6152ded496cc032bc1ed9d339e675c7984808716477465b194ce230f44646e354bfae1a382da287114e0ec0246ee667aef8ec7d64c2059d
 </pre>
 
@@ -368,12 +345,12 @@ Now we're ready for hashcat. I decided to use a dictionary attack with
 <pre class="src src-markdown">$ hashcat -a 0 -m 7100 hash.txt rockyou.txt -w 4 --potfile-path hash.pot
 hashcat (v5.1.0) starting...
 
-<span style="color: #b3b3b3;">*</span> Device #1: WARNING! Kernel exec timeout is not disabled.
-             This may cause "CL<span style="color: #b3b3b3;">_</span><span style="font-style: italic;">OUT</span><span style="color: #b3b3b3;">_</span>OF_RESOURCES" or related errors.
-             To disable the timeout, see: <span style="color: #F0DFAF; font-weight: bold; text-decoration: underline;">https://hashcat.net/q/timeoutpatch</span>
-<span style="color: #93E0E3; font-weight: bold;">OpenCL Platform #1: NVIDIA Corporation</span>
-<span style="color: #b3b3b3;">======================================</span>
-<span style="color: #b3b3b3;">*</span> Device #1: NVIDIA GeForce GTX 960, 499/1998 MB allocatable, 8MCU
+* Device #1: WARNING! Kernel exec timeout is not disabled.
+             This may cause "CL_OUT_OF_RESOURCES" or related errors.
+             To disable the timeout, see: https://hashcat.net/q/timeoutpatch
+OpenCL Platform #1: NVIDIA Corporation
+======================================
+* Device #1: NVIDIA GeForce GTX 960, 499/1998 MB allocatable, 8MCU
 
 Hashfile 'hash.txt' on line 1 ($ml$36...114e0ec0246ee667aef8ec7d64c2059d): Token length exception
 No hashes loaded.
@@ -385,7 +362,7 @@ Stopped: Wed Dec 15 05:03:01 2021
 
 <p>
 We got a "token length exception." It turns out that hashcat expects a
-64-byte hash, but we gave it a 128-byte one<sup><a id="fnr.6" class="footref" href="#fn.6">6</a></sup>. We'll just remove
+64-byte hash, but we gave it a 128-byte one<sup><a id="fnr.6" class="footref" href="#fn.6" role="doc-backlink">6</a></sup>. We'll just remove
 64 bytes from the hash and try again. Since each byte of the hash is
 represented in hash.txt in hexadecimal as two ASCII characters, each
 of which occupies one byte, we need to remove <kbd>64*2</kbd> bytes from
@@ -397,36 +374,36 @@ hash.txt:
 $ hashcat -a 0 -m 7100 hash-truncated.txt rockyou.txt --encoding-from=utf8 --encoding-to=ascii -w 4 --potfile-path ~/hash-truncated.pot
 hashcat (v5.1.0) starting...
 
-<span style="color: #b3b3b3;">*</span> Device #1: WARNING! Kernel exec timeout is not disabled.
-             This may cause "CL<span style="color: #b3b3b3;">_</span><span style="font-style: italic;">OUT</span><span style="color: #b3b3b3;">_</span>OF_RESOURCES" or related errors.
-             To disable the timeout, see: <span style="color: #F0DFAF; font-weight: bold; text-decoration: underline;">https://hashcat.net/q/timeoutpatch</span>
-<span style="color: #93E0E3; font-weight: bold;">OpenCL Platform #1: NVIDIA Corporation</span>
-<span style="color: #b3b3b3;">======================================</span>
-<span style="color: #b3b3b3;">*</span> Device #1: NVIDIA GeForce GTX 960, 499/1998 MB allocatable, 8MCU
+* Device #1: WARNING! Kernel exec timeout is not disabled.
+             This may cause "CL_OUT_OF_RESOURCES" or related errors.
+             To disable the timeout, see: https://hashcat.net/q/timeoutpatch
+OpenCL Platform #1: NVIDIA Corporation
+======================================
+* Device #1: NVIDIA GeForce GTX 960, 499/1998 MB allocatable, 8MCU
 
 Hashes: 1 digests; 1 unique digests, 1 unique salts
 Bitmaps: 16 bits, 65536 entries, 0x0000ffff mask, 262144 bytes, 5/13 rotates
 Rules: 1
 
 Applicable optimizers:
-<span style="color: #b3b3b3;">*</span> Zero-Byte
-<span style="color: #b3b3b3;">*</span> Single-Hash
-<span style="color: #b3b3b3;">*</span> Single-Salt
-<span style="color: #b3b3b3;">*</span> Slow-Hash-SIMD-LOOP
-<span style="color: #b3b3b3;">*</span> Uses-64-Bit
+* Zero-Byte
+* Single-Hash
+* Single-Salt
+* Slow-Hash-SIMD-LOOP
+* Uses-64-Bit
 
 Minimum password length supported by kernel: 0
 Maximum password length supported by kernel: 256
 
 Watchdog: Temperature abort trigger set to 90c
 
-<span style="color: #b3b3b3;">*</span> Device #1: build<span style="color: #b3b3b3;">_</span><span style="font-style: italic;">opts '-cl-std=CL1.2 -I OpenCL -I /usr/share/hashcat/OpenCL -D LOCAL</span><span style="color: #b3b3b3;">_</span>MEM<span style="color: #b3b3b3;">_</span><span style="font-style: italic;">TYPE=1 -D VENDOR</span><span style="color: #b3b3b3;">_</span>ID=32 -D CUDA<span style="color: #b3b3b3;">_</span><span style="font-style: italic;">ARCH=502 -D AMD</span><span style="color: #b3b3b3;">_</span>ROCM=0 -D VECT<span style="color: #b3b3b3;">_</span><span style="font-style: italic;">SIZE=1 -D DEVICE</span><span style="color: #b3b3b3;">_</span>TYPE=4 -D DGST<span style="color: #b3b3b3;">_</span><span style="font-style: italic;">R0=0 -D DGST</span><span style="color: #b3b3b3;">_</span>R1=1 -D DGST<span style="color: #b3b3b3;">_</span><span style="font-style: italic;">R2=2 -D DGST</span><span style="color: #b3b3b3;">_</span>R3=3 -D DGST<span style="color: #b3b3b3;">_</span><span style="font-style: italic;">ELEM=32 -D KERN</span><span style="color: #b3b3b3;">_</span>TYPE=7100 -D _unroll'
+* Device #1: build_opts '-cl-std=CL1.2 -I OpenCL -I /usr/share/hashcat/OpenCL -D LOCAL_MEM_TYPE=1 -D VENDOR_ID=32 -D CUDA_ARCH=502 -D AMD_ROCM=0 -D VECT_SIZE=1 -D DEVICE_TYPE=4 -D DGST_R0=0 -D DGST_R1=1 -D DGST_R2=2 -D DGST_R3=3 -D DGST_ELEM=32 -D KERN_TYPE=7100 -D _unroll'
 Dictionary cache built:
-<span style="color: #b3b3b3;">*</span> Filename..: ./rockyou.txt
-<span style="color: #b3b3b3;">*</span> Passwords.: 14329857
-<span style="color: #b3b3b3;">*</span> Bytes.....: 139921497
-<span style="color: #b3b3b3;">*</span> Keyspace..: 14329850
-<span style="color: #b3b3b3;">*</span> Runtime...: 7 secs
+* Filename..: ./rockyou.txt
+* Passwords.: 14329857
+* Bytes.....: 139921497
+* Keyspace..: 14329850
+* Runtime...: 7 secs
 
 $ml$36900$0509f57e4c698b5e6d2eb23ab1509f66cf2b571c44fb4abc5bde1cc08c63df00$f7a92ade7a1b9b61bf8c5b5da08b1f8333fc9b748261b1a19c8d4e74ed2bbff6a0fbc5093940d466d4c8687e0632c04b30cf0716daa91f98c02a92624210f099:[REDACTED]
 Session..........: hashcat
@@ -457,9 +434,9 @@ We recovered the password in just over a minute!
 </div>
 </div>
 
-<div id="outline-container-orgccaac6d" class="outline-2">
-<h2 id="orgccaac6d">Notes</h2>
-<div class="outline-text-2" id="text-orgccaac6d">
+<div id="outline-container-org9714545" class="outline-2">
+<h2 id="org9714545">Notes</h2>
+<div class="outline-text-2" id="text-org9714545">
 <p>
 To prevent leaking the recovered password, I flipped bits in both the
 salt and the hash. However, I used a well-known password dictionary
@@ -475,27 +452,27 @@ from the above hash. Happy hunting!
 <h2 class="footnotes">Footnotes: </h2>
 <div id="text-footnotes">
 
-<div class="footdef"><sup><a id="fn.1" class="footnum" href="#fnr.1">1</a></sup> <div class="footpara"><p class="footpara">
+<div class="footdef"><sup><a id="fn.1" class="footnum" href="#fnr.1" role="doc-backlink">1</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
 <a href="https://support.apple.com/en-us/HT201255">https://support.apple.com/en-us/HT201255</a>
 </p></div></div>
 
-<div class="footdef"><sup><a id="fn.2" class="footnum" href="#fnr.2">2</a></sup> <div class="footpara"><p class="footpara">
+<div class="footdef"><sup><a id="fn.2" class="footnum" href="#fnr.2" role="doc-backlink">2</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
 <a href="https://logi.wiki/index.php/Single_user_mode">https://logi.wiki/index.php/Single_user_mode</a>
 </p></div></div>
 
-<div class="footdef"><sup><a id="fn.3" class="footnum" href="#fnr.3">3</a></sup> <div class="footpara"><p class="footpara">
+<div class="footdef"><sup><a id="fn.3" class="footnum" href="#fnr.3" role="doc-backlink">3</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
 <a href="https://null-byte.wonderhowto.com/how-to/hacking-macos-hack-mac-password-without-changing-0189001">https://null-byte.wonderhowto.com/how-to/hacking-macos-hack-mac-password-without-changing-0189001</a>
 </p></div></div>
 
-<div class="footdef"><sup><a id="fn.4" class="footnum" href="#fnr.4">4</a></sup> <div class="footpara"><p class="footpara">
+<div class="footdef"><sup><a id="fn.4" class="footnum" href="#fnr.4" role="doc-backlink">4</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
 <a href="https://www.onlinehashcrack.com/how-to-extract-hashes-crack-mac-osx-passwords.php">https://www.onlinehashcrack.com/how-to-extract-hashes-crack-mac-osx-passwords.php</a>
 </p></div></div>
 
-<div class="footdef"><sup><a id="fn.5" class="footnum" href="#fnr.5">5</a></sup> <div class="footpara"><p class="footpara">
+<div class="footdef"><sup><a id="fn.5" class="footnum" href="#fnr.5" role="doc-backlink">5</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
 <a href="https://github.com/tokyoneon/hashdump.py/blob/master/hashdump.py">https://github.com/tokyoneon/hashdump.py/blob/master/hashdump.py</a>
 </p></div></div>
 
-<div class="footdef"><sup><a id="fn.6" class="footnum" href="#fnr.6">6</a></sup> <div class="footpara"><p class="footpara">
+<div class="footdef"><sup><a id="fn.6" class="footnum" href="#fnr.6" role="doc-backlink">6</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
 <a href="https://github.com/hashcat/hashcat/issues/1697">https://github.com/hashcat/hashcat/issues/1697</a>
 </p></div></div>
 
@@ -503,7 +480,7 @@ from the above hash. Happy hunting!
 </div>
 </div></div>
 <div id="postamble" class="status">
-<i>BTC Address: bc1qlpu2c7ltxrz5fd2a977ywedlp9u4lvukvluc3d</i>
+<p>hi</p>
 </div>
 </body>
 </html>

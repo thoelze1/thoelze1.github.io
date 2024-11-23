@@ -3,14 +3,13 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2023-01-06 Fri 14:00 -->
+<!-- 2024-11-23 Sat 00:30 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Writing a basic service for GNU Guix</title>
-<meta name="generator" content="Org mode" />
-<meta name="author" content="Tanner Hoelzel" />
-<style type="text/css">
- <!--/*--><![CDATA[/*><!--*/
+<meta name="generator" content="Org Mode" />
+<style>
+  #content { max-width: 60em; margin: auto; }
   .title  { text-align: center;
              margin-bottom: .2em; }
   .subtitle { text-align: center;
@@ -31,8 +30,9 @@
   #postamble p, #preamble p { font-size: 90%; margin: .2em; }
   p.verse { margin-left: 3%; }
   pre {
-    border: 1px solid #ccc;
-    box-shadow: 3px 3px 3px #eee;
+    border: 1px solid #e6e6e6;
+    border-radius: 3px;
+    background-color: #f2f2f2;
     padding: 8pt;
     font-family: monospace;
     overflow: auto;
@@ -41,21 +41,21 @@
   pre.src {
     position: relative;
     overflow: auto;
-    padding-top: 1.2em;
   }
   pre.src:before {
     display: none;
     position: absolute;
-    background-color: white;
-    top: -10px;
-    right: 10px;
+    top: -8px;
+    right: 12px;
     padding: 3px;
-    border: 1px solid black;
+    color: #555;
+    background-color: #f2f2f299;
   }
   pre.src:hover:before { display: inline; margin-top: 14px;}
   /* Languages per Org manual */
   pre.src-asymptote:before { content: 'Asymptote'; }
   pre.src-awk:before { content: 'Awk'; }
+  pre.src-authinfo::before { content: 'Authinfo'; }
   pre.src-C:before { content: 'C'; }
   /* pre.src-C++ doesn't work in CSS */
   pre.src-clojure:before { content: 'Clojure'; }
@@ -190,45 +190,22 @@
     { font-size: 10px; font-weight: bold; white-space: nowrap; }
   .org-info-js_search-highlight
     { background-color: #ffff00; color: #000000; font-weight: bold; }
-  .org-svg { width: 90%; }
-  /*]]>*/-->
+  .org-svg { }
 </style>
-<script type="text/javascript">
-// @license magnet:?xt=urn:btih:e95b018ef3580986a04669f1b5879592219e2a7a&dn=public-domain.txt Public Domain
-<!--/*--><![CDATA[/*><!--*/
-     function CodeHighlightOn(elem, id)
-     {
-       var target = document.getElementById(id);
-       if(null != target) {
-         elem.classList.add("code-highlighted");
-         target.classList.add("code-highlighted");
-       }
-     }
-     function CodeHighlightOff(elem, id)
-     {
-       var target = document.getElementById(id);
-       if(null != target) {
-         elem.classList.remove("code-highlighted");
-         target.classList.remove("code-highlighted");
-       }
-     }
-    /*]]>*///-->
-// @license-end
-</script>
 </head>
 <body>
-<div id="content">
+<div id="content" class="content">
 <h1 class="title">Writing a basic service for GNU Guix</h1>
-<div id="table-of-contents">
+<div id="table-of-contents" role="doc-toc">
 <h2>Table of Contents</h2>
-<div id="text-table-of-contents">
+<div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#orge9cae54">Reading the docs</a></li>
-<li><a href="#orgd53beaf">Reading some source</a></li>
-<li><a href="#org7db9522">Writing <kbd>kmonad-service-type</kbd></a></li>
-<li><a href="#org8a24d60">Using <kbd>kmonad-service-type</kbd></a></li>
-<li><a href="#orge4e457a">A simpler daemon?</a></li>
-<li><a href="#org2667337">References</a></li>
+<li><a href="#orgd3a063f">Reading the docs</a></li>
+<li><a href="#org63d37f4">Reading some source</a></li>
+<li><a href="#orgabb1195">Writing <kbd>kmonad-service-type</kbd></a></li>
+<li><a href="#org62db731">Using <kbd>kmonad-service-type</kbd></a></li>
+<li><a href="#org316b41e">A simpler daemon?</a></li>
+<li><a href="#orgfa31ea0">References</a></li>
 </ul>
 </div>
 </div>
@@ -246,9 +223,9 @@ writing a service keeps things organized and seems like the "right"
 way. If nothing else, it's a great learning opportunity.
 </p>
 
-<div id="outline-container-orge9cae54" class="outline-2">
-<h2 id="orge9cae54">Reading the docs</h2>
-<div class="outline-text-2" id="text-orge9cae54">
+<div id="outline-container-orgd3a063f" class="outline-2">
+<h2 id="orgd3a063f">Reading the docs</h2>
+<div class="outline-text-2" id="text-orgd3a063f">
 <p>
 First let's read the documentation of <a href="https://guix.gnu.org/en/manual/en/guix.html">GNU Guix</a>. We see that Guix
 offers "services" which extend the functionality of the operating
@@ -277,14 +254,14 @@ construct. Nearby, we see that the Guix daemon defines its own
 </p>
 
 <div class="org-src-container">
-<pre class="src src-scheme"><span style="color: #DCDCCC;">(</span><span style="color: #F0DFAF; font-weight: bold;">define</span> <span style="color: #93E0E3;">guix-service-type</span>
-  <span style="color: #BFEBBF;">(</span>service-type
-   <span style="color: #D0BF8F;">(</span>name 'guix<span style="color: #D0BF8F;">)</span>
-   <span style="color: #D0BF8F;">(</span>extensions
-    <span style="color: #93E0E3;">(</span>list <span style="color: #9FC59F;">(</span>service-extension shepherd-root-service-type guix-shepherd-service<span style="color: #9FC59F;">)</span>
-          <span style="color: #9FC59F;">(</span>service-extension account-service-type guix-accounts<span style="color: #9FC59F;">)</span>
-          <span style="color: #9FC59F;">(</span>service-extension activation-service-type guix-activation<span style="color: #9FC59F;">)</span><span style="color: #93E0E3;">)</span><span style="color: #D0BF8F;">)</span>
-   <span style="color: #D0BF8F;">(</span>default-value <span style="color: #93E0E3;">(</span>guix-configuration<span style="color: #93E0E3;">)</span><span style="color: #D0BF8F;">)</span><span style="color: #BFEBBF;">)</span><span style="color: #DCDCCC;">)</span>
+<pre class="src src-scheme">(define guix-service-type
+  (service-type
+   (name 'guix)
+   (extensions
+    (list (service-extension shepherd-root-service-type guix-shepherd-service)
+          (service-extension account-service-type guix-accounts)
+          (service-extension activation-service-type guix-activation)))
+   (default-value (guix-configuration))))
 </pre>
 </div>
 
@@ -299,9 +276,9 @@ off of it.
 </div>
 </div>
 
-<div id="outline-container-orgd53beaf" class="outline-2">
-<h2 id="orgd53beaf">Reading some source</h2>
-<div class="outline-text-2" id="text-orgd53beaf">
+<div id="outline-container-org63d37f4" class="outline-2">
+<h2 id="org63d37f4">Reading some source</h2>
+<div class="outline-text-2" id="text-org63d37f4">
 <p>
 I saw that "Game Services" were listed in the manual. Maybe there's a
 simple one we can make a template of. First, we find the definition of
@@ -309,88 +286,88 @@ the games services <a href="https://git.savannah.gnu.org/cgit/guix.git/tree/gnu/
 </p>
 
 <div class="org-src-container">
-<pre class="src src-scheme"><span style="color: #5F7F5F;">;;; </span><span style="color: #7F9F7F;">GNU Guix --- Functional package management for GNU</span>
-<span style="color: #5F7F5F;">;;; </span><span style="color: #7F9F7F;">Copyright &#169; 2018 Arun Isaac <a href="mailto:arunisaac%40systemreboot.net">&lt;arunisaac@systemreboot.net&gt;</a></span>
-<span style="color: #5F7F5F;">;;;</span>
-<span style="color: #5F7F5F;">;;; </span><span style="color: #7F9F7F;">This file is part of GNU Guix.</span>
-<span style="color: #5F7F5F;">;;;</span>
-<span style="color: #5F7F5F;">;;; </span><span style="color: #7F9F7F;">GNU Guix is free software; you can redistribute it and/or modify it</span>
-<span style="color: #5F7F5F;">;;; </span><span style="color: #7F9F7F;">under the terms of the GNU General Public License as published by</span>
-<span style="color: #5F7F5F;">;;; </span><span style="color: #7F9F7F;">the Free Software Foundation; either version 3 of the License, or (at</span>
-<span style="color: #5F7F5F;">;;; </span><span style="color: #7F9F7F;">your option) any later version.</span>
-<span style="color: #5F7F5F;">;;;</span>
-<span style="color: #5F7F5F;">;;; </span><span style="color: #7F9F7F;">GNU Guix is distributed in the hope that it will be useful, but</span>
-<span style="color: #5F7F5F;">;;; </span><span style="color: #7F9F7F;">WITHOUT ANY WARRANTY; without even the implied warranty of</span>
-<span style="color: #5F7F5F;">;;; </span><span style="color: #7F9F7F;">MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
-<span style="color: #5F7F5F;">;;; </span><span style="color: #7F9F7F;">GNU General Public License for more details.</span>
-<span style="color: #5F7F5F;">;;;</span>
-<span style="color: #5F7F5F;">;;; </span><span style="color: #7F9F7F;">You should have received a copy of the GNU General Public License</span>
-<span style="color: #5F7F5F;">;;; </span><span style="color: #7F9F7F;">along with GNU Guix.  If not, see <a href="http://www.gnu.org/licenses/">&lt;http://www.gnu.org/licenses/&gt;</a>.</span>
+<pre class="src src-scheme">;;; GNU Guix --- Functional package management for GNU
+;;; Copyright © 2018 Arun Isaac &lt;arunisaac@systemreboot.net&gt;
+;;;
+;;; This file is part of GNU Guix.
+;;;
+;;; GNU Guix is free software; you can redistribute it and/or modify it
+;;; under the terms of the GNU General Public License as published by
+;;; the Free Software Foundation; either version 3 of the License, or (at
+;;; your option) any later version.
+;;;
+;;; GNU Guix is distributed in the hope that it will be useful, but
+;;; WITHOUT ANY WARRANTY; without even the implied warranty of
+;;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+;;; GNU General Public License for more details.
+;;;
+;;; You should have received a copy of the GNU General Public License
+;;; along with GNU Guix.  If not, see &lt;http://www.gnu.org/licenses/&gt;.
 
-<span style="color: #DCDCCC;">(</span><span style="color: #F0DFAF; font-weight: bold;">define-module</span> <span style="color: #BFEBBF;">(</span><span style="color: #7CB8BB;">gnu services games</span><span style="color: #BFEBBF;">)</span>
-  <span style="color: #DCDCCC; font-weight: bold;">#:use-module</span> <span style="color: #BFEBBF;">(</span>gnu services<span style="color: #BFEBBF;">)</span>
-  <span style="color: #DCDCCC; font-weight: bold;">#:use-module</span> <span style="color: #BFEBBF;">(</span>gnu services shepherd<span style="color: #BFEBBF;">)</span>
-  <span style="color: #DCDCCC; font-weight: bold;">#:use-module</span> <span style="color: #BFEBBF;">(</span>gnu packages admin<span style="color: #BFEBBF;">)</span>
-  <span style="color: #DCDCCC; font-weight: bold;">#:use-module</span> <span style="color: #BFEBBF;">(</span>gnu packages games<span style="color: #BFEBBF;">)</span>
-  <span style="color: #DCDCCC; font-weight: bold;">#:use-module</span> <span style="color: #BFEBBF;">(</span>gnu system shadow<span style="color: #BFEBBF;">)</span>
-  <span style="color: #DCDCCC; font-weight: bold;">#:use-module</span> <span style="color: #BFEBBF;">(</span>guix gexp<span style="color: #BFEBBF;">)</span>
-  <span style="color: #DCDCCC; font-weight: bold;">#:use-module</span> <span style="color: #BFEBBF;">(</span>guix modules<span style="color: #BFEBBF;">)</span>
-  <span style="color: #DCDCCC; font-weight: bold;">#:use-module</span> <span style="color: #BFEBBF;">(</span>guix records<span style="color: #BFEBBF;">)</span>
-  <span style="color: #DCDCCC; font-weight: bold;">#:use-module</span> <span style="color: #BFEBBF;">(</span>ice-9 match<span style="color: #BFEBBF;">)</span>
-  <span style="color: #DCDCCC; font-weight: bold;">#:export</span> <span style="color: #BFEBBF;">(</span>wesnothd-configuration
+(define-module (gnu services games)
+  #:use-module (gnu services)
+  #:use-module (gnu services shepherd)
+  #:use-module (gnu packages admin)
+  #:use-module (gnu packages games)
+  #:use-module (gnu system shadow)
+  #:use-module (guix gexp)
+  #:use-module (guix modules)
+  #:use-module (guix records)
+  #:use-module (ice-9 match)
+  #:export (wesnothd-configuration
             wesnothd-configuration?
-            wesnothd-service-type<span style="color: #BFEBBF;">)</span><span style="color: #DCDCCC;">)</span>
+            wesnothd-service-type))
 
-<span style="color: #5F7F5F;">;;;</span>
-<span style="color: #5F7F5F;">;;; </span><span style="color: #7F9F7F;">The Battle for Wesnoth server</span>
-<span style="color: #5F7F5F;">;;;</span>
+;;;
+;;; The Battle for Wesnoth server
+;;;
 
-<span style="color: #DCDCCC;">(</span>define-record-type* <span style="color: #7CB8BB;">&lt;wesnothd-configuration&gt;</span>
+(define-record-type* &lt;wesnothd-configuration&gt;
   wesnothd-configuration make-wesnothd-configuration wesnothd-configuration?
-  <span style="color: #BFEBBF;">(</span>package wesnothd-configuration-package
-           <span style="color: #D0BF8F;">(</span>default wesnoth-server<span style="color: #D0BF8F;">)</span><span style="color: #BFEBBF;">)</span>
-  <span style="color: #BFEBBF;">(</span>port wesnothd-configuration-port
-        <span style="color: #D0BF8F;">(</span>default 15000<span style="color: #D0BF8F;">)</span><span style="color: #BFEBBF;">)</span><span style="color: #DCDCCC;">)</span>
+  (package wesnothd-configuration-package
+           (default wesnoth-server))
+  (port wesnothd-configuration-port
+        (default 15000)))
 
-<span style="color: #DCDCCC;">(</span><span style="color: #F0DFAF; font-weight: bold;">define</span> <span style="color: #93E0E3;">%wesnothd-accounts</span>
-  <span style="color: #BFEBBF;">(</span>list <span style="color: #D0BF8F;">(</span>user-account
-         <span style="color: #93E0E3;">(</span>name <span style="color: #CC9393;">"wesnothd"</span><span style="color: #93E0E3;">)</span>
-         <span style="color: #93E0E3;">(</span>group <span style="color: #CC9393;">"wesnothd"</span><span style="color: #93E0E3;">)</span>
-         <span style="color: #93E0E3;">(</span>system? #t<span style="color: #93E0E3;">)</span>
-         <span style="color: #93E0E3;">(</span>comment <span style="color: #CC9393;">"Wesnoth daemon user"</span><span style="color: #93E0E3;">)</span>
-         <span style="color: #93E0E3;">(</span>home-directory <span style="color: #CC9393;">"/var/empty"</span><span style="color: #93E0E3;">)</span>
-         <span style="color: #93E0E3;">(</span>shell <span style="color: #9FC59F;">(</span>file-append shadow <span style="color: #CC9393;">"/sbin/nologin"</span><span style="color: #9FC59F;">)</span><span style="color: #93E0E3;">)</span><span style="color: #D0BF8F;">)</span>
-        <span style="color: #D0BF8F;">(</span>user-group
-         <span style="color: #93E0E3;">(</span>name <span style="color: #CC9393;">"wesnothd"</span><span style="color: #93E0E3;">)</span>
-         <span style="color: #93E0E3;">(</span>system? #t<span style="color: #93E0E3;">)</span><span style="color: #D0BF8F;">)</span><span style="color: #BFEBBF;">)</span><span style="color: #DCDCCC;">)</span>
+(define %wesnothd-accounts
+  (list (user-account
+         (name "wesnothd")
+         (group "wesnothd")
+         (system? #t)
+         (comment "Wesnoth daemon user")
+         (home-directory "/var/empty")
+         (shell (file-append shadow "/sbin/nologin")))
+        (user-group
+         (name "wesnothd")
+         (system? #t))))
 
-<span style="color: #DCDCCC;">(</span><span style="color: #F0DFAF; font-weight: bold;">define</span> <span style="color: #93E0E3;">wesnothd-shepherd-service</span>
-  <span style="color: #BFEBBF;">(</span><span style="color: #F0DFAF; font-weight: bold;">match-lambda</span>
-    <span style="color: #D0BF8F;">(</span><span style="color: #93E0E3;">(</span>$ <span style="color: #7CB8BB;">&lt;wesnothd-configuration&gt;</span> package port<span style="color: #93E0E3;">)</span>
-     <span style="color: #93E0E3;">(</span>with-imported-modules <span style="color: #9FC59F;">(</span>source-module-closure
-                             '<span style="color: #94BFF3;">(</span><span style="color: #E0CF9F;">(</span>gnu build shepherd<span style="color: #E0CF9F;">)</span><span style="color: #94BFF3;">)</span><span style="color: #9FC59F;">)</span>
-       <span style="color: #9FC59F;">(</span>shepherd-service
-        <span style="color: #94BFF3;">(</span>documentation <span style="color: #CC9393;">"The Battle for Wesnoth server"</span><span style="color: #94BFF3;">)</span>
-        <span style="color: #94BFF3;">(</span>provision '<span style="color: #E0CF9F;">(</span>wesnoth-daemon<span style="color: #E0CF9F;">)</span><span style="color: #94BFF3;">)</span>
-        <span style="color: #94BFF3;">(</span>requirement '<span style="color: #E0CF9F;">(</span>networking<span style="color: #E0CF9F;">)</span><span style="color: #94BFF3;">)</span>
-        <span style="color: #94BFF3;">(</span>modules '<span style="color: #E0CF9F;">(</span><span style="color: #8FB28F;">(</span>gnu build shepherd<span style="color: #8FB28F;">)</span><span style="color: #E0CF9F;">)</span><span style="color: #94BFF3;">)</span>
-        <span style="color: #94BFF3;">(</span>start #~<span style="color: #E0CF9F;">(</span>make-forkexec-constructor/container
-                  <span style="color: #8FB28F;">(</span>list #$<span style="color: #6CA0A3;">(</span>file-append package <span style="color: #CC9393;">"/bin/wesnothd"</span><span style="color: #6CA0A3;">)</span>
-                        <span style="color: #CC9393;">"-p"</span> #$<span style="color: #6CA0A3;">(</span>number-&gt;string port<span style="color: #6CA0A3;">)</span><span style="color: #8FB28F;">)</span>
-                  <span style="color: #DCDCCC; font-weight: bold;">#:user</span> <span style="color: #CC9393;">"wesnothd"</span> <span style="color: #DCDCCC; font-weight: bold;">#:group</span> <span style="color: #CC9393;">"wesnothd"</span><span style="color: #E0CF9F;">)</span><span style="color: #94BFF3;">)</span>
-        <span style="color: #94BFF3;">(</span>stop #~<span style="color: #E0CF9F;">(</span>make-kill-destructor<span style="color: #E0CF9F;">)</span><span style="color: #94BFF3;">)</span><span style="color: #9FC59F;">)</span><span style="color: #93E0E3;">)</span><span style="color: #D0BF8F;">)</span><span style="color: #BFEBBF;">)</span><span style="color: #DCDCCC;">)</span>
+(define wesnothd-shepherd-service
+  (match-lambda
+    (($ &lt;wesnothd-configuration&gt; package port)
+     (with-imported-modules (source-module-closure
+                             '((gnu build shepherd)))
+       (shepherd-service
+        (documentation "The Battle for Wesnoth server")
+        (provision '(wesnoth-daemon))
+        (requirement '(networking))
+        (modules '((gnu build shepherd)))
+        (start #~(make-forkexec-constructor/container
+                  (list #$(file-append package "/bin/wesnothd")
+                        "-p" #$(number-&gt;string port))
+                  #:user "wesnothd" #:group "wesnothd"))
+        (stop #~(make-kill-destructor)))))))
 
-<span style="color: #DCDCCC;">(</span><span style="color: #F0DFAF; font-weight: bold;">define</span> <span style="color: #93E0E3;">wesnothd-service-type</span>
-  <span style="color: #BFEBBF;">(</span>service-type
-   <span style="color: #D0BF8F;">(</span>name 'wesnothd<span style="color: #D0BF8F;">)</span>
-   <span style="color: #D0BF8F;">(</span>description
-    <span style="color: #CC9393;">"Run The Battle for Wesnoth server @command{wesnothd}."</span><span style="color: #D0BF8F;">)</span>
-   <span style="color: #D0BF8F;">(</span>extensions
-    <span style="color: #93E0E3;">(</span>list <span style="color: #9FC59F;">(</span>service-extension account-service-type
-                             <span style="color: #94BFF3;">(</span>const %wesnothd-accounts<span style="color: #94BFF3;">)</span><span style="color: #9FC59F;">)</span>
-          <span style="color: #9FC59F;">(</span>service-extension shepherd-root-service-type
-                             <span style="color: #94BFF3;">(</span>compose list wesnothd-shepherd-service<span style="color: #94BFF3;">)</span><span style="color: #9FC59F;">)</span><span style="color: #93E0E3;">)</span><span style="color: #D0BF8F;">)</span>
-   <span style="color: #D0BF8F;">(</span>default-value <span style="color: #93E0E3;">(</span>wesnothd-configuration<span style="color: #93E0E3;">)</span><span style="color: #D0BF8F;">)</span><span style="color: #BFEBBF;">)</span><span style="color: #DCDCCC;">)</span>
+(define wesnothd-service-type
+  (service-type
+   (name 'wesnothd)
+   (description
+    "Run The Battle for Wesnoth server @command{wesnothd}.")
+   (extensions
+    (list (service-extension account-service-type
+                             (const %wesnothd-accounts))
+          (service-extension shepherd-root-service-type
+                             (compose list wesnothd-shepherd-service))))
+   (default-value (wesnothd-configuration))))
 </pre>
 </div>
 
@@ -419,9 +396,9 @@ that takes us.
 </div>
 </div>
 
-<div id="outline-container-org7db9522" class="outline-2">
-<h2 id="org7db9522">Writing <kbd>kmonad-service-type</kbd></h2>
-<div class="outline-text-2" id="text-org7db9522">
+<div id="outline-container-orgabb1195" class="outline-2">
+<h2 id="orgabb1195">Writing <kbd>kmonad-service-type</kbd></h2>
+<div class="outline-text-2" id="text-orgabb1195">
 <p>
 A <kbd>service-type</kbd> (see <a href="https://guix.gnu.org/manual/en/html_node/Service-Reference.html">Service Reference</a>) takes a name, description,
 and a list of <kbd>service-extension</kbd> objects, each of which describes how
@@ -463,16 +440,16 @@ because we want our daemon managed by the init system, Shepherd:
 </p>
 
 <div class="org-src-container">
-<pre class="src src-scheme"><span style="color: #DCDCCC;">(</span><span style="color: #F0DFAF; font-weight: bold;">define</span> <span style="color: #93E0E3;">kmonad-service-type</span>
-  <span style="color: #BFEBBF;">(</span>service-type
-   <span style="color: #D0BF8F;">(</span>name 'kmonad<span style="color: #D0BF8F;">)</span>
-   <span style="color: #D0BF8F;">(</span>description
-    <span style="color: #CC9393;">"Run kmonad as a daemon."</span><span style="color: #D0BF8F;">)</span>
-   <span style="color: #D0BF8F;">(</span>extensions
-    <span style="color: #93E0E3;">(</span>list <span style="color: #9FC59F;">(</span>service-extension account-service-type
-                             <span style="color: #94BFF3;">(</span>const %kmonad-daemon-accounts<span style="color: #94BFF3;">)</span><span style="color: #9FC59F;">)</span>
-          <span style="color: #9FC59F;">(</span>service-extension shepherd-root-service-type
-                             <span style="color: #94BFF3;">(</span>compose list kmonad-shepherd-service<span style="color: #94BFF3;">)</span><span style="color: #9FC59F;">)</span><span style="color: #93E0E3;">)</span><span style="color: #D0BF8F;">)</span><span style="color: #BFEBBF;">)</span><span style="color: #DCDCCC;">)</span>
+<pre class="src src-scheme">(define kmonad-service-type
+  (service-type
+   (name 'kmonad)
+   (description
+    "Run kmonad as a daemon.")
+   (extensions
+    (list (service-extension account-service-type
+                             (const %kmonad-daemon-accounts))
+          (service-extension shepherd-root-service-type
+                             (compose list kmonad-shepherd-service))))))
 </pre>
 </div>
 
@@ -484,9 +461,9 @@ to choose how to extend the <kbd>account-service-type</kbd> and the
 </p>
 </div>
 
-<div id="outline-container-org0f109af" class="outline-3">
-<h3 id="org0f109af">Extending the <kbd>account-service-type</kbd></h3>
-<div class="outline-text-3" id="text-org0f109af">
+<div id="outline-container-org68615dd" class="outline-3">
+<h3 id="org68615dd">Extending the <kbd>account-service-type</kbd></h3>
+<div class="outline-text-3" id="text-org68615dd">
 <p>
 As noted above, <kbd>(const %kmonad-daemon-accounts)</kbd> needs to evaluate to a
 function of a single argument that returns a list of users and
@@ -505,25 +482,25 @@ can pretty much copy the <kbd>%wesnothd-accounts</kbd> to make
 </p>
 
 <div class="org-src-container">
-<pre class="src src-scheme"><span style="color: #DCDCCC;">(</span><span style="color: #F0DFAF; font-weight: bold;">define</span> <span style="color: #93E0E3;">%kmonad-daemon-accounts</span>
-  <span style="color: #BFEBBF;">(</span>list <span style="color: #D0BF8F;">(</span>user-account
-         <span style="color: #93E0E3;">(</span>name <span style="color: #CC9393;">"kmonad-daemon"</span><span style="color: #93E0E3;">)</span>
-         <span style="color: #93E0E3;">(</span>group <span style="color: #CC9393;">"kmonad-daemon"</span><span style="color: #93E0E3;">)</span>
-         <span style="color: #93E0E3;">(</span>system? #t<span style="color: #93E0E3;">)</span>
-         <span style="color: #93E0E3;">(</span>comment <span style="color: #CC9393;">"kmonad daemon user"</span><span style="color: #93E0E3;">)</span>
-         <span style="color: #93E0E3;">(</span>home-directory <span style="color: #CC9393;">"/var/empty"</span><span style="color: #93E0E3;">)</span>
-         <span style="color: #93E0E3;">(</span>shell <span style="color: #9FC59F;">(</span>file-append shadow <span style="color: #CC9393;">"/sbin/nologin"</span><span style="color: #9FC59F;">)</span><span style="color: #93E0E3;">)</span><span style="color: #D0BF8F;">)</span>
-        <span style="color: #D0BF8F;">(</span>user-group
-         <span style="color: #93E0E3;">(</span>name <span style="color: #CC9393;">"kmonad-daemon"</span><span style="color: #93E0E3;">)</span>
-         <span style="color: #93E0E3;">(</span>system? #t<span style="color: #93E0E3;">)</span><span style="color: #D0BF8F;">)</span><span style="color: #BFEBBF;">)</span><span style="color: #DCDCCC;">)</span>
+<pre class="src src-scheme">(define %kmonad-daemon-accounts
+  (list (user-account
+         (name "kmonad-daemon")
+         (group "kmonad-daemon")
+         (system? #t)
+         (comment "kmonad daemon user")
+         (home-directory "/var/empty")
+         (shell (file-append shadow "/sbin/nologin")))
+        (user-group
+         (name "kmonad-daemon")
+         (system? #t))))
 </pre>
 </div>
 </div>
 </div>
 
-<div id="outline-container-org11fd1e7" class="outline-3">
-<h3 id="org11fd1e7">Extending the <kbd>shepherd-root-service-type</kbd></h3>
-<div class="outline-text-3" id="text-org11fd1e7">
+<div id="outline-container-orgf8ce49b" class="outline-3">
+<h3 id="orgf8ce49b">Extending the <kbd>shepherd-root-service-type</kbd></h3>
+<div class="outline-text-3" id="text-orgf8ce49b">
 <p>
 As noted above, <kbd>(compose list kmonad-shepherd-service)</kbd> needs to
 evaluate to a function of a single argument (a single argument of our
@@ -542,9 +519,9 @@ think about the <kbd>requirement</kbd>, <kbd>start</kbd>, and <kbd>stop</kbd> fi
 </p>
 </div>
 
-<div id="outline-container-org3a5b00d" class="outline-4">
-<h4 id="org3a5b00d"><kbd>requirement</kbd> field</h4>
-<div class="outline-text-4" id="text-org3a5b00d">
+<div id="outline-container-org2666c50" class="outline-4">
+<h4 id="org2666c50"><kbd>requirement</kbd> field</h4>
+<div class="outline-text-4" id="text-org2666c50">
 <p>
 We definitely need to wait for <kbd>udev</kbd>, but maybe we should also wait
 for <kbd>user-processes</kbd> like the other daemons in the shepherd graph
@@ -568,9 +545,9 @@ think of it, I wonder why <kbd>wesnothd</kbd> doesn't depend on
 </div>
 </div>
 
-<div id="outline-container-orgfbcbebb" class="outline-4">
-<h4 id="orgfbcbebb"><kbd>start</kbd> and <kbd>stop</kbd> fields</h4>
-<div class="outline-text-4" id="text-orgfbcbebb">
+<div id="outline-container-org51b5d91" class="outline-4">
+<h4 id="org51b5d91"><kbd>start</kbd> and <kbd>stop</kbd> fields</h4>
+<div class="outline-text-4" id="text-org51b5d91">
 <p>
 According to the Shepherd Services <a href="https://guix.gnu.org/manual/en/html_node/Shepherd-Services.html">documentation</a>, the <kbd>start</kbd> and
 <kbd>stop</kbd> fields of <kbd>shepherd-service</kbd> take <a href="https://guix.gnu.org/manual/en/html_node/G_002dExpressions.html">G-Expressions</a>. But what's a
@@ -582,10 +559,10 @@ field of <kbd>wesnoth-shepherd-service</kbd>:
 </p>
 
 <div class="org-src-container">
-<pre class="src src-scheme"><span style="color: #DCDCCC;">(</span>start #~<span style="color: #BFEBBF;">(</span>make-forkexec-constructor/container
-          <span style="color: #D0BF8F;">(</span>list #$<span style="color: #93E0E3;">(</span>file-append package <span style="color: #CC9393;">"/bin/wesnothd"</span><span style="color: #93E0E3;">)</span>
-                <span style="color: #CC9393;">"-p"</span> #$<span style="color: #93E0E3;">(</span>number-&gt;string port<span style="color: #93E0E3;">)</span><span style="color: #D0BF8F;">)</span>
-          <span style="color: #DCDCCC; font-weight: bold;">#:user</span> <span style="color: #CC9393;">"wesnothd"</span> <span style="color: #DCDCCC; font-weight: bold;">#:group</span> <span style="color: #CC9393;">"wesnothd"</span><span style="color: #BFEBBF;">)</span><span style="color: #DCDCCC;">)</span>
+<pre class="src src-scheme">(start #~(make-forkexec-constructor/container
+          (list #$(file-append package "/bin/wesnothd")
+                "-p" #$(number-&gt;string port))
+          #:user "wesnothd" #:group "wesnothd"))
 </pre>
 </div>
 
@@ -646,34 +623,34 @@ the containerized-version, so we'll stick with
 </div>
 </div>
 
-<div id="outline-container-orgc2b3665" class="outline-4">
-<h4 id="orgc2b3665"><kbd>kmonad-shepherd-service</kbd></h4>
-<div class="outline-text-4" id="text-orgc2b3665">
+<div id="outline-container-orgd64f772" class="outline-4">
+<h4 id="orgd64f772"><kbd>kmonad-shepherd-service</kbd></h4>
+<div class="outline-text-4" id="text-orgd64f772">
 <p>
 Let's put it all together:
 </p>
 
 <div class="org-src-container">
-<pre class="src src-scheme"><span style="color: #DCDCCC;">(</span><span style="color: #F0DFAF; font-weight: bold;">define</span> <span style="color: #BFEBBF;">(</span><span style="color: #93E0E3;">kmonad-shepherd-service</span> kbd-path<span style="color: #BFEBBF;">)</span>
-  <span style="color: #BFEBBF;">(</span>shepherd-service
-   <span style="color: #D0BF8F;">(</span>documentation <span style="color: #CC9393;">"Run the kmonad daemon (kmonad-daemon)."</span> <span style="color: #D0BF8F;">)</span>
-   <span style="color: #D0BF8F;">(</span>provision '<span style="color: #93E0E3;">(</span>kmonad-daemon<span style="color: #93E0E3;">)</span><span style="color: #D0BF8F;">)</span>
-   <span style="color: #D0BF8F;">(</span>requirement '<span style="color: #93E0E3;">(</span>udev user-processes<span style="color: #93E0E3;">)</span><span style="color: #D0BF8F;">)</span>
-   <span style="color: #D0BF8F;">(</span>start #~<span style="color: #93E0E3;">(</span>make-forkexec-constructor
-             <span style="color: #9FC59F;">(</span>list #$<span style="color: #94BFF3;">(</span>file-append kmonad <span style="color: #CC9393;">"/bin/kmonad"</span><span style="color: #94BFF3;">)</span>
-                   #$kbd-path <span style="color: #CC9393;">"-l info"</span><span style="color: #9FC59F;">)</span>
-             <span style="color: #DCDCCC; font-weight: bold;">#:user</span> <span style="color: #CC9393;">"kmonad-daemon"</span> <span style="color: #DCDCCC; font-weight: bold;">#:group</span> <span style="color: #CC9393;">"kmonad-daemon"</span>
-             <span style="color: #DCDCCC; font-weight: bold;">#:log-file</span> <span style="color: #CC9393;">"/var/log/kmonad.log"</span><span style="color: #93E0E3;">)</span><span style="color: #D0BF8F;">)</span>
-   <span style="color: #D0BF8F;">(</span>stop #~<span style="color: #93E0E3;">(</span>make-kill-destructor<span style="color: #93E0E3;">)</span><span style="color: #D0BF8F;">)</span><span style="color: #BFEBBF;">)</span><span style="color: #DCDCCC;">)</span>
+<pre class="src src-scheme">(define (kmonad-shepherd-service kbd-path)
+  (shepherd-service
+   (documentation "Run the kmonad daemon (kmonad-daemon)." )
+   (provision '(kmonad-daemon))
+   (requirement '(udev user-processes))
+   (start #~(make-forkexec-constructor
+             (list #$(file-append kmonad "/bin/kmonad")
+                   #$kbd-path "-l info")
+             #:user "kmonad-daemon" #:group "kmonad-daemon"
+             #:log-file "/var/log/kmonad.log"))
+   (stop #~(make-kill-destructor))))
 </pre>
 </div>
 </div>
 </div>
 </div>
 
-<div id="outline-container-org8e27ad1" class="outline-3">
-<h3 id="org8e27ad1">Making a module</h3>
-<div class="outline-text-3" id="text-org8e27ad1">
+<div id="outline-container-org5a3eaba" class="outline-3">
+<h3 id="org5a3eaba">Making a module</h3>
+<div class="outline-text-3" id="text-org5a3eaba">
 <p>
 Now let's package our code into a module. If the location where we
 keep local guix modules is <kbd>~/local-guix</kbd>, then we can add our module
@@ -681,95 +658,95 @@ at <kbd>~/local-guix/my/services/kmonad.scm</kbd> as:
 </p>
 
 <div class="org-src-container">
-<pre class="src src-scheme"><span style="color: #DCDCCC;">(</span><span style="color: #F0DFAF; font-weight: bold;">define-module</span> <span style="color: #BFEBBF;">(</span><span style="color: #7CB8BB;">my services kmonad</span><span style="color: #BFEBBF;">)</span>
-  <span style="color: #DCDCCC; font-weight: bold;">#:use-module</span> <span style="color: #BFEBBF;">(</span>gnu services<span style="color: #BFEBBF;">)</span>
-  <span style="color: #DCDCCC; font-weight: bold;">#:use-module</span> <span style="color: #BFEBBF;">(</span>gnu services shepherd<span style="color: #BFEBBF;">)</span>
-  <span style="color: #DCDCCC; font-weight: bold;">#:use-module</span> <span style="color: #BFEBBF;">(</span>gnu packages haskell-apps<span style="color: #BFEBBF;">)</span>
-  <span style="color: #DCDCCC; font-weight: bold;">#:use-module</span> <span style="color: #BFEBBF;">(</span>gnu system shadow<span style="color: #BFEBBF;">)</span>
-  <span style="color: #DCDCCC; font-weight: bold;">#:use-module</span> <span style="color: #BFEBBF;">(</span>guix gexp<span style="color: #BFEBBF;">)</span>
-  <span style="color: #DCDCCC; font-weight: bold;">#:export</span> <span style="color: #BFEBBF;">(</span>kmonad-service-type<span style="color: #BFEBBF;">)</span><span style="color: #DCDCCC;">)</span>
+<pre class="src src-scheme">(define-module (my services kmonad)
+  #:use-module (gnu services)
+  #:use-module (gnu services shepherd)
+  #:use-module (gnu packages haskell-apps)
+  #:use-module (gnu system shadow)
+  #:use-module (guix gexp)
+  #:export (kmonad-service-type))
 
-<span style="color: #DCDCCC;">(</span><span style="color: #F0DFAF; font-weight: bold;">define</span> <span style="color: #93E0E3;">%kmonad-daemon-accounts</span>
-  <span style="color: #BFEBBF;">(</span>list <span style="color: #D0BF8F;">(</span>user-account
-         <span style="color: #93E0E3;">(</span>name <span style="color: #CC9393;">"kmonad-daemon"</span><span style="color: #93E0E3;">)</span>
-         <span style="color: #93E0E3;">(</span>group <span style="color: #CC9393;">"kmonad-daemon"</span><span style="color: #93E0E3;">)</span>
-         <span style="color: #93E0E3;">(</span>system? #t<span style="color: #93E0E3;">)</span>
-         <span style="color: #93E0E3;">(</span>comment <span style="color: #CC9393;">"kmonad daemon user"</span><span style="color: #93E0E3;">)</span>
-         <span style="color: #93E0E3;">(</span>home-directory <span style="color: #CC9393;">"/var/empty"</span><span style="color: #93E0E3;">)</span>
-         <span style="color: #93E0E3;">(</span>shell <span style="color: #9FC59F;">(</span>file-append shadow <span style="color: #CC9393;">"/sbin/nologin"</span><span style="color: #9FC59F;">)</span><span style="color: #93E0E3;">)</span><span style="color: #D0BF8F;">)</span>
-        <span style="color: #D0BF8F;">(</span>user-group
-         <span style="color: #93E0E3;">(</span>name <span style="color: #CC9393;">"kmonad-daemon"</span><span style="color: #93E0E3;">)</span>
-         <span style="color: #93E0E3;">(</span>system? #t<span style="color: #93E0E3;">)</span><span style="color: #D0BF8F;">)</span><span style="color: #BFEBBF;">)</span><span style="color: #DCDCCC;">)</span>
+(define %kmonad-daemon-accounts
+  (list (user-account
+         (name "kmonad-daemon")
+         (group "kmonad-daemon")
+         (system? #t)
+         (comment "kmonad daemon user")
+         (home-directory "/var/empty")
+         (shell (file-append shadow "/sbin/nologin")))
+        (user-group
+         (name "kmonad-daemon")
+         (system? #t))))
 
-<span style="color: #DCDCCC;">(</span><span style="color: #F0DFAF; font-weight: bold;">define</span> <span style="color: #BFEBBF;">(</span><span style="color: #93E0E3;">kmonad-shepherd-service</span> kbd-path<span style="color: #BFEBBF;">)</span>
-  <span style="color: #BFEBBF;">(</span>shepherd-service
-   <span style="color: #D0BF8F;">(</span>documentation <span style="color: #CC9393;">"Run the kmonad daemon (kmonad-daemon)."</span> <span style="color: #D0BF8F;">)</span>
-   <span style="color: #D0BF8F;">(</span>provision '<span style="color: #93E0E3;">(</span>kmonad-daemon<span style="color: #93E0E3;">)</span><span style="color: #D0BF8F;">)</span>
-   <span style="color: #D0BF8F;">(</span>requirement '<span style="color: #93E0E3;">(</span>udev user-processes<span style="color: #93E0E3;">)</span><span style="color: #D0BF8F;">)</span>
-   <span style="color: #D0BF8F;">(</span>start #~<span style="color: #93E0E3;">(</span>make-forkexec-constructor
-             <span style="color: #9FC59F;">(</span>list #$<span style="color: #94BFF3;">(</span>file-append kmonad <span style="color: #CC9393;">"/bin/kmonad"</span><span style="color: #94BFF3;">)</span>
-                   #$kbd-path <span style="color: #CC9393;">"-l info"</span><span style="color: #9FC59F;">)</span>
-             <span style="color: #DCDCCC; font-weight: bold;">#:user</span> <span style="color: #CC9393;">"kmonad-daemon"</span> <span style="color: #DCDCCC; font-weight: bold;">#:group</span> <span style="color: #CC9393;">"kmonad-daemon"</span>
-             <span style="color: #DCDCCC; font-weight: bold;">#:log-file</span> <span style="color: #CC9393;">"/var/log/kmonad.log"</span><span style="color: #93E0E3;">)</span><span style="color: #D0BF8F;">)</span>
-   <span style="color: #D0BF8F;">(</span>stop #~<span style="color: #93E0E3;">(</span>make-kill-destructor<span style="color: #93E0E3;">)</span><span style="color: #D0BF8F;">)</span><span style="color: #BFEBBF;">)</span><span style="color: #DCDCCC;">)</span>
+(define (kmonad-shepherd-service kbd-path)
+  (shepherd-service
+   (documentation "Run the kmonad daemon (kmonad-daemon)." )
+   (provision '(kmonad-daemon))
+   (requirement '(udev user-processes))
+   (start #~(make-forkexec-constructor
+             (list #$(file-append kmonad "/bin/kmonad")
+                   #$kbd-path "-l info")
+             #:user "kmonad-daemon" #:group "kmonad-daemon"
+             #:log-file "/var/log/kmonad.log"))
+   (stop #~(make-kill-destructor))))
 
-<span style="color: #DCDCCC;">(</span><span style="color: #F0DFAF; font-weight: bold;">define</span> <span style="color: #93E0E3;">kmonad-service-type</span>
-  <span style="color: #BFEBBF;">(</span>service-type
-   <span style="color: #D0BF8F;">(</span>name 'kmonad<span style="color: #D0BF8F;">)</span>
-   <span style="color: #D0BF8F;">(</span>description
-    <span style="color: #CC9393;">"Run kmonad as a daemon."</span><span style="color: #D0BF8F;">)</span>
-   <span style="color: #D0BF8F;">(</span>extensions
-    <span style="color: #93E0E3;">(</span>list <span style="color: #9FC59F;">(</span>service-extension account-service-type
-                             <span style="color: #94BFF3;">(</span>const %kmonad-daemon-accounts<span style="color: #94BFF3;">)</span><span style="color: #9FC59F;">)</span>
-          <span style="color: #9FC59F;">(</span>service-extension shepherd-root-service-type
-                             <span style="color: #94BFF3;">(</span>compose list kmonad-shepherd-service<span style="color: #94BFF3;">)</span><span style="color: #9FC59F;">)</span><span style="color: #93E0E3;">)</span><span style="color: #D0BF8F;">)</span><span style="color: #BFEBBF;">)</span><span style="color: #DCDCCC;">)</span>
+(define kmonad-service-type
+  (service-type
+   (name 'kmonad)
+   (description
+    "Run kmonad as a daemon.")
+   (extensions
+    (list (service-extension account-service-type
+                             (const %kmonad-daemon-accounts))
+          (service-extension shepherd-root-service-type
+                             (compose list kmonad-shepherd-service))))))
 </pre>
 </div>
 </div>
 </div>
 </div>
 
-<div id="outline-container-org8a24d60" class="outline-2">
-<h2 id="org8a24d60">Using <kbd>kmonad-service-type</kbd></h2>
-<div class="outline-text-2" id="text-org8a24d60">
+<div id="outline-container-org62db731" class="outline-2">
+<h2 id="org62db731">Using <kbd>kmonad-service-type</kbd></h2>
+<div class="outline-text-2" id="text-org62db731">
 <p>
 Now adding a kmonad service is straightforward. Let's add some other
 kmonad-specific configuration to our system while we're at it:
 </p>
 
 <div class="org-src-container">
-<pre class="src src-scheme"><span style="color: #DCDCCC;">(</span><span style="color: #F0DFAF; font-weight: bold;">use-modules</span> <span style="color: #BFEBBF;">(</span>my services kmonad<span style="color: #BFEBBF;">)</span><span style="color: #DCDCCC;">)</span>
-<span style="color: #5F7F5F;">;; </span><span style="color: #7F9F7F;">more modules</span>
+<pre class="src src-scheme">(use-modules (my services kmonad))
+;; more modules
 
-<span style="color: #DCDCCC;">(</span>operating-system
-  <span style="color: #BFEBBF;">(</span>users
-    <span style="color: #D0BF8F;">(</span>append <span style="color: #93E0E3;">(</span>list <span style="color: #9FC59F;">(</span>user-account
-                    <span style="color: #94BFF3;">(</span>supplementary-groups
-                      '<span style="color: #E0CF9F;">(</span><span style="color: #CC9393;">"input"</span> <span style="color: #5F7F5F;">;; </span><span style="color: #7F9F7F;">needed by kmonad</span>
-                        <span style="color: #5F7F5F;">;; </span><span style="color: #7F9F7F;">more groups</span>
-                       <span style="color: #E0CF9F;">)</span><span style="color: #94BFF3;">)</span>
-                    <span style="color: #5F7F5F;">;; </span><span style="color: #7F9F7F;">more fields</span>
-                  <span style="color: #9FC59F;">)</span>
-                  <span style="color: #5F7F5F;">;; </span><span style="color: #7F9F7F;">more users</span>
-            <span style="color: #93E0E3;">)</span>
-            %base-user-accounts<span style="color: #D0BF8F;">)</span><span style="color: #BFEBBF;">)</span>
-  <span style="color: #BFEBBF;">(</span>packages
-    <span style="color: #D0BF8F;">(</span>append <span style="color: #93E0E3;">(</span>list
-             <span style="color: #CC9393;">"kmonad"</span>
-             <span style="color: #5F7F5F;">;; </span><span style="color: #7F9F7F;">more packages</span>
-            <span style="color: #93E0E3;">)</span>
-            %base-packages<span style="color: #D0BF8F;">)</span><span style="color: #BFEBBF;">)</span>
-  <span style="color: #BFEBBF;">(</span>services
-    <span style="color: #D0BF8F;">(</span>append <span style="color: #93E0E3;">(</span>list <span style="color: #9FC59F;">(</span>service kmonad-service-type <span style="color: #CC9393;">"/path/to/config.kbd"</span><span style="color: #9FC59F;">)</span>
-                  <span style="color: #5F7F5F;">;; </span><span style="color: #7F9F7F;">more services</span>
-            <span style="color: #93E0E3;">)</span>
-            <span style="color: #93E0E3;">(</span>modify-services %desktop-services <span style="color: #5F7F5F;">;; </span><span style="color: #7F9F7F;">needed to add kmonad udev rules</span>
-              <span style="color: #9FC59F;">(</span>udev-service-type config =&gt;
-                <span style="color: #94BFF3;">(</span>udev-configuration <span style="color: #E0CF9F;">(</span>inherit config<span style="color: #E0CF9F;">)</span>
-                  <span style="color: #E0CF9F;">(</span>rules <span style="color: #8FB28F;">(</span>cons kmonad
-                    <span style="color: #6CA0A3;">(</span>udev-configuration-rules config<span style="color: #6CA0A3;">)</span><span style="color: #8FB28F;">)</span><span style="color: #E0CF9F;">)</span><span style="color: #94BFF3;">)</span><span style="color: #9FC59F;">)</span><span style="color: #93E0E3;">)</span><span style="color: #D0BF8F;">)</span><span style="color: #BFEBBF;">)</span>
-  <span style="color: #5F7F5F;">;; </span><span style="color: #7F9F7F;">more fields</span>
-<span style="color: #DCDCCC;">)</span>
+(operating-system
+  (users
+    (append (list (user-account
+                    (supplementary-groups
+                      '("input" ;; needed by kmonad
+                        ;; more groups
+                       ))
+                    ;; more fields
+                  )
+                  ;; more users
+            )
+            %base-user-accounts))
+  (packages
+    (append (list
+             "kmonad"
+             ;; more packages
+            )
+            %base-packages))
+  (services
+    (append (list (service kmonad-service-type "/path/to/config.kbd")
+                  ;; more services
+            )
+            (modify-services %desktop-services ;; needed to add kmonad udev rules
+              (udev-service-type config =&gt;
+                (udev-configuration (inherit config)
+                  (rules (cons kmonad
+                    (udev-configuration-rules config))))))))
+  ;; more fields
+)
 </pre>
 </div>
 
@@ -784,9 +761,9 @@ And reconfigure:
 </div>
 </div>
 
-<div id="outline-container-orge4e457a" class="outline-2">
-<h2 id="orge4e457a">A simpler daemon?</h2>
-<div class="outline-text-2" id="text-orge4e457a">
+<div id="outline-container-org316b41e" class="outline-2">
+<h2 id="org316b41e">A simpler daemon?</h2>
+<div class="outline-text-2" id="text-org316b41e">
 <p>
 I think it would be possible to add kmonad as a <kbd>simple-service</kbd> on top of
 <kbd>shepherd-root-service-type</kbd>. After looking at the <kbd>simple-service</kbd>
@@ -794,25 +771,25 @@ I think it would be possible to add kmonad as a <kbd>simple-service</kbd> on top
 </p>
 
 <div class="org-src-container">
-<pre class="src src-scheme"><span style="color: #DCDCCC;">(</span>simple-service 'kmonad-service shepherd-root-service-type
-                <span style="color: #BFEBBF;">(</span>list <span style="color: #D0BF8F;">(</span>shepherd-service
-                       <span style="color: #93E0E3;">(</span>documentation <span style="color: #CC9393;">"Run the kmonad daemon (kmonad-daemon)."</span> <span style="color: #93E0E3;">)</span>
-                       <span style="color: #93E0E3;">(</span>provision '<span style="color: #9FC59F;">(</span>kmonad-daemon<span style="color: #9FC59F;">)</span><span style="color: #93E0E3;">)</span>
-                       <span style="color: #93E0E3;">(</span>requirement '<span style="color: #9FC59F;">(</span>udev user-processes<span style="color: #9FC59F;">)</span><span style="color: #93E0E3;">)</span>
-                       <span style="color: #93E0E3;">(</span>start #~<span style="color: #9FC59F;">(</span>make-forkexec-constructor
-                                 <span style="color: #94BFF3;">(</span>list #$<span style="color: #E0CF9F;">(</span>file-append kmonad <span style="color: #CC9393;">"/bin/kmonad"</span><span style="color: #E0CF9F;">)</span>
-                                       #$kbd-path <span style="color: #CC9393;">"-l info"</span><span style="color: #94BFF3;">)</span>
-                                 <span style="color: #DCDCCC; font-weight: bold;">#:log-file</span> <span style="color: #CC9393;">"/var/log/kmonad.log"</span><span style="color: #9FC59F;">)</span><span style="color: #93E0E3;">)</span>
-                       <span style="color: #93E0E3;">(</span>stop #~<span style="color: #9FC59F;">(</span>make-kill-destructor<span style="color: #9FC59F;">)</span><span style="color: #93E0E3;">)</span><span style="color: #D0BF8F;">)</span><span style="color: #BFEBBF;">)</span><span style="color: #DCDCCC;">)</span>
+<pre class="src src-scheme">(simple-service 'kmonad-service shepherd-root-service-type
+                (list (shepherd-service
+                       (documentation "Run the kmonad daemon (kmonad-daemon)." )
+                       (provision '(kmonad-daemon))
+                       (requirement '(udev user-processes))
+                       (start #~(make-forkexec-constructor
+                                 (list #$(file-append kmonad "/bin/kmonad")
+                                       #$kbd-path "-l info")
+                                 #:log-file "/var/log/kmonad.log"))
+                       (stop #~(make-kill-destructor)))))
 
 </pre>
 </div>
 </div>
 </div>
 
-<div id="outline-container-org2667337" class="outline-2">
-<h2 id="org2667337">References</h2>
-<div class="outline-text-2" id="text-org2667337">
+<div id="outline-container-orgfa31ea0" class="outline-2">
+<h2 id="orgfa31ea0">References</h2>
+<div class="outline-text-2" id="text-orgfa31ea0">
 <ul class="org-ul">
 <li><a href="https://www.mndet.net/2016/05/04/guixsd-system-service.html">https://www.mndet.net/2016/05/04/guixsd-system-service.html</a></li>
 <li><a href="https://github.com/alezost/guix-config/blob/master/system-config/os-main.scm">https://github.com/alezost/guix-config/blob/master/system-config/os-main.scm</a></li>
@@ -823,7 +800,7 @@ I think it would be possible to add kmonad as a <kbd>simple-service</kbd> on top
 </div>
 </div>
 <div id="postamble" class="status">
-<i>BTC Address: bc1qlpu2c7ltxrz5fd2a977ywedlp9u4lvukvluc3d</i>
+<p>hi</p>
 </div>
 </body>
 </html>

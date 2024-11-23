@@ -3,14 +3,13 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2023-01-06 Fri 14:00 -->
+<!-- 2024-11-23 Sat 00:30 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Booting and Installing Linux on a MacBook</title>
-<meta name="generator" content="Org mode" />
-<meta name="author" content="Tanner Hoelzel" />
-<style type="text/css">
- <!--/*--><![CDATA[/*><!--*/
+<meta name="generator" content="Org Mode" />
+<style>
+  #content { max-width: 60em; margin: auto; }
   .title  { text-align: center;
              margin-bottom: .2em; }
   .subtitle { text-align: center;
@@ -31,8 +30,9 @@
   #postamble p, #preamble p { font-size: 90%; margin: .2em; }
   p.verse { margin-left: 3%; }
   pre {
-    border: 1px solid #ccc;
-    box-shadow: 3px 3px 3px #eee;
+    border: 1px solid #e6e6e6;
+    border-radius: 3px;
+    background-color: #f2f2f2;
     padding: 8pt;
     font-family: monospace;
     overflow: auto;
@@ -41,21 +41,21 @@
   pre.src {
     position: relative;
     overflow: auto;
-    padding-top: 1.2em;
   }
   pre.src:before {
     display: none;
     position: absolute;
-    background-color: white;
-    top: -10px;
-    right: 10px;
+    top: -8px;
+    right: 12px;
     padding: 3px;
-    border: 1px solid black;
+    color: #555;
+    background-color: #f2f2f299;
   }
   pre.src:hover:before { display: inline; margin-top: 14px;}
   /* Languages per Org manual */
   pre.src-asymptote:before { content: 'Asymptote'; }
   pre.src-awk:before { content: 'Awk'; }
+  pre.src-authinfo::before { content: 'Authinfo'; }
   pre.src-C:before { content: 'C'; }
   /* pre.src-C++ doesn't work in CSS */
   pre.src-clojure:before { content: 'Clojure'; }
@@ -190,34 +190,11 @@
     { font-size: 10px; font-weight: bold; white-space: nowrap; }
   .org-info-js_search-highlight
     { background-color: #ffff00; color: #000000; font-weight: bold; }
-  .org-svg { width: 90%; }
-  /*]]>*/-->
+  .org-svg { }
 </style>
-<script type="text/javascript">
-// @license magnet:?xt=urn:btih:e95b018ef3580986a04669f1b5879592219e2a7a&dn=public-domain.txt Public Domain
-<!--/*--><![CDATA[/*><!--*/
-     function CodeHighlightOn(elem, id)
-     {
-       var target = document.getElementById(id);
-       if(null != target) {
-         elem.classList.add("code-highlighted");
-         target.classList.add("code-highlighted");
-       }
-     }
-     function CodeHighlightOff(elem, id)
-     {
-       var target = document.getElementById(id);
-       if(null != target) {
-         elem.classList.remove("code-highlighted");
-         target.classList.remove("code-highlighted");
-       }
-     }
-    /*]]>*///-->
-// @license-end
-</script>
 </head>
 <body>
-<div id="content">
+<div id="content" class="content">
 <h1 class="title">Booting and Installing Linux on a MacBook</h1>
 <p>
 There are many existing resources for installing and running Linux on
@@ -234,9 +211,9 @@ process, expect something bad to happen but maybe don't let that stop
 you from experimenting.
 </p>
 
-<div id="outline-container-org3ec1f29" class="outline-2">
-<h2 id="org3ec1f29">Before installing</h2>
-<div class="outline-text-2" id="text-org3ec1f29">
+<div id="outline-container-org3ac2f20" class="outline-2">
+<h2 id="org3ac2f20">Before installing</h2>
+<div class="outline-text-2" id="text-org3ac2f20">
 <p>
 It's good to understand some aspects of the OS X/macOS system
 (hereafter "macOS") before making adjustments. Most important
@@ -244,9 +221,9 @@ are firmware updates, Apple's UEFI implementation, and <kbd>bless(8)</kbd>.
 </p>
 </div>
 
-<div id="outline-container-org006e5e8" class="outline-3">
-<h3 id="org006e5e8">Firmware updates</h3>
-<div class="outline-text-3" id="text-org006e5e8">
+<div id="outline-container-org1c3dff8" class="outline-3">
+<h3 id="org1c3dff8">Firmware updates</h3>
+<div class="outline-text-3" id="text-org1c3dff8">
 <p>
 The easiest (and only, AFAIK) way to update firmware is through the
 "Software Update" feature of macOS. For that reason, it's a good idea
@@ -258,9 +235,9 @@ instructions.
 </div>
 </div>
 
-<div id="outline-container-org67653ee" class="outline-3">
-<h3 id="org67653ee">UEFI</h3>
-<div class="outline-text-3" id="text-org67653ee">
+<div id="outline-container-org0392d3b" class="outline-3">
+<h3 id="org0392d3b">UEFI</h3>
+<div class="outline-text-3" id="text-org0392d3b">
 <p>
 On startup, a macbook boots to whichever EFI entry has the highest
 priority. The process can be interrupted by holding a certain key
@@ -272,9 +249,9 @@ intend, at which point you will have to reboot and try again.
 </div>
 </div>
 
-<div id="outline-container-orga1612e5" class="outline-3">
-<h3 id="orga1612e5"><kbd>bless(8)</kbd></h3>
-<div class="outline-text-3" id="text-orga1612e5">
+<div id="outline-container-org8500daf" class="outline-3">
+<h3 id="org8500daf"><kbd>bless(8)</kbd></h3>
+<div class="outline-text-3" id="text-org8500daf">
 <p>
 The <kbd>bless</kbd> utility is widely reported to be buggy, which matches my
 experience with it. I would recommend using <kbd>efibootmgr</kbd> (the standard
@@ -283,9 +260,9 @@ alternative on Linux) entirely.
 </div>
 </div>
 
-<div id="outline-container-org181fec6" class="outline-3">
-<h3 id="org181fec6">EFI System Partition (ESP)</h3>
-<div class="outline-text-3" id="text-org181fec6">
+<div id="outline-container-org391a25c" class="outline-3">
+<h3 id="org391a25c">EFI System Partition (ESP)</h3>
+<div class="outline-text-3" id="text-org391a25c">
 <p>
 By default, Apple's Disk Utility hides the ESP. You can still mount it
 from a terminal:
@@ -303,9 +280,9 @@ sudo mount -t msdos /dev/diskXsY /Volumes/efi
 </div>
 </div>
 
-<div id="outline-container-org6970629" class="outline-2">
-<h2 id="org6970629">Installing Linux</h2>
-<div class="outline-text-2" id="text-org6970629">
+<div id="outline-container-org8f0184e" class="outline-2">
+<h2 id="org8f0184e">Installing Linux</h2>
+<div class="outline-text-2" id="text-org8f0184e">
 <p>
 There are a number of ways to structure the process of booting Linux,
 which will include some number of the following components:
@@ -334,9 +311,9 @@ Apple's UEFI.
 </p>
 </div>
 
-<div id="outline-container-org8e4b6c1" class="outline-3">
-<h3 id="org8e4b6c1">Using the rEFInd boot manager</h3>
-<div class="outline-text-3" id="text-org8e4b6c1">
+<div id="outline-container-org09046fb" class="outline-3">
+<h3 id="org09046fb">Using the rEFInd boot manager</h3>
+<div class="outline-text-3" id="text-org09046fb">
 <p>
 rEFInd has great documentation where you can find installation
 instructions and a detailed feature list. There are two primary ways
@@ -345,9 +322,9 @@ Linux kernel EFI stub.
 </p>
 </div>
 
-<div id="outline-container-org1559a85" class="outline-4">
-<h4 id="org1559a85">Invoking the GRUB2 bootloader from rEFInd</h4>
-<div class="outline-text-4" id="text-org1559a85">
+<div id="outline-container-orgf074c65" class="outline-4">
+<h4 id="orgf074c65">Invoking the GRUB2 bootloader from rEFInd</h4>
+<div class="outline-text-4" id="text-orgf074c65">
 <p>
 This is the "standard" way of dual-booting Linux. Installation might
 look like this:
@@ -369,9 +346,9 @@ You're dual-booting!
 </div>
 </div>
 
-<div id="outline-container-org2bd630b" class="outline-4">
-<h4 id="org2bd630b">Loading a kernel EFI stub from rEFInd</h4>
-<div class="outline-text-4" id="text-org2bd630b">
+<div id="outline-container-orgd990b72" class="outline-4">
+<h4 id="orgd990b72">Loading a kernel EFI stub from rEFInd</h4>
+<div class="outline-text-4" id="text-orgd990b72">
 <p>
 This method is very similar to the above, but may require a more
 manual installation process. For a how-to, see
@@ -381,9 +358,9 @@ manual installation process. For a how-to, see
 </div>
 </div>
 
-<div id="outline-container-orga613946" class="outline-3">
-<h3 id="orga613946">Using Apple's boot manager</h3>
-<div class="outline-text-3" id="text-orga613946">
+<div id="outline-container-orgfff21b1" class="outline-3">
+<h3 id="orgfff21b1">Using Apple's boot manager</h3>
+<div class="outline-text-3" id="text-orgfff21b1">
 <p>
 You may be able to get by without a third-party boot manager. However,
 on some Apple hardware, booting non-macOS operating systems from EFI
@@ -398,9 +375,9 @@ Again, you can invoke a bootloader or load an EFI stub.
 </p>
 </div>
 
-<div id="outline-container-orgf5b260b" class="outline-4">
-<h4 id="orgf5b260b">Invoking GRUB2 from Apple's UEFI</h4>
-<div class="outline-text-4" id="text-orgf5b260b">
+<div id="outline-container-org0760853" class="outline-4">
+<h4 id="org0760853">Invoking GRUB2 from Apple's UEFI</h4>
+<div class="outline-text-4" id="text-org0760853">
 <p>
 For a full guide, see:
 </p>
@@ -411,9 +388,9 @@ For a full guide, see:
 </div>
 </div>
 
-<div id="outline-container-org315a318" class="outline-4">
-<h4 id="org315a318">Loading a Linux kernel with EFI stub from Apple's UEFI</h4>
-<div class="outline-text-4" id="text-org315a318">
+<div id="outline-container-org7586a44" class="outline-4">
+<h4 id="org7586a44">Loading a Linux kernel with EFI stub from Apple's UEFI</h4>
+<div class="outline-text-4" id="text-org7586a44">
 <p>
 This <a href="https://stackoverflow.com/questions/28842865/passing-kernel-parametes-to-efi-stub-in-apples-efi-env/">stackoverflow post</a> has full instructions. They boil down to:
 </p>
@@ -427,7 +404,7 @@ experience)</li>
 Create a new boot entry pointing to your new partition:
 </p>
 <div class="org-src-container">
-<pre class="src src-bash">efibootmgr -d /dev/sdX -p Y -c -L <span style="color: #CC9393;">"Debian (EFI-Stub)"</span> -l /vmlinuz.efi -u <span style="color: #CC9393;">"root=UUID=xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx ro quiet splash initrd=\initrd.img"</span>
+<pre class="src src-bash">efibootmgr -d /dev/sdX -p Y -c -L "Debian (EFI-Stub)" -l /vmlinuz.efi -u "root=UUID=xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx ro quiet splash initrd=\initrd.img"
 </pre>
 </div></li>
 </ol>
@@ -438,8 +415,8 @@ thoughts about this boot sequence.
 </div>
 
 <ul class="org-ul">
-<li><a id="orge7f2433"></a>Without initial ramdisk<br />
-<div class="outline-text-5" id="text-orge7f2433">
+<li><a id="org1b0487b"></a>Without initial ramdisk<br />
+<div class="outline-text-5" id="text-org1b0487b">
 <p>
 The same steps apply, but you must use <kbd>root=PARTUUID=...</kbd> instead of
 <kbd>root=UUID=...</kbd>. See this <a href="https://www.reddit.com/r/Gentoo/comments/ivrfyf/comment/g5ujnm1/">reddit comment</a> for an explanation.
@@ -451,9 +428,9 @@ The same steps apply, but you must use <kbd>root=PARTUUID=...</kbd> instead of
 </div>
 </div>
 
-<div id="outline-container-org8d622c9" class="outline-2">
-<h2 id="org8d622c9">Troubleshooting</h2>
-<div class="outline-text-2" id="text-org8d622c9">
+<div id="outline-container-orgf5f161e" class="outline-2">
+<h2 id="orgf5f161e">Troubleshooting</h2>
+<div class="outline-text-2" id="text-orgf5f161e">
 <ul class="org-ul">
 <li>Unable to partition disk, even though there should be room
 <ul class="org-ul">
@@ -470,9 +447,9 @@ The same steps apply, but you must use <kbd>root=PARTUUID=...</kbd> instead of
 </div>
 </div>
 
-<div id="outline-container-org7ca0713" class="outline-2">
-<h2 id="org7ca0713">References</h2>
-<div class="outline-text-2" id="text-org7ca0713">
+<div id="outline-container-org410868d" class="outline-2">
+<h2 id="org410868d">References</h2>
+<div class="outline-text-2" id="text-org410868d">
 <ul class="org-ul">
 <li><a href="https://www.reddit.com/r/linux/comments/4rnufy/people_who_run_linux_on_macbooks_is_it_worth_it/">https://www.reddit.com/r/linux/comments/4rnufy/people_who_run_linux_on_macbooks_is_it_worth_it/</a></li>
 <li><a href="https://www.reddit.com/r/hackintosh/comments/7sprm3/is_it_possible_to_run_a_hackintosh_off_an/">https://www.reddit.com/r/hackintosh/comments/7sprm3/is_it_possible_to_run_a_hackintosh_off_an/</a></li>
@@ -486,7 +463,7 @@ The same steps apply, but you must use <kbd>root=PARTUUID=...</kbd> instead of
 </div>
 </div>
 <div id="postamble" class="status">
-<i>BTC Address: bc1qlpu2c7ltxrz5fd2a977ywedlp9u4lvukvluc3d</i>
+<p>hi</p>
 </div>
 </body>
 </html>

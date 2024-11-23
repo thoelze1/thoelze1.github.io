@@ -3,14 +3,13 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2023-01-06 Fri 14:00 -->
+<!-- 2024-11-23 Sat 00:30 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>"Jump to Definition" in Emacs</title>
-<meta name="generator" content="Org mode" />
-<meta name="author" content="Tanner Hoelzel" />
-<style type="text/css">
- <!--/*--><![CDATA[/*><!--*/
+<meta name="generator" content="Org Mode" />
+<style>
+  #content { max-width: 60em; margin: auto; }
   .title  { text-align: center;
              margin-bottom: .2em; }
   .subtitle { text-align: center;
@@ -31,8 +30,9 @@
   #postamble p, #preamble p { font-size: 90%; margin: .2em; }
   p.verse { margin-left: 3%; }
   pre {
-    border: 1px solid #ccc;
-    box-shadow: 3px 3px 3px #eee;
+    border: 1px solid #e6e6e6;
+    border-radius: 3px;
+    background-color: #f2f2f2;
     padding: 8pt;
     font-family: monospace;
     overflow: auto;
@@ -41,21 +41,21 @@
   pre.src {
     position: relative;
     overflow: auto;
-    padding-top: 1.2em;
   }
   pre.src:before {
     display: none;
     position: absolute;
-    background-color: white;
-    top: -10px;
-    right: 10px;
+    top: -8px;
+    right: 12px;
     padding: 3px;
-    border: 1px solid black;
+    color: #555;
+    background-color: #f2f2f299;
   }
   pre.src:hover:before { display: inline; margin-top: 14px;}
   /* Languages per Org manual */
   pre.src-asymptote:before { content: 'Asymptote'; }
   pre.src-awk:before { content: 'Awk'; }
+  pre.src-authinfo::before { content: 'Authinfo'; }
   pre.src-C:before { content: 'C'; }
   /* pre.src-C++ doesn't work in CSS */
   pre.src-clojure:before { content: 'Clojure'; }
@@ -190,34 +190,11 @@
     { font-size: 10px; font-weight: bold; white-space: nowrap; }
   .org-info-js_search-highlight
     { background-color: #ffff00; color: #000000; font-weight: bold; }
-  .org-svg { width: 90%; }
-  /*]]>*/-->
+  .org-svg { }
 </style>
-<script type="text/javascript">
-// @license magnet:?xt=urn:btih:e95b018ef3580986a04669f1b5879592219e2a7a&dn=public-domain.txt Public Domain
-<!--/*--><![CDATA[/*><!--*/
-     function CodeHighlightOn(elem, id)
-     {
-       var target = document.getElementById(id);
-       if(null != target) {
-         elem.classList.add("code-highlighted");
-         target.classList.add("code-highlighted");
-       }
-     }
-     function CodeHighlightOff(elem, id)
-     {
-       var target = document.getElementById(id);
-       if(null != target) {
-         elem.classList.remove("code-highlighted");
-         target.classList.remove("code-highlighted");
-       }
-     }
-    /*]]>*///-->
-// @license-end
-</script>
 </head>
 <body>
-<div id="content">
+<div id="content" class="content">
 <h1 class="title">"Jump to Definition" in Emacs</h1>
 <p>
 Navigating from a variable's usage to its definition (or declaration)
@@ -229,9 +206,9 @@ ways, that I know of, to achieve this feature: <kbd>etags.el</kbd> (now
 deprecated) and its successor <kbd>xref.el</kbd>.
 </p>
 
-<div id="outline-container-orge3e5fe4" class="outline-2">
-<h2 id="orge3e5fe4"><kbd>etags.el</kbd></h2>
-<div class="outline-text-2" id="text-orge3e5fe4">
+<div id="outline-container-org12f3717" class="outline-2">
+<h2 id="org12f3717"><kbd>etags.el</kbd></h2>
+<div class="outline-text-2" id="text-org12f3717">
 <p>
 The standard way to achieve code navigation used to be to generate an
 index of all source code for your project. The index would
@@ -239,7 +216,7 @@ basically map a name to a line number of a particular file. <kbd>ctags</kbd>
 was the original program that did this, and was written for Unix in
 the 90's. I think the origin of its name is that it generates tags for
 the C language (it also supported Pascal, Fortran, LISP, yacc and lex,
-but defaulted to C)<sup><a id="fnr.1" class="footref" href="#fn.1">1</a></sup>. There are two modern implementations of
+but defaulted to C)<sup><a id="fnr.1" class="footref" href="#fn.1" role="doc-backlink">1</a></sup>. There are two modern implementations of
 ctags: <a href="https://ctags.sourceforge.net/">exuberant-ctags</a> (no longer maintained) and <a href="https://github.com/universal-ctags/ctags">universal-ctags</a> (an
 active fork of exuberant-ctags).
 </p>
@@ -263,7 +240,7 @@ a <a href="https://stackoverflow.com/questions/1481842/clojure-emacs-etags">stac
 </p>
 
 <div class="org-src-container">
-<pre class="src src-bash">find . <span style="color: #CC9393;">\!</span> -name <span style="color: #CC9393;">'.*'</span> -name <span style="color: #CC9393;">'*.clj'</span> | xargs etags --regex=<span style="color: #CC9393;">'/[ \t\(]*def[a-z]* \([a-z-!]+\)/\1/'</span> --regex=<span style="color: #CC9393;">'/[ \t\(]*ns \([a-z.]+\)/\1/'</span>
+<pre class="src src-bash">find . \! -name '.*' -name '*.clj' | xargs etags --regex='/[ \t\(]*def[a-z]* \([a-z-!]+\)/\1/' --regex='/[ \t\(]*ns \([a-z.]+\)/\1/'
 </pre>
 </div>
 
@@ -273,7 +250,7 @@ pattern</kbd>. I had to transpose the <kbd>!</kbd> and the <kbd>-</kbd> to get i
 </p>
 
 <div class="org-src-container">
-<pre class="src src-bash">find . <span style="color: #CC9393;">\!</span> -name <span style="color: #CC9393;">'.*'</span> -name <span style="color: #CC9393;">'*.cljs'</span> | xargs etags --regex=<span style="color: #CC9393;">'/[ \t\(]*def[a-z]* \([a-z!-]+\)/\1/'</span> --regex=<span style="color: #CC9393;">'/[ \t\(]*ns \([a-z.]+\)/\1/'</span>
+<pre class="src src-bash">find . \! -name '.*' -name '*.cljs' | xargs etags --regex='/[ \t\(]*def[a-z]* \([a-z!-]+\)/\1/' --regex='/[ \t\(]*ns \([a-z.]+\)/\1/'
 </pre>
 </div>
 
@@ -282,15 +259,15 @@ It also provided a way with <kbd>ctags</kbd>:
 </p>
 
 <div class="org-src-container">
-<pre class="src src-emacs-lisp"><span style="color: #DCDCCC;">(</span><span style="color: #F0DFAF; font-weight: bold;">defvar</span> <span style="color: #DFAF8F;">path-to-ctags</span> <span style="color: #CC9393;">"/usr/local/bin/ctags"</span><span style="color: #DCDCCC;">)</span>
+<pre class="src src-emacs-lisp">(defvar path-to-ctags "/usr/local/bin/ctags")
 
-<span style="color: #5F7F5F;">;; </span><span style="color: #7F9F7F;">Recursively generate tags for all *.clj files, </span>
-<span style="color: #5F7F5F;">;; </span><span style="color: #7F9F7F;">creating tags for def* and namespaces</span>
-<span style="color: #DCDCCC;">(</span><span style="color: #F0DFAF; font-weight: bold;">defun</span> <span style="color: #93E0E3;">create-clj-tags</span> <span style="color: #BFEBBF;">(</span>dir-name<span style="color: #BFEBBF;">)</span>
-  <span style="color: #9FC59F;">"Create tags file."</span>
-  <span style="color: #BFEBBF;">(</span><span style="color: #F0DFAF; font-weight: bold;">interactive</span> <span style="color: #CC9393;">"DDirectory: "</span><span style="color: #BFEBBF;">)</span>
-  <span style="color: #BFEBBF;">(</span>shell-command
-   <span style="color: #D0BF8F;">(</span>format <span style="color: #CC9393;">"%s  --langdef=Clojure --langmap=Clojure:.clj --regex-Clojure='/[ \t</span><span style="color: #D0BF8F; font-weight: bold;">\</span><span style="color: #CC9393;">(]*def[a-z]* </span><span style="color: #D0BF8F; font-weight: bold;">\</span><span style="color: #CC9393;">([a-z!-]+</span><span style="color: #D0BF8F; font-weight: bold;">\</span><span style="color: #CC9393;">)/\1/'  --regex-Clojure='/[ \t</span><span style="color: #D0BF8F; font-weight: bold;">\</span><span style="color: #CC9393;">(]*ns </span><span style="color: #D0BF8F; font-weight: bold;">\</span><span style="color: #CC9393;">([a-z.]+</span><span style="color: #D0BF8F; font-weight: bold;">\</span><span style="color: #CC9393;">)/\1/' -f %s/TAGS -e -R %s"</span> path-to-ctags dir-name <span style="color: #93E0E3;">(</span>directory-file-name dir-name<span style="color: #93E0E3;">)</span><span style="color: #D0BF8F;">)</span><span style="color: #BFEBBF;">)</span><span style="color: #DCDCCC;">)</span>
+;; Recursively generate tags for all *.clj files, 
+;; creating tags for def* and namespaces
+(defun create-clj-tags (dir-name)
+  "Create tags file."
+  (interactive "DDirectory: ")
+  (shell-command
+   (format "%s  --langdef=Clojure --langmap=Clojure:.clj --regex-Clojure='/[ \t\(]*def[a-z]* \([a-z!-]+\)/\1/'  --regex-Clojure='/[ \t\(]*ns \([a-z.]+\)/\1/' -f %s/TAGS -e -R %s" path-to-ctags dir-name (directory-file-name dir-name))))
 </pre>
 </div>
 
@@ -298,16 +275,16 @@ It also provided a way with <kbd>ctags</kbd>:
 Now <kbd>M-x find-tag</kbd> can use these tables to jump to definitions. Keep
 in mind that using tags tables for source navigating may require some
 tuning of your workflow. For example, navigating from a project to its
-libraries can be complicated<sup><a id="fnr.2" class="footref" href="#fn.2">2</a></sup> for some languages (and easy for
-others<sup><a id="fnr.3" class="footref" href="#fn.3">3</a></sup>) and you have to plan for the tags table to get
+libraries can be complicated<sup><a id="fnr.2" class="footref" href="#fn.2" role="doc-backlink">2</a></sup> for some languages (and easy for
+others<sup><a id="fnr.3" class="footref" href="#fn.3" role="doc-backlink">3</a></sup>) and you have to plan for the tags table to get
 invalidated as you edit your code.
 </p>
 </div>
 </div>
 
-<div id="outline-container-orge81c72f" class="outline-2">
-<h2 id="orge81c72f"><kbd>xref.el</kbd></h2>
-<div class="outline-text-2" id="text-orge81c72f">
+<div id="outline-container-orge2c80e5" class="outline-2">
+<h2 id="orge2c80e5"><kbd>xref.el</kbd></h2>
+<div class="outline-text-2" id="text-orge2c80e5">
 <p>
 <kbd>xref.el</kbd> uses a backend provided by a major mode to find identifiers
 (and more). A backend can be implemented using a tags table, language
@@ -315,9 +292,9 @@ server, or anything else:
 </p>
 </div>
 
-<div id="outline-container-org8f032bc" class="outline-3">
-<h3 id="org8f032bc">Plain old <kbd>tags</kbd> table</h3>
-<div class="outline-text-3" id="text-org8f032bc">
+<div id="outline-container-org3ff82f6" class="outline-3">
+<h3 id="org3ff82f6">Plain old <kbd>tags</kbd> table</h3>
+<div class="outline-text-3" id="text-org3ff82f6">
 <p>
 I tried using <kbd>xref-find-definitions</kbd> with the two above tags tables,
 but only the <kbd>etags</kbd> table worked. Not sure why.
@@ -325,9 +302,9 @@ but only the <kbd>etags</kbd> table worked. Not sure why.
 </div>
 </div>
 
-<div id="outline-container-orgb2ff8c4" class="outline-3">
-<h3 id="orgb2ff8c4">Language Servers</h3>
-<div class="outline-text-3" id="text-orgb2ff8c4">
+<div id="outline-container-org68bbfd1" class="outline-3">
+<h3 id="org68bbfd1">Language Servers</h3>
+<div class="outline-text-3" id="text-org68bbfd1">
 <p>
 There are at least two emacs clients for the Language Server Protocol:
  <kbd>eglot.el</kbd> and <kbd>lsp.el</kbd>. To use these packages, install a language
@@ -341,9 +318,9 @@ There are also other language servers such as <a href="https://github.com/Anders
 </div>
 </div>
 
-<div id="outline-container-org94cf334" class="outline-3">
-<h3 id="org94cf334">CIDER</h3>
-<div class="outline-text-3" id="text-org94cf334">
+<div id="outline-container-org880f7ae" class="outline-3">
+<h3 id="org880f7ae">CIDER</h3>
+<div class="outline-text-3" id="text-org880f7ae">
 <p>
 For Clojure, you can use CIDER which implements an <kbd>xref</kbd> backend:
 </p>
@@ -361,9 +338,9 @@ successfully compiled).
 </div>
 </div>
 
-<div id="outline-container-orgb25ecff" class="outline-3">
-<h3 id="orgb25ecff">Other Emacs Packages</h3>
-<div class="outline-text-3" id="text-orgb25ecff">
+<div id="outline-container-orgf2cc315" class="outline-3">
+<h3 id="orgf2cc315">Other Emacs Packages</h3>
+<div class="outline-text-3" id="text-orgf2cc315">
 <ul class="org-ul">
 <li><a href="https://github.com/jacktasia/dumb-jump"><kbd>dumb-jump.el</kbd></a></li>
 </ul>
@@ -374,7 +351,7 @@ successfully compiled).
 <h2 class="footnotes">Footnotes: </h2>
 <div id="text-footnotes">
 
-<div class="footdef"><sup><a id="fn.1" class="footnum" href="#fnr.1">1</a></sup> <div class="footpara"><p class="footpara">
+<div class="footdef"><sup><a id="fn.1" class="footnum" href="#fnr.1" role="doc-backlink">1</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
 From the <kbd>ctags</kbd> <a href="https://sites.ualberta.ca/dept/chemeng/AIX-43/share/man/info/C/a_doc_lib/cmds/aixcmds1/ctags.htm">man page</a>:
 </p>
 <blockquote>
@@ -386,11 +363,11 @@ suffix are processed as C-language source code.
 </p>
 </blockquote></div></div>
 
-<div class="footdef"><sup><a id="fn.2" class="footnum" href="#fnr.2">2</a></sup> <div class="footpara"><p class="footpara">
+<div class="footdef"><sup><a id="fn.2" class="footnum" href="#fnr.2" role="doc-backlink">2</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
 <a href="https://stackoverflow.com/questions/7848911/can-ctags-be-made-to-follow-include-directives">https://stackoverflow.com/questions/7848911/can-ctags-be-made-to-follow-include-directives</a>
 </p></div></div>
 
-<div class="footdef"><sup><a id="fn.3" class="footnum" href="#fnr.3">3</a></sup> <div class="footpara"><p class="footpara">
+<div class="footdef"><sup><a id="fn.3" class="footnum" href="#fnr.3" role="doc-backlink">3</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
 <a href="https://blog.ssanj.net/posts/2015-08-22-how-to-browse-scala-sources-of-your-dependencies-from-sublime.html">https://blog.ssanj.net/posts/2015-08-22-how-to-browse-scala-sources-of-your-dependencies-from-sublime.html</a>
 </p></div></div>
 
@@ -398,7 +375,7 @@ suffix are processed as C-language source code.
 </div>
 </div></div>
 <div id="postamble" class="status">
-<i>BTC Address: bc1qlpu2c7ltxrz5fd2a977ywedlp9u4lvukvluc3d</i>
+<p>hi</p>
 </div>
 </body>
 </html>
